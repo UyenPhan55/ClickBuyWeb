@@ -1,19 +1,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Cập nhật URI chuẩn Jakarta cho JSTL --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - ClickBuy</title>
     
     <jsp:include page="common/header.jsp" />
     
     <style>
-        body { background: #f5f5f5; }
+        body { background: #f8f9fa; }
         .login-card {
             border-radius: 15px;
             border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: #ffffff;
         }
         .btn-login {
             background: #d70018;
@@ -25,7 +29,7 @@
         .btn-login:hover { background: #b80014; color: white; transform: translateY(-2px); }
         .back-to-home {
             text-decoration: none;
-            color: #666;
+            color: #6c757d;
             font-size: 14px;
             transition: 0.3s;
         }
@@ -39,48 +43,53 @@
 
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-8">
                 
                 <div class="mb-3">
-                    <a href="${pageContext.request.contextPath}/index.jsp" class="back-to-home">
+                    <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="back-to-home">
                         <i class="bi bi-arrow-left"></i> Quay về trang chủ
                     </a>
                 </div>
 
                 <div class="card login-card p-4">
-                    <h3 class="text-center fw-bold text-danger mb-4">CLICKBUY LOGIN</h3>
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold text-danger mb-1">CLICKBUY LOGIN</h3>
+                        <p class="text-muted small">Vui lòng đăng nhập để tiếp tục mua sắm</p>
+                    </div>
 
-                    <%-- Thông báo lỗi từ AuthServlet (Sai mật khẩu, tài khoản bị khóa...) --%>
+                    <%-- Thông báo lỗi từ AuthServlet --%>
                     <c:if test="${not empty error}">
-                        <div class="alert alert-danger text-center py-2 small mb-3">
-                            <i class="bi bi-exclamation-circle"></i> ${error}
+                        <div class="alert alert-danger text-center py-2 small mb-3 border-0">
+                            <i class="bi bi-exclamation-circle-fill me-1"></i> ${error}
                         </div>
                     </c:if>
 
-                    <%-- Thông báo thành công (Dùng sau khi đăng ký xong rồi nhảy sang đây) --%>
+                    <%-- Thông báo thành công --%>
                     <c:if test="${not empty message}">
-                        <div class="alert alert-success text-center py-2 small mb-3">
-                            ${message}
+                        <div class="alert alert-success text-center py-2 small mb-3 border-0">
+                            <i class="bi bi-check-circle-fill me-1"></i> ${message}
                         </div>
                     </c:if>
 
                     <form action="${pageContext.request.contextPath}/AuthServlet" method="post">
-                      
+                        <%-- Định danh hành động cho Servlet --%>
                         <input type="hidden" name="action" value="login">
                         
                         <div class="mb-3">
                             <label class="fw-bold mb-1 small">Email hoặc Số điện thoại</label>
-                          
-                            <input type="text" name="user_input" class="form-control" placeholder="Nhập email hoặc SĐT" required>
+                            <%-- value="${param.user_input}" giúp giữ lại tên đăng nhập khi gõ sai mật khẩu --%>
+                            <input type="text" name="user_input" class="form-control shadow-none" 
+                                   placeholder="Nhập email hoặc SĐT" value="${param.user_input}" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="fw-bold mb-1 small">Mật khẩu</label>
-                           
-                            <input type="password" name="mat_khau" class="form-control" placeholder="********" required>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="fw-bold small mb-0">Mật khẩu</label>
+                                <a href="quen-mat-khau.jsp" class="text-danger text-decoration-none" style="font-size: 12px;">Quên mật khẩu?</a>
+                            </div>
+                            <input type="password" name="mat_khau" class="form-control shadow-none" placeholder="********" required>
                         </div>
 
-                        <%-- Checkbox ghi nhớ đăng nhập (Tùy chọn thêm cho xịn) --%>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
                             <label class="form-check-label small text-muted" for="rememberMe">Ghi nhớ đăng nhập</label>

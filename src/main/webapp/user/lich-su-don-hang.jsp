@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Cập nhật URI sang Jakarta --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
@@ -23,49 +24,53 @@
                
                 <c:forEach var="order" items="${orderList}">
                     <tr>
-                        <td class="ps-3 fw-bold">#${order.idDonHang}</td>
+                        <td class="ps-3 fw-bold text-primary">#${order.idDonHang}</td>
                         <td>
                             <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy" />
                         </td>
                         <td class="text-danger fw-bold">
-                            <fmt:formatNumber value="${order.tongTien}" type="number"/>đ
+                            <%-- Định dạng tiền tệ theo chuẩn VNĐ --%>
+                            <fmt:formatNumber value="${order.tongTien}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                         </td>
                         <td>
                             <c:choose>
                                 <c:when test="${order.trangThai == 'CHO_XAC_NHAN'}">
-                                    <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                                    <span class="badge rounded-pill bg-warning text-dark">Chờ xác nhận</span>
                                 </c:when>
                                 <c:when test="${order.trangThai == 'DA_GIAO'}">
-                                    <span class="badge bg-success">Đã giao hàng</span>
+                                    <span class="badge rounded-pill bg-success">Đã giao hàng</span>
                                 </c:when>
                                 <c:when test="${order.trangThai == 'DA_HUY'}">
-                                    <span class="badge bg-secondary">Đã hủy</span>
+                                    <span class="badge rounded-pill bg-secondary">Đã hủy</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="badge bg-info text-dark">${order.trangThai}</span>
+                                    <span class="badge rounded-pill bg-info text-dark">${order.trangThai}</span>
                                 </c:otherwise>
                             </c:choose>
                         </td>
                         <td class="text-end pe-3">
-                            <button class="btn btn-sm btn-dark" 
-                                    onclick="location.href='chi-tiet-don-hang.jsp?id=${order.idDonHang}'">Chi tiết</button>
+                            <a href="${pageContext.request.contextPath}/chi-tiet-don-hang?id=${order.idDonHang}" 
+                               class="btn btn-sm btn-dark shadow-sm">
+                                <i class="bi bi-eye me-1"></i> Chi tiết
+                            </a>
                             
-                            <%-- Chỉ cho phép đánh giá nếu đơn hàng đã giao thành công --%>
                             <c:if test="${order.trangThai == 'DA_GIAO'}">
-                                <button class="btn btn-sm btn-outline-danger" 
-                                        onclick="location.href='them-danh-gia.jsp?id=${order.idDonHang}'">Đánh giá</button>
+                                <a href="${pageContext.request.contextPath}/them-danh-gia?id=${order.idDonHang}" 
+                                   class="btn btn-sm btn-outline-danger shadow-sm">
+                                    <i class="bi bi-star-fill me-1"></i> Đánh giá
+                                </a>
                             </c:if>
                         </td>
                     </tr>
                 </c:forEach>
 
-                <%-- Hiển thị thông báo nếu khách chưa mua gì --%>
                 <c:if test="${empty orderList}">
                     <tr>
                         <td colspan="5" class="text-center py-5 text-muted">
-                            <i class="bi bi-cart-x fs-1 d-block mb-2"></i>
-                            Bạn chưa có đơn hàng nào 
-                            <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="text-danger fw-bold">Mua sắm ngay</a>
+                            <i class="bi bi-cart-x fs-1 d-block mb-3 text-secondary"></i>
+                            <h5>Bạn chưa có đơn hàng nào</h5>
+                            <p class="small mb-4">Hãy tiếp tục khám phá các sản phẩm công nghệ mới nhất nhé!</p>
+                            <a href="${pageContext.request.contextPath}/home" class="btn btn-danger px-4 fw-bold">Mua sắm ngay</a>
                         </td>
                     </tr>
                 </c:if>

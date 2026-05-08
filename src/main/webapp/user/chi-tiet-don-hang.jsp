@@ -1,10 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Sửa URI sang Jakarta cho JSTL Core và Format --%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Chi tiết đơn hàng - ClickBuy</title>
+    <%-- Đường dẫn include header --%>
     <jsp:include page="../common/header.jsp" />
     <style>
         .track-line { height: 4px; background-color: #eee; position: relative; top: 20px; z-index: 1; }
@@ -40,7 +42,6 @@
         <div class="card border-0 shadow-sm p-4 mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <a href="${pageContext.request.contextPath}/user/lich-su-don-hang.jsp" class="back-link">
-                    
                     <h4 class="fw-bold mb-0"> CHI TIẾT ĐƠN #CB${order.id_don_hang}</h4>
                 </a>
                 <a href="${pageContext.request.contextPath}/user/gui-khieu-nai.jsp?orderId=${order.id_don_hang}" 

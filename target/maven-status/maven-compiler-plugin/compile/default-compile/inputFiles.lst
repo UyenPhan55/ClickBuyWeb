@@ -1,3 +1,48 @@
+<<<<<<< HEAD
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\DonHang.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\KhieuNai.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\NguoiDungDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\LichSuHoatDongDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\com\clickbuy\ClickBuyWeb\JakartaRestConfiguration.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\GioHangServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\SanPhamDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\SanPhamTrongGioDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\DonHangServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\util\SessionUtil.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\filter\EncodingFilter.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\filter\AdminFilter.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\SanPham.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\DonHangDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\DBConnection.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\VaiTro.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\NguoiDung.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\BaoHanhDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\BaoHanhServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\DBConnection1.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\com\clickbuy\ClickBuyWeb\resources\JakartaEE10Resource.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\DanhGiaServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\SanPhamServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\ThongBao.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\DanhGia.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\SanPhamTrongDon.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\NguoiDungServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\filter\StaffFilter.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\BaoHanh.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\AuthServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\KhieuNaiServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\DanhGiaDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\GioHangDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\filter\LoginFilter.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\LichSuHoatDong.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\SanPhamTrongGio.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\LichSuHoatDongServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\controller\ThongBaoServlet.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\util\PasswordUtil.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\KhieuNaiDAO.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\model\GioHang.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\util\LogUtil.java
+D:\Minh Trang\HKII 2025 - 2026\LT WEB\ClickBuyWeb\src\main\java\dao\ThongBaoDAO.java
+=======
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/filter/StaffFilter.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/NguoiDungDAO.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/DBConnection.java
@@ -37,3 +82,4 @@
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/model/VaiTro.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/DonHangDAO.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/SanPhamTrongGioDAO.java
+>>>>>>> 33ebaca7d2c49db05c2e70428446b2bc26631a54

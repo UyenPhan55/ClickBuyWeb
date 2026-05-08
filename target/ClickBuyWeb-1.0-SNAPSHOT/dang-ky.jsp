@@ -14,9 +14,12 @@
         .back-to-home:hover { color: #d70018; }
         .form-control:focus { border-color: #d70018; box-shadow: 0 0 0 0.25rem rgba(215, 0, 24, 0.25); }
         body { background-color: #f8f9fa; }
+<<<<<<< HEAD
         /* Style nhỏ để nút mắt trông mượt hơn */
         .btn-outline-secondary { border-color: #dee2e6; color: #6c757d; }
         .btn-outline-secondary:hover { background-color: #f8f9fa; color: #d70018; border-color: #ced4da; }
+=======
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
     </style>
 </head>
 <body>
@@ -67,6 +70,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Mật khẩu</label>
+<<<<<<< HEAD
                             <div class="input-group">
                                 <input type="password" name="mat_khau" id="password" class="form-control shadow-none" 
                                        placeholder="********" required>
@@ -74,10 +78,15 @@
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
+=======
+                            <input type="password" name="mat_khau" class="form-control shadow-none" 
+                                   placeholder="********" required>
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Xác nhận mật khẩu</label>
+<<<<<<< HEAD
                             <div class="input-group">
                                 <input type="password" name="confirmPassword" id="confirmPassword" class="form-control shadow-none" 
                                        placeholder="********" required>
@@ -85,6 +94,10 @@
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
+=======
+                            <input type="password" name="confirmPassword" class="form-control shadow-none" 
+                                   placeholder="********" required>
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
                         </div>
 
                         <button type="submit" class="btn btn-danger w-100 fw-bold py-2 mt-2 shadow-sm">ĐĂNG KÝ NGAY</button>

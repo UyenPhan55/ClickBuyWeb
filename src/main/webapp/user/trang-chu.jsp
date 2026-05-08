@@ -36,7 +36,6 @@
             background-color: #b50014;
             color: white;
         }
-        /* Style cho Navbar bà làm rất đẹp, tui giữ nguyên nhé */
         .nav-link {
             transition: all 0.3s ease;
             color: rgba(255,255,255,0.8) !important;
@@ -113,8 +112,9 @@
 
 </body>
 </html>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -176,7 +176,6 @@
             <c:forEach var="p" items="${latestProducts}">
                 <div class="col-md-4 mb-4">
                     <div class="card p-3 border-0 shadow-sm h-100 product-card">
-                        <%-- Link đến trang chi tiết kèm theo ID sản phẩm --%>
                         <a href="chi-tiet-san-pham.jsp?id=${p.idSanPham}" class="product-link">
                             <img src="${pageContext.request.contextPath}/uploads/san-pham/${p.urlAnh}" 
                                  class="card-img-top img-fluid" style="max-height: 200px; object-fit: contain;" alt="${p.tenSanPham}">
@@ -188,7 +187,6 @@
                             </div>
                         </a>
                         <div class="d-grid gap-2 mt-auto">
-                            <%-- Nút Mua Ngay đẩy thẳng tới thanh toán với ID biến thể mặc định --%>
                             <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm" 
                                     onclick="location.href='thanh-toan.jsp?id=${p.idSanPham}'">
                                 MUA NGAY
@@ -202,7 +200,6 @@
                 </div>
             </c:forEach>
 
-            <%-- Nếu chưa có sản phẩm nào --%>
             <c:if test="${empty latestProducts}">
                 <div class="col-12 text-center py-5">
                     <p class="text-muted italic">Đang cập nhật sản phẩm mới nhất</p>

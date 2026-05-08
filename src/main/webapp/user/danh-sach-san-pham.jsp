@@ -1,12 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Cập nhật URI sang hệ Jakarta --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
 
 <main class="container my-5">
     <div class="row">
+        <%-- Cột bên trái: Bộ lọc --%>
         <div class="col-md-3">
             <div class="card p-3 mb-4 border-0 shadow-sm">
                 <h5 class="fw-bold mb-3"><i class="bi bi-filter-left me-2"></i>Bộ lọc sản phẩm</h5>
@@ -16,6 +18,7 @@
                     <div class="d-flex flex-column gap-2 mb-3">
                         <c:forEach var="brand" items="${brands}">
                             <div class="form-check">
+                                <%-- Logic giữ trạng thái checked của bà rất chuẩn --%>
                                 <input class="form-check-input" type="checkbox" name="brandId" 
                                        value="${brand.id_thuong_hieu}" id="brand${brand.id_thuong_hieu}"
                                        <c:if test="${paramValues.brandId != null}">
@@ -35,6 +38,7 @@
             </div>
         </div>
 
+        <%-- Cột bên phải: Danh sách sản phẩm --%>
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
                 <h4 class="fw-bold mb-0 text-uppercase">
@@ -90,6 +94,7 @@
 </main>
 
 <jsp:include page="../common/footer.jsp" />
+<<<<<<< HEAD
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -208,3 +213,5 @@
 </main>
 
 <jsp:include page="../common/footer.jsp" />
+=======
+>>>>>>> 33ebaca7d2c49db05c2e70428446b2bc26631a54

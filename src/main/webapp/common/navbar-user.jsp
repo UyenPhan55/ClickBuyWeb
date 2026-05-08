@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Chuyển URI sang Jakarta để chạy được logic session và giỏ hàng --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <style>
     .navbar { padding: 10px 0 !important; }
@@ -85,6 +86,7 @@
                     </a>
                 </li>
 
+                <%-- Dùng Jakarta để kiểm tra thông tin user trong session --%>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <li class="nav-item me-2">

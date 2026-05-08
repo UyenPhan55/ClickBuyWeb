@@ -1,23 +1,35 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- Cập nhật sang URI Jakarta chuẩn cho dự án --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký - ClickBuy</title>
     <jsp:include page="common/header.jsp" />
     <style>
         .back-to-home { color: #6c757d; text-decoration: none; font-size: 14px; transition: 0.3s; }
         .back-to-home:hover { color: #d70018; }
         .form-control:focus { border-color: #d70018; box-shadow: 0 0 0 0.25rem rgba(215, 0, 24, 0.25); }
+        body { background-color: #f8f9fa; }
+<<<<<<< HEAD
+        /* Style nhỏ để nút mắt trông mượt hơn */
+        .btn-outline-secondary { border-color: #dee2e6; color: #6c757d; }
+        .btn-outline-secondary:hover { background-color: #f8f9fa; color: #d70018; border-color: #ced4da; }
+=======
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
     </style>
 </head>
-<body style="background-color: #f8f9fa;">
+<body>
     <jsp:include page="common/navbar-user.jsp" />
 
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="mb-3">
-                    <a href="${pageContext.request.contextPath}/index.jsp" class="back-to-home">
+                    <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="back-to-home">
                         <i class="bi bi-arrow-left"></i> Quay về trang chủ
                     </a>
                 </div>
@@ -27,12 +39,12 @@
                         <p class="text-muted">Tham gia ClickBuy ngay hôm nay!</p>
                     </div>
 
-                    <%-- Hiện lỗi từ Servlet gửi về (Ví dụ: Email đã tồn tại) --%>
-                    <% if (request.getAttribute("error") != null) { %>
+                    <%-- Hiện lỗi bằng JSTL thay cho Scriptlet cũ --%>
+                    <c:if test="${not empty error}">
                         <div class="alert alert-danger text-center py-2 small" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill"></i> <%= request.getAttribute("error") %>
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> ${error}
                         </div>
-                    <% } %>
+                    </c:if>
 
                     <%-- Form gửi dữ liệu đến AuthServlet --%>
                     <form action="${pageContext.request.contextPath}/AuthServlet" method="post">
@@ -40,27 +52,52 @@
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Họ và tên</label>
-                            <input type="text" name="ten_day_du" class="form-control" placeholder="Nhập tên của bạn" required>
+                            <input type="text" name="ten_day_du" class="form-control shadow-none" 
+                                   placeholder="Nhập tên của bạn" value="${param.ten_day_du}" required>
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Email đăng nhập</label>
-                            <input type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
+                            <input type="email" name="email" class="form-control shadow-none" 
+                                   placeholder="example@gmail.com" value="${param.email}" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Số điện thoại</label>
-                            <input type="text" name="sdt" class="form-control" placeholder="Nhập số điện thoại" required>
+                            <input type="text" name="sdt" class="form-control shadow-none" 
+                                   placeholder="Nhập số điện thoại" value="${param.sdt}" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Mật khẩu</label>
-                            <input type="password" name="mat_khau" class="form-control" placeholder="********" required>
+<<<<<<< HEAD
+                            <div class="input-group">
+                                <input type="password" name="mat_khau" id="password" class="form-control shadow-none" 
+                                       placeholder="********" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+=======
+                            <input type="password" name="mat_khau" class="form-control shadow-none" 
+                                   placeholder="********" required>
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Xác nhận mật khẩu</label>
-                            <input type="password" name="confirmPassword" class="form-control" placeholder="********" required>
+<<<<<<< HEAD
+                            <div class="input-group">
+                                <input type="password" name="confirmPassword" id="confirmPassword" class="form-control shadow-none" 
+                                       placeholder="********" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+=======
+                            <input type="password" name="confirmPassword" class="form-control shadow-none" 
+                                   placeholder="********" required>
+>>>>>>> a47ecee4c10cc752e8cf48e868671412a698ffba
                         </div>
 
                         <button type="submit" class="btn btn-danger w-100 fw-bold py-2 mt-2 shadow-sm">ĐĂNG KÝ NGAY</button>
@@ -76,5 +113,21 @@
     </div>
 
     <jsp:include page="common/footer.jsp" />
+
+    <%-- Script xử lý ẩn hiện mật khẩu --%>
+    <script>
+        function togglePassword(inputId, btn) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
 </body>
 </html>

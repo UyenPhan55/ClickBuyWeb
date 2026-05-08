@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Chuyển đổi sang Jakarta Taglib --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
@@ -16,6 +17,7 @@
 
     <div class="row mb-5">
         <div class="col-md-6 text-center">
+            <%-- Giữ hiệu ứng sticky của bà vì nó rất tiện khi scroll đọc mô tả --%>
             <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 100px; z-index: 10;">
                 <img src="${pageContext.request.contextPath}/uploads/san-pham/${product.url_anh}" 
                      class="img-fluid" style="max-height: 450px; object-fit: contain;" alt="${product.ten_san_pham}">
@@ -28,7 +30,6 @@
             <div class="d-flex align-items-center gap-2 mb-3">
                 <span class="text-muted small">Thương hiệu: <strong class="text-dark">${product.ten_thuong_hieu}</strong></span>
                 <span class="text-muted">|</span>
-                <%-- Trạng thái từ bảng san_pham --%>
                 <c:choose>
                     <c:when test="${product.trang_thai == 1}">
                         <span class="badge bg-success-subtle text-success border border-success-subtle fw-bold">
@@ -107,6 +108,7 @@
             <div class="card border-0 shadow-sm p-4 mb-4">
                 <h5 class="fw-bold border-bottom pb-3 mb-3 text-uppercase">Mô tả sản phẩm</h5>
                 <div class="content-detail" style="line-height: 1.8;">
+                    <%-- Dùng c:out nếu muốn bảo mật, hoặc giữ nguyên nếu nội dung là HTML --%>
                     ${product.mo_ta}
                 </div>
             </div>
@@ -118,14 +120,17 @@
     function updateInfo(id, price, stock) {
         document.getElementById('selected-variant-id').value = id;
         
+        // Format tiền tệ chuẩn Việt Nam
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
         });
         
+        // Cập nhật giá và tồn kho
         document.getElementById('display-price').innerText = formatter.format(price).replace(/\u20AB/g, 'đ');
         document.getElementById('display-stock').innerText = stock;
         
+        // Reset lại max cho ô nhập số lượng
         const qtyInput = document.getElementById('buy-quantity');
         qtyInput.max = stock;
         if (parseInt(qtyInput.value) > parseInt(stock)) {

@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- Cập nhật URI sang hệ Jakarta --%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
@@ -16,10 +17,11 @@
             cursor: pointer;
             border-radius: 15px;
             overflow: hidden;
+            background: #fff;
         }
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
         }
         .product-link {
             text-decoration: none;
@@ -34,6 +36,7 @@
             background-color: #b50014;
             color: white;
         }
+        /* Style cho Navbar bà làm rất đẹp, tui giữ nguyên nhé */
         .nav-link {
             transition: all 0.3s ease;
             color: rgba(255,255,255,0.8) !important;
@@ -48,50 +51,59 @@
         }
     </style>
 </head>
-<body style="background-color: #f4f4f4;">
+<body style="background-color: #f8f9fa;">
 
     <jsp:include page="../common/navbar-user.jsp" />
 
     <main class="container my-5">
-        <h3 class="mb-4 fw-bold border-start border-4 border-danger ps-3 text-uppercase">
-            Sản phẩm mới nhất
-        </h3>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold border-start border-4 border-danger ps-3 text-uppercase mb-0">
+                Sản phẩm mới nhất
+            </h3>
+            <a href="${pageContext.request.contextPath}/tat-ca-san-pham" class="text-danger text-decoration-none fw-bold small">
+                Xem tất cả <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
         
         <div class="row">
-            
             <c:forEach var="p" items="${latestProducts}">
-                <div class="col-md-4 mb-4">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="card p-3 border-0 shadow-sm h-100 product-card">
-                        <%-- Link đến trang chi tiết kèm theo ID sản phẩm --%>
-                        <a href="chi-tiet-san-pham.jsp?id=${p.idSanPham}" class="product-link">
+                        <%-- Điều hướng bằng URL sạch thông qua Servlet --%>
+                        <a href="${pageContext.request.contextPath}/product-detail?id=${p.idSanPham}" class="product-link">
                             <img src="${pageContext.request.contextPath}/uploads/san-pham/${p.urlAnh}" 
-                                 class="card-img-top img-fluid" style="max-height: 200px; object-fit: contain;" alt="${p.tenSanPham}">
-                            <div class="card-body text-center d-flex flex-column">
-                                <h5 class="card-title fw-bold">${p.tenSanPham}</h5>
+                                 class="card-img-top img-fluid mb-3" 
+                                 style="height: 180px; object-fit: contain;" 
+                                 alt="${p.tenSanPham}">
+                            
+                            <div class="card-body p-0 d-flex flex-column text-center">
+                                <h6 class="card-title fw-bold text-dark mb-2" style="height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    ${p.tenSanPham}
+                                </h6>
                                 <p class="text-danger fw-bold fs-5">
-                                    <fmt:formatNumber value="${p.giaNiemYet}" type="number"/>đ
+                                    <fmt:formatNumber value="${p.giaNiemYet}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                 </p>
                             </div>
                         </a>
-                        <div class="d-grid gap-2 mt-auto">
-                            <%-- Nút Mua Ngay đẩy thẳng tới thanh toán với ID biến thể mặc định --%>
-                            <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm" 
-                                    onclick="location.href='thanh-toan.jsp?id=${p.idSanPham}'">
-                                MUA NGAY
+                        
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm rounded-3" 
+                                    onclick="location.href='${pageContext.request.contextPath}/thanh-toan?id=${p.idSanPham}'">
+                                <i class="bi bi-cart-plus me-1"></i> MUA NGAY
                             </button>
-                            <button type="button" class="btn btn-outline-dark fw-bold btn-sm" 
-                                    onclick="location.href='chi-tiet-san-pham.jsp?id=${p.idSanPham}'">
-                                XEM CHI TIẾT
+                            <button type="button" class="btn btn-outline-secondary fw-bold btn-sm rounded-3" 
+                                    onclick="location.href='${pageContext.request.contextPath}/product-detail?id=${p.idSanPham}'">
+                                CHI TIẾT
                             </button>
                         </div>
                     </div>
                 </div>
             </c:forEach>
 
-            <%-- Nếu chưa có sản phẩm nào --%>
             <c:if test="${empty latestProducts}">
                 <div class="col-12 text-center py-5">
-                    <p class="text-muted italic">Đang cập nhật sản phẩm mới nhất</p>
+                    <i class="bi bi-box-seam fs-1 text-muted d-block mb-3"></i>
+                    <p class="text-muted fst-italic">Đang cập nhật những sản phẩm công nghệ mới nhất...</p>
                 </div>
             </c:if>
         </div>

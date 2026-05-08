@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Cập nhật URI sang hệ Jakarta --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />

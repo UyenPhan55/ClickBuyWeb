@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Cập nhật URI sang hệ Jakarta --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
@@ -18,18 +19,18 @@
                     <select class="form-select border-danger-subtle shadow-none" name="id_don_hang" required>
                         <option value="" selected disabled>-- Chọn đơn hàng --</option>
                         <c:forEach var="order" items="${orders}">
+                            <%-- Lưu ý: Kiểm tra xem Uyên đặt tên là idDonHang hay id_don_hang để sửa cho khớp nhé --%>
                             <option value="${order.idDonHang}">
                                 Đơn hàng #${order.maDonHang} - <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy" />
                             </option>
                         </c:forEach>
-                        <%-- Option dự phòng nếu các bạn Java chưa đổ dữ liệu --%>
+                        
                         <c:if test="${empty orders}">
                             <option value="0">Chưa có dữ liệu đơn hàng</option>
                         </c:if>
                     </select>
                 </div>
 
-                <%-- 2. Nội dung (Khớp với cột 'noi_dung' trong DB) --%>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Nội dung</label>
                     <textarea class="form-control border-danger-subtle shadow-none" 
@@ -37,10 +38,8 @@
                               placeholder="Mô tả chi tiết vấn đề..."></textarea>
                 </div>
 
-                <%-- 3. Yêu cầu trả hàng (Khớp với cột 'yeu_cau_tra_hang' - kiểu tinyint) --%>
                 <div class="mb-3 p-3 bg-light rounded border border-dashed" style="border-style: dashed !important;">
                     <div class="form-check form-switch">
-                        <%-- Value là 1 tương ứng với YES trong Database --%>
                         <input class="form-check-input" type="checkbox" name="yeu_cau_tra_hang" 
                                id="returnRequest" value="1">
                         <label class="form-check-label fw-bold text-danger" for="returnRequest">
@@ -49,9 +48,9 @@
                     </div>
                 </div>
 
-                <%-- Các thông tin ẩn/mặc định hiển thị cho user --%>
                 <div class="mb-4 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">Ngày gửi: 27/04/2026</small>
+                    <%-- Dùng JSP để lấy ngày hiện tại tự động luôn cho xịn bà nè --%>
+                    <small class="text-muted">Ngày gửi: <fmt:formatDate value="<%= new java.util.Date() %>" pattern="dd/MM/yyyy" /></small>
                     <span class="badge bg-warning text-dark">CHỜ TIẾP NHẬN</span>
                 </div>
 
@@ -63,9 +62,9 @@
     </div>
 </main>
 
-<%-- MODAL THÔNG BÁO (Hiện ra khi các bạn Servlet redirect kèm status=success) --%>
+<%-- MODAL THÔNG BÁO THÀNH CÔNG --%>
 <c:if test="${param.status == 'success'}">
-    <div class="modal fade show" id="successModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
+    <div class="modal fade show" id="successModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5); z-index: 1060;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-body text-center p-5">

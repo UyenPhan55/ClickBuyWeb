@@ -38,4 +38,17 @@ public class SessionUtil {
         NguoiDung u = getUser(req);
         return u != null && (u.getIdVaiTro() == 1 || u.getIdVaiTro() == 2);
     }
+    // Lấy ID người dùng từ session
+    public static Integer getIdNguoiDung(HttpServletRequest req) {
+        NguoiDung u = getUser(req);
+        if (u != null) {
+            return u.getIdNguoiDung(); 
+        }
+        return null;
+    }
+    public static boolean isStaffOrAdmin(HttpServletRequest req) {
+    NguoiDung u = getUser(req);
+    // Kiểm tra nếu là Admin (1) hoặc Nhân viên (2)
+    return u != null && (u.getIdVaiTro() == 1 || u.getIdVaiTro() == 2);
+    }
 }

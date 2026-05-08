@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Cập nhật URI sang hệ Jakarta để chạy trên Tomcat 10 --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
@@ -9,13 +10,13 @@
     <c:choose>
         <%-- TRƯỜNG HỢP CÓ SẢN PHẨM TRONG GIỎ --%>
         <c:when test="${not empty cartItems}">
-            <h3 class="fw-bold mb-4">GIỎ HÀNG CỦA BẠN</h3>
+            <h3 class="fw-bold mb-4 uppercase">GIỎ HÀNG CỦA BẠN</h3>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card p-3 mb-4 border-0 shadow-sm">
                         <table class="table align-middle">
                             <thead>
-                                <tr class="text-secondary small">
+                                <tr class="text-secondary small text-uppercase">
                                     <th>Sản phẩm</th>
                                     <th class="text-center">Giá</th>
                                     <th class="text-center" style="width: 120px;">Số lượng</th>
@@ -32,7 +33,6 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <%-- Link xem chi tiết --%>
                                                 <a href="${pageContext.request.contextPath}/ProductDetailServlet?id=${item.id_san_pham}">
                                                     <img src="${pageContext.request.contextPath}/uploads/san-pham/${item.url_anh}" width="70" class="me-3 rounded shadow-sm border" alt="${item.ten_san_pham}">
                                                 </a>
@@ -44,7 +44,7 @@
                                                     </h6>
                                                     <small class="text-danger d-block fw-medium">Phiên bản: ${item.ten_bien_the}</small>
                                                     <small class="text-muted" style="font-size: 0.75rem;">
-                                                        <i class="bi bi-clock-history"></i> Ngày thêm: <fmt:formatDate value="${item.ngay_them}" pattern="dd/MM/yyyy" />
+                                                        <i class="bi bi-clock-history"></i> Thêm ngày: <fmt:formatDate value="${item.ngay_them}" pattern="dd/MM/yyyy" />
                                                     </small>
                                                 </div>
                                             </div>
@@ -73,7 +73,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <%-- Sửa link TIẾP TỤC MUA SẮM về thẳng trang chủ của bà --%>
                     <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="text-decoration-none text-danger fw-bold small">
                         <i class="bi bi-arrow-left"></i> TIẾP TỤC MUA SẮM
                     </a>
@@ -88,7 +87,7 @@
                             <button class="btn btn-danger px-3 fw-bold" type="submit">ÁP DỤNG</button>
                         </form>
                         <c:if test="${not empty voucherMsg}">
-                            <small class="${voucherSuccess ? 'text-success' : 'text-danger'} mt-2">${voucherMsg}</small>
+                            <small class="${voucherSuccess ? 'text-success' : 'text-danger'} mt-2 d-block">${voucherMsg}</small>
                         </c:if>
                     </div>
 
@@ -137,7 +136,6 @@
                 </div>
                 <h4 class="mt-4 fw-bold text-muted">Giỏ hàng của bạn đang trống</h4>
                 <p class="text-secondary">Hãy chọn sản phẩm để tiếp tục mua sắm nhé!</p>
-                <%-- Nút MUA SẮM NGAY quay về trang chủ --%>
                 <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="btn btn-danger px-4 fw-bold mt-3 py-2 shadow">MUA SẮM NGAY</a>
             </div>
         </c:otherwise>

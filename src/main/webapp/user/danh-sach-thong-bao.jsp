@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Cập nhật URI sang hệ Jakarta --%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -72,11 +73,11 @@
                 <c:choose>
                     <c:when test="${not empty notifications}">
                         <c:forEach var="n" items="${notifications}">
+                            <%-- Thiết lập class và icon động dựa trên loại thông báo --%>
                             <c:set var="typeClass" value="${n.loai == 'KHUYEN_MAI' ? 'bg-khuyen-mai' : (n.loai == 'DON_HANG' ? 'bg-don-hang' : 'bg-he-thong')}" />
                             <c:set var="icon" value="${n.loai == 'KHUYEN_MAI' ? '🎁' : (n.loai == 'DON_HANG' ? '🚚' : '⚙️')}" />
                             <c:set var="typeName" value="${n.loai == 'KHUYEN_MAI' ? 'KHUYẾN MÃI' : (n.loai == 'DON_HANG' ? 'ĐƠN HÀNG' : 'HỆ THỐNG')}" />
 
-                           
                             <a href="${n.duong_dan}" class="card noti-card p-3 mb-3 ${n.da_doc == 0 ? 'noti-unread' : 'noti-read'}">
                                 <div class="d-flex align-items-start">
                                     <div class="noti-icon ${typeClass} me-3 shadow-sm">${icon}</div>

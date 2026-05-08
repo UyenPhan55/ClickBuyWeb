@@ -51,7 +51,6 @@
     </script>
 </footer>
 </body> 
-<%@ page pageEncoding="UTF-8" language="java" %>
 <%-- Kết thúc main-wrapper --%>
     </div>
 </div>

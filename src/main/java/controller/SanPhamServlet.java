@@ -1,88 +1,85 @@
-<<<<<<< HEAD
-package controller;
+package dao;
 
-import dao.SanPhamDAO;
-import dao.BienTheSanPhamDAO;
-import model.SanPham;
-import model.BienTheSanPham;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+
+import java.sql.Connection;
+
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+
+import java.util.ArrayList;
+
 import java.util.List;
 
-@WebServlet(name = "SanPhamServlet", urlPatterns = {"/san-pham"})
-public class SanPhamServlet extends HttpServlet {
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) action = "list";
-
-        SanPhamDAO spDAO = new SanPhamDAO();
-        BienTheSanPhamDAO btDAO = new BienTheSanPhamDAO();
-
-        try {
-            switch (action) {
-                case "list":
-                    // Lấy danh sách sản phẩm hiển thị ra trang chủ/danh sách
-                    List<SanPham> list = spDAO.getAllSanPham();
-                    request.setAttribute("listSP", list);
-                    request.getRequestDispatcher("user/danh-sach-san-pham.jsp").forward(request, response);
-                    break;
-                case "detail":
-                    // Xem chi tiết 1 sản phẩm và các biến thể của nó
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    SanPham sp = spDAO.getSanPhamById(id);
-                    List<BienTheSanPham> listBT = btDAO.getBienTheBySanPhamId(id);
-                    request.setAttribute("detail", sp);
-                    request.setAttribute("listBT", listBT);
-                    request.getRequestDispatcher("user/chi-tiet-san-pham.jsp").forward(request, response);
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-=======
-package controller;
-
-import dao.SanPhamDAO;
 import model.SanPham;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = {"/danh-sach-san-pham"})
-public class SanPhamServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+
+public class SanPhamDAO {
+
+    public List<SanPham> getAllSanPham() {
+
+        List<SanPham> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM san_pham";
+
         
-        // Cài đặt tiếng Việt để tránh lỗi font nếu có
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
 
-        try {
-            // 1. Gọi DAO để lấy danh sách sản phẩm từ Database
-            SanPhamDAO dao = new SanPhamDAO();
-            List<SanPham> list = dao.getAllSanPham();
+        try (Connection conn = DBConnection.getConnection(); 
 
-            // 2. Đẩy danh sách này lên request với tên "listP"
-            request.setAttribute("listP", list);
+             PreparedStatement ps = conn.prepareStatement(sql);
 
-            // 3. Chuyển hướng sang trang JSP (nằm trong thư mục user) để hiển thị
-            request.getRequestDispatcher("user/danh-sach-san-pham.jsp").forward(request, response);
+             ResultSet rs = ps.executeQuery()) {
+
             
-        } catch (ServletException | IOException e) {
+
+            while (rs.next()) {
+
+                list.add(new SanPham(
+
+                    rs.getInt("id_san_pham"),
+
+                    rs.getString("ten_san_pham"),
+
+                    rs.getDouble("gia_goc"),
+
+                    rs.getString("hinh_anh"),
+
+                    rs.getString("mo_ta"),
+
+                    rs.getInt("id_danh_muc")
+
+                ));
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Lỗi lấy danh sách SP: " + e.getMessage());
+
         }
+
+        return list;
+
     }
->>>>>>> 66e75cedbca2796cc48db838e4062f55d94b85ec
+
+    
+
+    // Test nhanh xem DB có chạy không (Chạy bằng Shift + F6)
+
+    public static void main(String[] args) {
+
+        SanPhamDAO dao = new SanPhamDAO();
+
+        List<SanPham> list = dao.getAllSanPham();
+
+        for (SanPham sp : list) {
+
+            System.out.println(sp.getTenSanPham() + " - " + sp.getGiaGoc());
+
+        }
+
+    }
+
 }

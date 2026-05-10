@@ -1,26 +1,28 @@
 package dao;
 
-import model.BienTheSanPham;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import model.BienTheSanPham;
 
 public class BienTheSanPhamDAO {
 
-    public List<BienTheSanPham> getBienTheBySanPhamId(int sanPhamId) {
+    public List<BienTheSanPham> getBienTheBySanPhamId(int idSanPham) {
         List<BienTheSanPham> list = new ArrayList<>();
-        String query = "SELECT * FROM BienTheSanPham WHERE sanPhamId = ?";
+        String sql = "SELECT * FROM bien_the_san_pham WHERE id_san_pham = ?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, sanPhamId);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idSanPham);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new BienTheSanPham(
-                        rs.getInt("id"), rs.getInt("sanPhamId"),
-                        rs.getString("mauSac"), rs.getString("dungLuong"),
-                        rs.getDouble("giaBan"), rs.getInt("soLuongTon")
+                        rs.getInt("id_bien_the"),
+                        rs.getInt("id_san_pham"),
+                        rs.getString("ten_bien_the"),
+                        rs.getDouble("gia_bien_the"),
+                        rs.getInt("so_luong_ton")
                     ));
                 }
             }

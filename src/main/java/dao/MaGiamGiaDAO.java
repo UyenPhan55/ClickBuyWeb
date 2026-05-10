@@ -1,36 +1,36 @@
 package dao;
 
-import model.MaGiamGia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import model.MaGiamGia;
 
 public class MaGiamGiaDAO {
 
-    // Chức năng quan trọng nhất: Lấy và kiểm tra mã giảm giá khi USER nhập vào
-    public MaGiamGia getMaGiamGiaByCode(String maCode) {
-        // Query kiểm tra mã còn hạn và còn số lượng sử dụng không
-        String query = "SELECT * FROM MaGiamGia WHERE maCode = ? AND ngayKetThuc >= NOW() AND soLuongDaDung < soLuongToiDa";
+    public MaGiamGia getMaGiamGiaByCode(String code) {
+        String sql = "SELECT * FROM ma_giam_gia WHERE ma_code = ? AND trang_thai = 1";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            ps.setString(1, maCode);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, code);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    MaGiamGia mgg = new MaGiamGia();
-                    mgg.setId(rs.getInt("id"));
-                    mgg.setMaCode(rs.getString("maCode"));
-                    mgg.setGiaTriGiam(rs.getDouble("giaTriGiam"));
-                    mgg.setLoaiGiam(rs.getString("loaiGiam"));
-                    mgg.setDonToiThieu(rs.getDouble("donToiThieu"));
-                    return mgg;
+                    return new MaGiamGia(
+                        rs.getInt("id_voucher"),
+                        rs.getString("ma_code"),
+                        rs.getString("loai_giam"),
+                        rs.getDouble("gia_tri_giam"),
+                        rs.getDouble("don_toi_thieu"),
+                        rs.getDouble("giam_toi_da"),
+                        rs.getInt("so_luong_gioi_han"),
+                        rs.getTimestamp("ngay_bat_dau"),
+                        rs.getTimestamp("ngay_het_han"),
+                        rs.getInt("trang_thai")
+                    );
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu mã sai, hết hạn hoặc hết lượt
+        return null;
     }
-    
-    // STAFF/ADMIN có thể cần thêm các hàm getList, insert, update... Bạn có thể bổ sung tương tự SanPhamDAO
 }

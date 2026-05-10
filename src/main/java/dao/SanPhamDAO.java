@@ -1,31 +1,30 @@
-<<<<<<< HEAD
 package dao;
 
-import model.SanPham;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import model.SanPham;
 
 public class SanPhamDAO {
-    
-    // 1. Lấy tất cả sản phẩm
+
+    // 1. LẤY DANH SÁCH SẢN PHẨM
     public List<SanPham> getAllSanPham() {
         List<SanPham> list = new ArrayList<>();
-        String query = "SELECT * FROM SanPham";
-        try (Connection conn = DBConnection.getConnection(); // Dùng static đúng ý bạn nhé
-             PreparedStatement ps = conn.prepareStatement(query);
+        String sql = "SELECT * FROM san_pham ORDER BY id_san_pham DESC"; 
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new SanPham(
-                    rs.getInt("id"),
-                    rs.getString("tenSanPham"),
-                    rs.getString("hangSanXuat"),
-                    rs.getString("moTa"),
-                    rs.getString("anhDaiDien"),
-                    rs.getBoolean("trangThai"),
-                    rs.getDate("ngayTao")
+                        rs.getInt("id_san_pham"),
+                        rs.getString("ten_san_pham"),
+                        rs.getString("mo_ta"),
+                        rs.getString("url_anh"),
+                        rs.getString("nha_san_xuat"),
+                        rs.getDouble("gia_co_ban"),
+                        rs.getInt("trang_thai")
                 ));
             }
         } catch (Exception e) {
@@ -34,18 +33,19 @@ public class SanPhamDAO {
         return list;
     }
 
-    // 2. Lấy 1 sản phẩm theo ID
+    // 2. LẤY CHI TIẾT 1 SẢN PHẨM
     public SanPham getSanPhamById(int id) {
-        String query = "SELECT * FROM SanPham WHERE id = ?";
+        String sql = "SELECT * FROM san_pham WHERE id_san_pham = ?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new SanPham(
-                        rs.getInt("id"), rs.getString("tenSanPham"),
-                        rs.getString("hangSanXuat"), rs.getString("moTa"),
-                        rs.getString("anhDaiDien"), rs.getBoolean("trangThai"), rs.getDate("ngayTao")
+                        rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
+                        rs.getString("mo_ta"), rs.getString("url_anh"),
+                        rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
+                        rs.getInt("trang_thai")
                     );
                 }
             }
@@ -54,48 +54,77 @@ public class SanPhamDAO {
         }
         return null;
     }
-=======
-package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import model.SanPham;
+    // 3. THÊM SẢN PHẨM MỚI
+    public boolean addSanPham(SanPham sp) {
+        String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, sp.getTenSanPham());
+            ps.setString(2, sp.getMoTa());
+            ps.setString(3, sp.getUrlAnh());
+            ps.setString(4, sp.getNhaSanXuat());
+            ps.setDouble(5, sp.getGiaCoBan());
+            ps.setInt(6, sp.getTrangThai());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-public class SanPhamDAO {
-    public List<SanPham> getAllSanPham() {
+    // 4. CẬP NHẬT SẢN PHẨM
+    public boolean updateSanPham(SanPham sp) {
+        String sql = "UPDATE san_pham SET ten_san_pham=?, mo_ta=?, url_anh=?, nha_san_xuat=?, gia_co_ban=?, trang_thai=? WHERE id_san_pham=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, sp.getTenSanPham());
+            ps.setString(2, sp.getMoTa());
+            ps.setString(3, sp.getUrlAnh());
+            ps.setString(4, sp.getNhaSanXuat());
+            ps.setDouble(5, sp.getGiaCoBan());
+            ps.setInt(6, sp.getTrangThai());
+            ps.setInt(7, sp.getIdSanPham());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // 5. XÓA SẢN PHẨM
+    public boolean deleteSanPham(int id) {
+        String sql = "DELETE FROM san_pham WHERE id_san_pham = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // 6. TÌM KIẾM SẢN PHẨM THEO TÊN
+    public List<SanPham> searchSanPhamByName(String keyword) {
         List<SanPham> list = new ArrayList<>();
-        String sql = "SELECT * FROM san_pham";
-        
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            
-            while (rs.next()) {
-                list.add(new SanPham(
-                    rs.getInt("id_san_pham"),
-                    rs.getString("ten_san_pham"),
-                    rs.getDouble("gia_goc"),
-                    rs.getString("hinh_anh"),
-                    rs.getString("mo_ta"),
-                    rs.getInt("id_danh_muc")
-                ));
+        String sql = "SELECT * FROM san_pham WHERE ten_san_pham LIKE ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new SanPham(
+                        rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
+                        rs.getString("mo_ta"), rs.getString("url_anh"),
+                        rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
+                        rs.getInt("trang_thai")
+                    ));
+                }
             }
         } catch (Exception e) {
-            System.out.println("Lỗi lấy danh sách SP: " + e.getMessage());
+            e.printStackTrace();
         }
         return list;
     }
-    
-    // Test nhanh xem DB có chạy không (Chạy bằng Shift + F6)
-    public static void main(String[] args) {
-        SanPhamDAO dao = new SanPhamDAO();
-        List<SanPham> list = dao.getAllSanPham();
-        for (SanPham sp : list) {
-            System.out.println(sp.getTenSanPham() + " - " + sp.getGiaGoc());
-        }
-    }
->>>>>>> 66e75cedbca2796cc48db838e4062f55d94b85ec
 }

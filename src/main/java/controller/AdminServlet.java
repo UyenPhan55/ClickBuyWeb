@@ -14,10 +14,9 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException { // Bỏ SQLException ở đây đi để hết lỗi đỏ ở dòng 16
-
+            throws ServletException, IOException { 
         try {
-            // Giữ nguyên toàn bộ logic của bạn ở đây
+            
             model.NguoiDung user = (model.NguoiDung) req.getSession().getAttribute("user");
             if (user == null) {
                 res.sendRedirect(req.getContextPath() + "/dang-nhap.jsp");
@@ -28,9 +27,9 @@ public class AdminServlet extends HttpServlet {
                 return;
             }
 
-            req.setAttribute("totalProducts", new SanPhamDAO().getAll().size());
+            req.setAttribute("totalProducts", new SanPhamDAO().getAllSanPham().size());
             req.setAttribute("totalUsers",    new NguoiDungDAO().getAll().size());
-            req.setAttribute("totalOrders",   new DonHangDAO().getAll().size());
+            req.setAttribute("totalOrders",   new DonHangDAO().getAllOrders().size());
 
             req.getRequestDispatcher("/admin/dashboard.jsp").forward(req, res);
             

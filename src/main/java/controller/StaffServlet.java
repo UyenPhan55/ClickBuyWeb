@@ -25,8 +25,8 @@ public class StaffServlet extends HttpServlet {
                 return;
             }
 
-            req.setAttribute("totalProducts", new SanPhamDAO().getAll().size());
-            req.setAttribute("totalOrders",   new DonHangDAO().getAll().size());
+            req.setAttribute("totalProducts", new SanPhamDAO().getAllSanPham().size());
+            req.setAttribute("totalOrders",   new DonHangDAO().getAllOrders().size());
 
             req.getRequestDispatcher("/staff/dashboard.jsp").forward(req, res);
 

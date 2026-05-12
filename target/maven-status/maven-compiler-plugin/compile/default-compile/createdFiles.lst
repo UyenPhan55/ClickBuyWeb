@@ -35,6 +35,7 @@ dao/SanPhamDAO.class
 model/GioHang.class
 model/VaiTro.class
 controller/StaffServlet.class
+controller/TrangChuServlet.class
 model/LichSuHoatDong.class
 dao/BaoHanhDAO.class
 model/MaGiamGia.class

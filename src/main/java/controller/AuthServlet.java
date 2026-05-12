@@ -42,9 +42,11 @@ public class AuthServlet extends HttpServlet {
 
             // Lưu vào session
             SessionUtil.saveUser(req, user);
-
+            req.getSession().setAttribute("justLoggedIn", true); 
+            
             // Điều hướng theo vai trò
             String ctx = req.getContextPath();
+     
             if (user.getIdVaiTro() == 1) {
                 res.sendRedirect(ctx + "/AdminServlet");       // Admin
             } else if (user.getIdVaiTro() == 2) {

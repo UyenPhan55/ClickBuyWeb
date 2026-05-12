@@ -17,6 +17,7 @@
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/model/LichSuHoatDong.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/controller/AuthServlet.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/model/ThongBao.java
+/Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/controller/TrangChuServlet.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/SanPhamDAO.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/dao/BaoHanhDAO.java
 /Users/Uyen/NetBeansProjects/ClickBuyWeb/src/main/java/model/BaoHanh.java

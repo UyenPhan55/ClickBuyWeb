@@ -91,7 +91,7 @@
                     <c:when test="${not empty sessionScope.user}">
                         <li class="nav-item me-2">
                             <a class="nav-link text-warning" href="${pageContext.request.contextPath}/user/lich-su-don-hang.jsp">
-                                👤 ${sessionScope.user.TenDayDu} 
+                                👤 ${sessionScope.user.tenDayDu} 
                             </a>
                         </li>
                         <li class="nav-item">

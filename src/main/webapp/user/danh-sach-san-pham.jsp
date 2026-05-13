@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%-- Cập nhật URI sang hệ Jakarta --%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
@@ -122,8 +121,8 @@
     </body>
 </html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
@@ -213,5 +212,3 @@
 </main>
 
 <jsp:include page="../common/footer.jsp" />
-=======
->>>>>>> 33ebaca7d2c49db05c2e70428446b2bc26631a54

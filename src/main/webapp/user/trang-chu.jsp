@@ -79,7 +79,7 @@
                                     ${p.tenSanPham}
                                 </h6>
                                 <p class="text-danger fw-bold fs-5">
-                                    <fmt:formatNumber value="${p.giaNiemYet}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                                    <fmt:formatNumber value="${p.giaCoBan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                 </p>
                             </div>
                         </a>

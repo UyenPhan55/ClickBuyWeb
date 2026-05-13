@@ -2,7 +2,7 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
-<%-- ✅ Đặt biến TRƯỚC khi include header để header đọc được --%>
+<%--  Đặt biến TRƯỚC khi include header để header đọc được --%>
 <c:set var="pageTitle" value="Dashboard nhân viên"/>
 <c:set var="breadcrumb" value="Trang chủ / Dashboard"/>
 

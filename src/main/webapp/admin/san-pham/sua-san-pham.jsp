@@ -2,7 +2,6 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <c:set var="pageTitle" value="Sửa sản phẩm"/>
-<c:set var="breadcrumb" value="Sản phẩm / Sửa"/>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -15,131 +14,135 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/staff.css">
     <style>
         .img-preview {
-            width: 120px; height: 120px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px dashed #d0d5dd;
-            display: block;
+            width:120px; height:120px;
+            object-fit:cover;
+            border-radius:12px;
+            border:2px dashed #d0d5dd;
+            display:block;
         }
         .form-section-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-muted, #888);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #f0f0f0;
+            font-size:13px; font-weight:700;
+            color:#888; text-transform:uppercase;
+            letter-spacing:.5px; margin-bottom:14px;
+            padding-bottom:8px; border-bottom:1px solid #f0f0f0;
         }
     </style>
 </head>
 <body>
 <div class="layout-wrapper">
-    <%@ include file="/common/sidebar-admin.jsp" %>
-    <div class="main-content">
-        <%@ include file="/common/topnav-admin.jsp" %>
-        <div class="page-content">
 
+    <jsp:include page="/common/sidebar-admin.jsp"/>
+
+    <div class="main-content">
+        <jsp:include page="/common/topnav-admin.jsp"/>
+
+        <div class="page-content">
             <c:if test="${not empty error}">
-                <div class="alert alert-danger"><i class="bi bi-exclamation-circle-fill"></i> ${error}</div>
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-circle-fill"></i> ${error}
+                </div>
             </c:if>
 
             <div class="card" style="max-width:780px;margin:auto">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <a href="danh-sach-san-pham.jsp" class="btn btn-sm btn-outline-secondary">
+                    <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+                       class="btn btn-sm btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i>
                     </a>
                     <div class="card-title mb-0">
                         <i class="bi bi-pencil-fill"></i> Sửa sản phẩm
                         <c:if test="${not empty sanPham}">
-                            <span style="font-weight:400;font-size:13px;color:var(--text-muted)">
+                            <span style="font-weight:400;font-size:13px;color:#888">
                                 — #${sanPham.idSanPham}
                             </span>
                         </c:if>
                     </div>
                 </div>
                 <div class="card-body" style="padding:24px">
-                    <%-- Khi ghép Servlet: đổi action="ProductServlet?action=update" --%>
-                    <form action="danh-sach-san-pham.jsp" method="post">
-                        <%-- Hidden ID --%>
+                    <%--  Sửa: action trỏ vào SanPhamServlet --%>
+                    <form action="${pageContext.request.contextPath}/SanPhamServlet"
+                          method="post">
+                        <input type="hidden" name="action" value="update">
                         <input type="hidden" name="id_san_pham" value="${sanPham.idSanPham}">
 
-                        <%-- THÔNG TIN CƠ BẢN --%>
                         <div class="form-section-title">Thông tin cơ bản</div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Tên sản phẩm <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">
+                                Tên sản phẩm <span class="text-danger">*</span>
+                            </label>
                             <input type="text" name="ten_san_pham" class="form-control"
-                                   value="${sanPham.tenSanPham}"
-                                   placeholder="VD: Laptop ASUS ROG Strix G16..." required>
+                                   value="${sanPham.tenSanPham}" required>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Nhà sản xuất</label>
                                 <input type="text" name="nha_san_xuat" class="form-control"
-                                       value="${sanPham.nhaSanXuat}"
-                                       placeholder="VD: ASUS, Apple, Samsung...">
+                                       value="${sanPham.nhaSanXuat}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">Giá cơ bản (₫) <span class="text-danger">*</span></label>
+                                <label class="form-label fw-semibold">
+                                    Giá cơ bản (₫) <span class="text-danger">*</span>
+                                </label>
+                                <%--  Sửa: giaCoban (chữ b thường) --%>
                                 <input type="number" name="gia_co_ban" class="form-control"
-                                       value="${sanPham.giaCoBan}"
-                                       placeholder="VD: 15000000" min="0" required>
+                                       value="${sanPham.giaCoban}" min="0" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Mô tả sản phẩm</label>
-                            <textarea name="mo_ta" class="form-control" rows="4"
-                                      placeholder="Nhập mô tả chi tiết về sản phẩm...">${sanPham.moTa}</textarea>
+                            <textarea name="mo_ta" class="form-control"
+                                      rows="4">${sanPham.moTa}</textarea>
                         </div>
 
-                        <%-- HÌNH ẢNH & TRẠNG THÁI --%>
                         <div class="form-section-title mt-4">Hình ảnh & Trạng thái</div>
                         <div class="row align-items-start">
                             <div class="col-md-8 mb-3">
                                 <label class="form-label fw-semibold">URL hình ảnh</label>
-                                <input type="text" name="url_anh" id="urlAnh" class="form-control"
+                                <input type="text" name="url_anh" id="urlAnh"
+                                       class="form-control"
                                        value="${sanPham.urlAnh}"
-                                       placeholder="https://example.com/anh-san-pham.jpg"
                                        oninput="previewImg(this.value)">
-                                <div class="form-text">Dán đường link ảnh trực tiếp vào đây</div>
                             </div>
                             <div class="col-md-4 mb-3 text-center">
                                 <label class="form-label fw-semibold d-block">Xem trước</label>
                                 <img id="imgPreview"
-                                     src="${not empty sanPham.urlAnh ? sanPham.urlAnh : 'https://placehold.co/120x120?text=Ảnh'}"
+                                     src="${not empty sanPham.urlAnh
+                                         ? sanPham.urlAnh
+                                         : 'https://placehold.co/120x120?text=Ảnh'}"
                                      alt="preview" class="img-preview mx-auto"
                                      onerror="this.src='https://placehold.co/120x120?text=Lỗi'">
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Trạng thái <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">
+                                Trạng thái <span class="text-danger">*</span>
+                            </label>
+                            <%--  Sửa: trangThai là int 1/0 --%>
                             <select name="trang_thai" class="form-select" required>
-                                <option value="dang_ban"
-                                    ${sanPham.trangThai == 'dang_ban' ? 'selected' : ''}>Đang bán</option>
-                                <option value="tam_ngung"
-                                    ${sanPham.trangThai == 'tam_ngung' ? 'selected' : ''}>Tạm ngưng</option>
-                                <option value="ngung_kinh_doanh"
-                                    ${sanPham.trangThai == 'ngung_kinh_doanh' ? 'selected' : ''}>Ngưng kinh doanh</option>
+                                <option value="1" ${sanPham.trangThai == 1 ? 'selected' : ''}>
+                                    Đang bán
+                                </option>
+                                <option value="0" ${sanPham.trangThai == 0 ? 'selected' : ''}>
+                                    Tạm ngưng
+                                </option>
                             </select>
                         </div>
 
-                        <%-- ACTIONS --%>
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-warning">
                                 <i class="bi bi-check-lg"></i> Cập nhật
                             </button>
-                            <a href="danh-sach-san-pham.jsp" class="btn btn-outline-secondary">
+                            <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+                               class="btn btn-outline-secondary">
                                 <i class="bi bi-x-lg"></i> Hủy
                             </a>
                         </div>
-
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -147,12 +150,8 @@
 <script>
     function previewImg(url) {
         const img = document.getElementById('imgPreview');
-        if (url.trim()) {
-            img.src = url;
-            img.onerror = () => img.src = 'https://placehold.co/120x120?text=Lỗi';
-        } else {
-            img.src = 'https://placehold.co/120x120?text=Ảnh';
-        }
+        img.src = url.trim() ? url : 'https://placehold.co/120x120?text=Ảnh';
+        img.onerror = () => img.src = 'https://placehold.co/120x120?text=Lỗi';
     }
 </script>
 </body>

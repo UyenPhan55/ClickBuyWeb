@@ -42,9 +42,11 @@ public class AuthServlet extends HttpServlet {
 
             // Lưu vào session
             SessionUtil.saveUser(req, user);
-
+            req.getSession().setAttribute("justLoggedIn", true); 
+            
             // Điều hướng theo vai trò
             String ctx = req.getContextPath();
+     
             if (user.getIdVaiTro() == 1) {
                 res.sendRedirect(ctx + "/AdminServlet");       // Admin
             } else if (user.getIdVaiTro() == 2) {
@@ -58,7 +60,7 @@ public class AuthServlet extends HttpServlet {
             String ten      = req.getParameter("ten_day_du");
             String email    = req.getParameter("email");
             String password = req.getParameter("mat_khau");
-            String confirm  = req.getParameter("confirm_mat_khau");
+            String confirm  = req.getParameter("confirmPassword");
             String sdt      = req.getParameter("sdt");
 
             // Validate trống
@@ -95,7 +97,7 @@ public class AuthServlet extends HttpServlet {
             NguoiDung u = new NguoiDung();
             u.setTenDayDu(ten.trim());
             u.setEmail(email.trim());
-            u.setMatKhau(password);   // DAO sẽ tự hash
+            u.setMatKhau(password);   
             u.setSdt(sdt != null ? sdt.trim() : "");
 
             boolean ok = dao.register(u);
@@ -116,7 +118,6 @@ public class AuthServlet extends HttpServlet {
         }
     }
 
-    // GET → đăng xuất rồi về trang đăng nhập
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

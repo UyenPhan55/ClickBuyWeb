@@ -1,9 +1,14 @@
 <%@ page pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
 <div class="topnav">
     <div class="topnav-left">
         <div class="page-title">${pageTitle}</div>
-        <div class="breadcrumb"><span>${breadcrumb}</span></div>
+        <div class="breadcrumb">
+            <a href="${pageContext.request.contextPath}/StaffServlet">Trang chủ</a>
+            <span>/</span>
+            <span>${breadcrumb}</span>
+        </div>
     </div>
     <div class="topnav-right">
         <div class="topnav-role">
@@ -15,18 +20,11 @@
         </a>
         <div class="topnav-user">
             <div class="avatar">
-                <c:choose>
-                    <c:when test="${not empty sessionScope.hoTen}">
-                        ${sessionScope.hoTen.charAt(0)}
-                    </c:when>
-                    <c:otherwise>S</c:otherwise>
-                </c:choose>
+                <%--  Sửa: sessionScope.user.tenDayDu --%>
+                ${not empty sessionScope.user ? sessionScope.user.tenDayDu.charAt(0) : 'S'}
             </div>
             <span class="uname">
-                <c:choose>
-                    <c:when test="${not empty sessionScope.hoTen}">${sessionScope.hoTen}</c:when>
-                    <c:otherwise>Staff</c:otherwise>
-                </c:choose>
+                ${not empty sessionScope.user ? sessionScope.user.tenDayDu : 'Staff'}
             </span>
         </div>
     </div>

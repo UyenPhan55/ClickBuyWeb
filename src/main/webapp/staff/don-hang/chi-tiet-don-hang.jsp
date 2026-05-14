@@ -37,13 +37,14 @@
                    class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> Quay lại
                 </a>
-                <%--  Sửa: dùng sessionScope.user.tenDayDu --%>
                 <div class="topnav-user">
                     <div class="avatar">
-                        ${not empty sessionScope.user ? sessionScope.user.tenDayDu.charAt(0) : 'N'}
+                        ${not empty sessionScope.user
+                            ? sessionScope.user.tenDayDu.charAt(0) : 'N'}
                     </div>
                     <span class="uname">
-                        ${not empty sessionScope.user ? sessionScope.user.tenDayDu : 'Nhân viên'}
+                        ${not empty sessionScope.user
+                            ? sessionScope.user.tenDayDu : 'Nhân viên'}
                     </span>
                 </div>
             </div>
@@ -70,7 +71,6 @@
                             <div class="card-title">
                                 <i class="bi bi-bag-check"></i> Sản phẩm trong đơn
                             </div>
-                            <%-- Badge trạng thái --%>
                             <c:choose>
                                 <c:when test="${donHang.trangThai=='CHO_XAC_NHAN'}">
                                     <span class="badge bg-warning text-dark">Chờ xác nhận</span>
@@ -78,7 +78,8 @@
                                 <c:when test="${donHang.trangThai=='DANG_GIAO'}">
                                     <span class="badge bg-info">Đang giao</span>
                                 </c:when>
-                                <c:when test="${donHang.trangThai=='DA_GIAO' || donHang.trangThai=='HOAN_THANH'}">
+                                <c:when test="${donHang.trangThai=='DA_GIAO'
+                                           || donHang.trangThai=='HOAN_THANH'}">
                                     <span class="badge bg-success">Hoàn thành</span>
                                 </c:when>
                                 <c:when test="${donHang.trangThai=='DA_HUY'}">
@@ -107,29 +108,30 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex gap-2 align-items-center">
-                                                            <%--  Sửa: urlAnh thay hinhAnh --%>
                                                             <img src="${not empty item.urlAnh
                                                                 ? pageContext.request.contextPath.concat('/uploads/san-pham/').concat(item.urlAnh)
                                                                 : 'https://placehold.co/44x44?text=SP'}"
                                                                  style="width:44px;height:44px;
-                                                                        object-fit:cover;border-radius:8px;"
+                                                                        object-fit:cover;
+                                                                        border-radius:8px;"
                                                                  onerror="this.src='https://placehold.co/44x44?text=SP'">
-                                                            <%--  Sửa: tenSanPham thay maSanPham --%>
-                                                            <div style="font-weight:600">
+                                                            <div class="fw-bold">
                                                                 ${item.tenSanPham}
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="text-muted" style="font-size:12.5px">
-                                                        ${not empty item.tenBienThe ? item.tenBienThe : '—'}
+                                                        ${not empty item.tenBienThe
+                                                            ? item.tenBienThe : '—'}
                                                     </td>
                                                     <td>
                                                         <fmt:formatNumber value="${item.donGia}"
                                                                           pattern="#,###"/>₫
                                                     </td>
-                                                    <td class="text-center fw-bold">${item.soLuong}</td>
+                                                    <td class="text-center fw-bold">
+                                                        ${item.soLuong}
+                                                    </td>
                                                     <td class="text-end fw-bold">
-                                                        <%--  Sửa: thanhTien là method trong model --%>
                                                         <fmt:formatNumber value="${item.thanhTien}"
                                                                           pattern="#,###"/>₫
                                                     </td>
@@ -138,8 +140,10 @@
                                         </c:when>
                                         <c:otherwise>
                                             <tr>
-                                                <td colspan="5" class="text-center py-4 text-muted">
-                                                    <i class="bi bi-bag-x"></i> Không có sản phẩm
+                                                <td colspan="5"
+                                                    class="text-center py-4 text-muted">
+                                                    <i class="bi bi-bag-x"></i>
+                                                    Không có sản phẩm
                                                 </td>
                                             </tr>
                                         </c:otherwise>
@@ -154,7 +158,6 @@
                                         <div class="d-flex justify-content-between py-1 text-muted"
                                              style="font-size:13px">
                                             <span>Tạm tính</span>
-                                            <%--  Sửa: tamTinh từ DonHangDAO --%>
                                             <span>
                                                 <fmt:formatNumber value="${donHang.tamTinh}"
                                                                   pattern="#,###"/>₫
@@ -168,10 +171,10 @@
                                                                     pattern="#,###"/>₫
                                             </span>
                                         </div>
-                                        <div class="d-flex justify-content-between pt-2 mt-1 border-top fw-bold"
+                                        <div class="d-flex justify-content-between pt-2 mt-1
+                                                    border-top fw-bold"
                                              style="font-size:17px;color:#d70018">
                                             <span>Tổng cộng</span>
-                                            <%--  Sửa: tongThanhToan từ DonHangDAO --%>
                                             <span>
                                                 <fmt:formatNumber value="${donHang.tongThanhToan}"
                                                                   pattern="#,###"/>₫
@@ -191,7 +194,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form method="post"
+                            <%--  Sửa: method GET thay POST --%>
+                            <form method="get"
                                   action="${pageContext.request.contextPath}/DonHangServlet"
                                   class="d-flex gap-2 align-items-end flex-wrap">
                                 <input type="hidden" name="action" value="updateStatus">
@@ -199,7 +203,6 @@
 
                                 <div style="flex:1;min-width:200px">
                                     <label class="form-label">Trạng thái mới</label>
-                                    <%--  Sửa: value uppercase khớp với DB --%>
                                     <select name="status" class="form-select" required>
                                         <option value="CHO_XAC_NHAN"
                                             ${donHang.trangThai=='CHO_XAC_NHAN'?'selected':''}>
@@ -250,20 +253,29 @@
                         </div>
                         <div class="card-body d-flex flex-column gap-3">
                             <div>
-                                <div class="text-muted" style="font-size:11px;text-transform:uppercase">
+                                <div class="text-muted"
+                                     style="font-size:11px;text-transform:uppercase">
                                     Họ tên
                                 </div>
-                                <%--  Sửa: tenNguoiDung từ JOIN trong DonHangDAO --%>
                                 <div class="fw-bold">${donHang.tenNguoiDung}</div>
                             </div>
                             <div>
-                                <div class="text-muted" style="font-size:11px;text-transform:uppercase">
+                                <div class="text-muted"
+                                     style="font-size:11px;text-transform:uppercase">
+                                    Email
+                                </div>
+                                <div>${donHang.email}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted"
+                                     style="font-size:11px;text-transform:uppercase">
                                     SĐT nhận hàng
                                 </div>
                                 <div class="fw-bold">${donHang.sdtNguoiNhan}</div>
                             </div>
                             <div>
-                                <div class="text-muted" style="font-size:11px;text-transform:uppercase">
+                                <div class="text-muted"
+                                     style="font-size:11px;text-transform:uppercase">
                                     Địa chỉ giao hàng
                                 </div>
                                 <div>${donHang.diaChi}</div>
@@ -279,7 +291,8 @@
                         </div>
                         <div class="card-body d-flex flex-column gap-3">
                             <div>
-                                <div class="text-muted" style="font-size:11px;text-transform:uppercase">
+                                <div class="text-muted"
+                                     style="font-size:11px;text-transform:uppercase">
                                     Ngày đặt
                                 </div>
                                 <div style="font-size:13px">
@@ -289,7 +302,8 @@
                             </div>
                             <c:if test="${not empty donHang.idVoucher}">
                                 <div>
-                                    <div class="text-muted" style="font-size:11px;text-transform:uppercase">
+                                    <div class="text-muted"
+                                         style="font-size:11px;text-transform:uppercase">
                                         Voucher áp dụng
                                     </div>
                                     <span class="badge bg-primary">

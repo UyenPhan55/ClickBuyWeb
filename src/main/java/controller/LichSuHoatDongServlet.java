@@ -5,6 +5,9 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import util.SessionUtil;
+import jakarta.servlet.annotation.WebServlet;
+
+@WebServlet("/LichSuHoatDongServlet") 
 
 public class LichSuHoatDongServlet extends HttpServlet {
     private final LichSuHoatDongDAO dao = new LichSuHoatDongDAO();

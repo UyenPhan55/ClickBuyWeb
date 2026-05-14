@@ -45,8 +45,8 @@
                         <tbody>
                             <%--  Xóa data mẫu, uncomment phần servlet --%>
                             <c:choose>
-                                <c:when test="${not empty listBaoHanh}">
-                                    <c:forEach items="${listBaoHanh}" var="bh">
+                                <c:when test="${not empty danhSachBaoHanh}">
+                                    <c:forEach items="${danhSachBaoHanh}" var="bh">
                                         <tr>
                                             <td>${bh.idBaoHanh}</td>
                                             <td><strong>#${bh.maBaoHanhCode}</strong></td>

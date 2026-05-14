@@ -8,7 +8,9 @@ import jakarta.servlet.http.*;
 import model.BaoHanh;
 import util.LogUtil;
 import util.SessionUtil;
+import jakarta.servlet.annotation.WebServlet;
 
+@WebServlet("/BaoHanhServlet") 
 public class BaoHanhServlet extends HttpServlet {
     private final BaoHanhDAO dao = new BaoHanhDAO();
 

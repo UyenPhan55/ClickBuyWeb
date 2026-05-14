@@ -6,6 +6,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import util.LogUtil;
 import util.SessionUtil;
+import jakarta.servlet.annotation.WebServlet;
+
+@WebServlet("/DanhGiaServlet") 
 
 public class DanhGiaServlet extends HttpServlet {
     private final DanhGiaDAO dao = new DanhGiaDAO();

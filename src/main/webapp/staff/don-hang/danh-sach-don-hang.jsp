@@ -88,8 +88,8 @@
                         </thead>
                         <tbody>
                             <c:choose>
-                                <c:when test="${not empty orderList}">
-                                    <c:forEach var="dh" items="${orderList}">
+                                <c:when test="${not empty danhSachDonHang}">
+                                    <c:forEach var="dh" items="${danhSachDonHang}">
                                         <tr>
                                             <%--  Sửa: idDonHang thay maDonHang --%>
                                             <td>
@@ -139,21 +139,43 @@
                                             </td>
                                             <td>
                                                 <form action="${pageContext.request.contextPath}/DonHangServlet"
-                                                      method="get" class="d-flex gap-1">
+                                                      method="post" class="d-flex gap-1">
                                                     <input type="hidden" name="action"
                                                            value="updateStatus">
-                                                    <input type="hidden" name="id"
+                                                    <input type="hidden" name="idDonHang"
                                                            value="${dh.idDonHang}">
-                                                    <select name="status"
-                                                            class="form-select form-select-sm"
+                                                    <select name="trangThai" 
+                                                            class="form-select form-select-sm" 
                                                             style="width:auto;font-size:12px">
-                                                        <option value="CHO_XAC_NHAN">Chờ xác nhận</option>
-                                                        <option value="DA_XAC_NHAN">Đã xác nhận</option>
-                                                        <option value="DANG_CHUAN_BI">Đang chuẩn bị</option>
-                                                        <option value="DANG_GIAO">Đang giao</option>
-                                                        <option value="DA_GIAO">Đã giao</option>
-                                                        <option value="HOAN_THANH">Hoàn thành</option>
-                                                        <option value="DA_HUY">Đã hủy</option>
+
+                                                        <option value="CHO_XAC_NHAN" ${dh.trangThai == 'CHO_XAC_NHAN' ? 'selected' : ''}>
+                                                            Chờ xác nhận
+                                                        </option>
+
+                                                        <option value="DA_XAC_NHAN" ${dh.trangThai == 'DA_XAC_NHAN' ? 'selected' : ''}>
+                                                            Đã xác nhận
+                                                        </option>
+
+                                                        <option value="DANG_CHUAN_BI" ${dh.trangThai == 'DANG_CHUAN_BI' ? 'selected' : ''}>
+                                                            Đang chuẩn bị
+                                                        </option>
+
+                                                        <option value="DANG_GIAO" ${dh.trangThai == 'DANG_GIAO' ? 'selected' : ''}>
+                                                            Đang giao
+                                                        </option>
+
+                                                        <option value="DA_GIAO" ${dh.trangThai == 'DA_GIAO' ? 'selected' : ''}>
+                                                            Đã giao
+                                                        </option>
+
+                                                        <option value="HOAN_THANH" ${dh.trangThai == 'HOAN_THANH' ? 'selected' : ''}>
+                                                            Hoàn thành
+                                                        </option>
+
+                                                        <option value="DA_HUY" ${dh.trangThai == 'DA_HUY' ? 'selected' : ''}>
+                                                            Đã hủy
+                                                        </option>
+
                                                     </select>
                                                     <button class="btn btn-sm btn-primary">Lưu</button>
                                                 </form>

@@ -12,11 +12,14 @@ import java.sql.SQLException;
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
+    private final SanPhamDAO   sanPhamDAO   = new SanPhamDAO();
+    private final NguoiDungDAO nguoiDungDAO = new NguoiDungDAO();
+    private final DonHangDAO   donHangDAO   = new DonHangDAO();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException { 
+            throws ServletException, IOException {
         try {
-            
             model.NguoiDung user = (model.NguoiDung) req.getSession().getAttribute("user");
             if (user == null) {
                 res.sendRedirect(req.getContextPath() + "/dang-nhap.jsp");
@@ -27,15 +30,13 @@ public class AdminServlet extends HttpServlet {
                 return;
             }
 
-            req.setAttribute("totalProducts", new SanPhamDAO().getAllSanPham().size());
-            req.setAttribute("totalUsers",    new NguoiDungDAO().getAll().size());
-            req.setAttribute("totalOrders",   new DonHangDAO().getAllOrders().size());
-
+            req.setAttribute("totalProducts", sanPhamDAO.getAllSanPham().size());
+            req.setAttribute("totalUsers",    nguoiDungDAO.getAll().size());
+            req.setAttribute("totalOrders",   donHangDAO.getAllOrders().size());
             req.getRequestDispatcher("/admin/dashboard.jsp").forward(req, res);
-            
+
         } catch (SQLException e) {
-            // Bọc lỗi SQL thành RuntimeException để Java không bắt bẻ ở dòng doGet nữa
-            throw new ServletException(e); 
+            throw new ServletException(e);
         }
     }
 }

@@ -6,10 +6,13 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import util.SessionUtil;
+import jakarta.servlet.annotation.WebServlet;
+
+@WebServlet("/DonHangServlet")   
 
 public class DonHangServlet extends HttpServlet {
-    private final DonHangDAO donHangDAO = new DonHangDAO();
-    private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
+private final DonHangDAO donHangDAO = new DonHangDAO();
+private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,7 +49,7 @@ public class DonHangServlet extends HttpServlet {
                     request.getRequestDispatcher(SessionUtil.isStaffOrAdmin(request) ? "/staff/don-hang/chi-tiet-don-hang.jsp" : "/user/chi-tiet-don-hang.jsp").forward(request, response);
                     break;
 
-                case "list":
+                case "staff-list":
                     if (!SessionUtil.isStaffOrAdmin(request)) {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN);
                         return;
@@ -104,7 +107,7 @@ public class DonHangServlet extends HttpServlet {
                 int idDonHang = Integer.parseInt(request.getParameter("idDonHang"));
                 String trangThai = request.getParameter("trangThai");
                 donHangDAO.updateStatus(idDonHang, trangThai, idNguoiDung, request.getRemoteAddr());
-                response.sendRedirect(request.getContextPath() + "/don-hang?action=list");
+                response.sendRedirect(request.getContextPath() + "/DonHangServlet?action=staff-list");
                 return;
             }
 

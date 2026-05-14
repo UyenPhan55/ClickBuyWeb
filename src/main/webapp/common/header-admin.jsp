@@ -14,15 +14,18 @@
 </head>
 <body>
 <div class="wrapper">
-    <%-- SIDEBAR được include ở đây luôn để đồng bộ --%>
-    <%@ include file="/common/sidebar-admin.jsp" %>
+    <%--  Sửa: jsp:include thay <%@ include --%>
+    <jsp:include page="/common/sidebar-admin.jsp"/>
 
     <div class="main-wrapper">
-        <%-- TOPNAV --%>
         <div class="topnav">
             <div class="topnav-left">
                 <div class="page-title">${pageTitle}</div>
-                <div class="breadcrumb"><span>${breadcrumb}</span></div>
+                <div class="breadcrumb">
+                    <a href="${pageContext.request.contextPath}/AdminServlet">Trang chủ</a>
+                    <span>/</span>
+                    <span>${breadcrumb}</span>
+                </div>
             </div>
             <div class="topnav-right">
                 <div class="topnav-role">
@@ -33,19 +36,16 @@
                     <span class="dot"></span>
                 </a>
                 <div class="topnav-user">
+                    <%--  Sửa: sessionScope.user.tenDayDu --%>
                     <div class="avatar">
-                        <c:choose>
-                            <c:when test="${not empty sessionScope.hoTen}">
-                                ${sessionScope.hoTen.substring(0,1).toUpperCase()}
-                            </c:when>
-                            <c:otherwise>A</c:otherwise>
-                        </c:choose>
+                        ${not empty sessionScope.user
+                            ? sessionScope.user.tenDayDu.charAt(0)
+                            : 'A'}
                     </div>
                     <span class="uname">
-                        <c:choose>
-                            <c:when test="${not empty sessionScope.hoTen}">${sessionScope.hoTen}</c:when>
-                            <c:otherwise>Admin</c:otherwise>
-                        </c:choose>
+                        ${not empty sessionScope.user
+                            ? sessionScope.user.tenDayDu
+                            : 'Admin'}
                     </span>
                 </div>
             </div>

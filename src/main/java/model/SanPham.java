@@ -7,12 +7,14 @@ public class SanPham {
     private String urlAnh;
     private String nhaSanXuat;
     private double giaCoBan;
-    private int trangThai; // Trong DB dùng TINYINT, Java dùng int là hợp lý nhất
+    private int trangThai; 
+    private int soLuongTon; // 1. Mới thêm: Số lượng tồn kho
 
     public SanPham() {
     }
 
-    public SanPham(int idSanPham, String tenSanPham, String moTa, String urlAnh, String nhaSanXuat, double giaCoBan, int trangThai) {
+    // 2. Cập nhật Constructor để nhận thêm soLuongTon
+    public SanPham(int idSanPham, String tenSanPham, String moTa, String urlAnh, String nhaSanXuat, double giaCoBan, int trangThai, int soLuongTon) {
         this.idSanPham = idSanPham;
         this.tenSanPham = tenSanPham;
         this.moTa = moTa;
@@ -20,6 +22,7 @@ public class SanPham {
         this.nhaSanXuat = nhaSanXuat;
         this.giaCoBan = giaCoBan;
         this.trangThai = trangThai;
+        this.soLuongTon = soLuongTon;
     }
 
     // --- GETTER & SETTER ---
@@ -43,4 +46,8 @@ public class SanPham {
 
     public int getTrangThai() { return trangThai; }
     public void setTrangThai(int trangThai) { this.trangThai = trangThai; }
+
+    // 3. Getter và Setter cho soLuongTon
+    public int getSoLuongTon() { return soLuongTon; }
+    public void setSoLuongTon(int soLuongTon) { this.soLuongTon = soLuongTon; }
 }

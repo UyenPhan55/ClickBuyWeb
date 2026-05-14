@@ -9,7 +9,7 @@ import model.SanPham;
 
 public class SanPhamDAO {
 
-    // 1. LẤY DANH SÁCH SẢN PHẨM
+    // 1. LẤY DANH SÁCH SẢN PHẨM (Thêm rs.getInt("so_luong_ton"))
     public List<SanPham> getAllSanPham() {
         List<SanPham> list = new ArrayList<>();
         String sql = "SELECT * FROM san_pham ORDER BY id_san_pham DESC"; 
@@ -24,7 +24,8 @@ public class SanPhamDAO {
                         rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"),
                         rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai")
+                        rs.getInt("trang_thai"),
+                        rs.getInt("so_luong_ton") // MỚI THÊM
                 ));
             }
         } catch (Exception e) {
@@ -32,8 +33,13 @@ public class SanPhamDAO {
         }
         return list;
     }
+    
+    // Bổ sung hàm getAll() để khớp với Admin/Staff Servlet nếu cần
+    public List<SanPham> getAll() {
+        return getAllSanPham();
+    }
 
-    // 2. LẤY CHI TIẾT 1 SẢN PHẨM
+    // 2. LẤY CHI TIẾT 1 SẢN PHẨM (Thêm rs.getInt("so_luong_ton"))
     public SanPham getSanPhamById(int id) {
         String sql = "SELECT * FROM san_pham WHERE id_san_pham = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -45,7 +51,8 @@ public class SanPhamDAO {
                         rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
                         rs.getString("mo_ta"), rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai")
+                        rs.getInt("trang_thai"),
+                        rs.getInt("so_luong_ton") // MỚI THÊM
                     );
                 }
             }
@@ -55,9 +62,9 @@ public class SanPhamDAO {
         return null;
     }
 
-    // 3. THÊM SẢN PHẨM MỚI
+    // 3. THÊM SẢN PHẨM MỚI (Thêm cột so_luong_ton vào câu INSERT)
     public boolean addSanPham(SanPham sp) {
-        String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai, so_luong_ton) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sp.getTenSanPham());
@@ -66,6 +73,7 @@ public class SanPhamDAO {
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
+            ps.setInt(7, sp.getSoLuongTon()); // MỚI THÊM
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,9 +81,9 @@ public class SanPhamDAO {
         return false;
     }
 
-    // 4. CẬP NHẬT SẢN PHẨM
+    // 4. CẬP NHẬT SẢN PHẨM (Thêm so_luong_ton=? vào câu UPDATE)
     public boolean updateSanPham(SanPham sp) {
-        String sql = "UPDATE san_pham SET ten_san_pham=?, mo_ta=?, url_anh=?, nha_san_xuat=?, gia_co_ban=?, trang_thai=? WHERE id_san_pham=?";
+        String sql = "UPDATE san_pham SET ten_san_pham=?, mo_ta=?, url_anh=?, nha_san_xuat=?, gia_co_ban=?, trang_thai=?, so_luong_ton=? WHERE id_san_pham=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sp.getTenSanPham());
@@ -84,7 +92,8 @@ public class SanPhamDAO {
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
-            ps.setInt(7, sp.getIdSanPham());
+            ps.setInt(7, sp.getSoLuongTon()); // MỚI THÊM
+            ps.setInt(8, sp.getIdSanPham());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +101,7 @@ public class SanPhamDAO {
         return false;
     }
 
-    // 5. XÓA SẢN PHẨM
+    // 5. XÓA SẢN PHẨM (Không đổi)
     public boolean deleteSanPham(int id) {
         String sql = "DELETE FROM san_pham WHERE id_san_pham = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -105,7 +114,7 @@ public class SanPhamDAO {
         return false;
     }
 
-    // 6. TÌM KIẾM SẢN PHẨM THEO TÊN
+    // 6. TÌM KIẾM SẢN PHẨM THEO TÊN (Thêm rs.getInt("so_luong_ton"))
     public List<SanPham> searchSanPhamByName(String keyword) {
         List<SanPham> list = new ArrayList<>();
         String sql = "SELECT * FROM san_pham WHERE ten_san_pham LIKE ?";
@@ -118,7 +127,8 @@ public class SanPhamDAO {
                         rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
                         rs.getString("mo_ta"), rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai")
+                        rs.getInt("trang_thai"),
+                        rs.getInt("so_luong_ton") // MỚI THÊM
                     ));
                 }
             }

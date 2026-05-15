@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClickBuy - Hệ thống bán lẻ điện thoại toàn quốc</title>
+    
+    <%-- Header chung --%>
     <jsp:include page="../common/header.jsp" />
     
     <style>
@@ -44,51 +46,59 @@
         .pagination .page-item.active .page-link {
             background-color: #d70018;
             border-color: #d70018;
+            color: white;
         }
     </style>
 </head>
 <body style="background-color: #f8f9fa;">
 
+    <%-- Thanh điều hướng --%>
     <jsp:include page="../common/navbar-user.jsp" />
 
     <main class="container my-5">
-        <%-- THÔNG BÁO CHÀO MỪNG (Nếu có) --%>
+        <%-- THÔNG BÁO CHÀO MỪNG (Dùng từ Servlet: welcomeMsg) --%>
         <c:if test="${not empty welcomeMsg}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 ${welcomeMsg}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </c:if>
 
+        <%-- TIÊU ĐỀ VÀ THÔNG TIN TRANG --%>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold border-start border-4 border-danger ps-3 text-uppercase mb-0">
                 Sản phẩm nổi bật
             </h3>
-            <span class="text-muted small">Trang ${currentPage} / ${totalPages}</span>
+            <span class="text-muted small">
+                Trang <strong>${not empty currentPage ? currentPage : 1}</strong> / ${not empty totalPages ? totalPages : 0}
+            </span>
         </div>
         
         <div class="row">
-            <%-- Dùng biến latestProducts cho khớp với Servlet bà gửi --%>
+            <%-- VÒNG LẶP HIỂN THỊ SẢN PHẨM (Khớp với attribute: latestProducts) --%>
             <c:forEach var="p" items="${latestProducts}">
-                <div class="col-lg-4 col-md-4 col-sm-6 mb-4"> <%-- Chỉnh col-lg-4 để hiện 3 sp/hàng cho đẹp vì pageSize=9 --%>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                     <div class="card p-3 border-0 shadow-sm h-100 product-card">
-                        <%-- Link đến trang chi tiết: Khớp với SanPhamServlet --%>
+                        <%-- Link chi tiết sản phẩm --%>
                         <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}" class="product-link">
-                            <img src="${pageContext.request.contextPath}/assets/images/${p.urlAnh}" 
+                            <%-- Xử lý ảnh: Nếu ko có ảnh thì hiện ảnh lỗi/mặc định --%>
+                            <img src="${pageContext.request.contextPath}/assets/images/${not empty p.urlAnh ? p.urlAnh : 'no-image.png'}" 
                                  class="card-img-top img-fluid mb-3" 
-                                 style="height: 200px; object-fit: contain;" 
+                                 style="height: 220px; object-fit: contain;" 
                                  alt="${p.tenSanPham}">
                             
                             <div class="card-body p-0 d-flex flex-column text-center">
-                                <h6 class="card-title fw-bold text-dark mb-2" style="height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                <h6 class="card-title fw-bold text-dark mb-2" 
+                                    style="height: 45px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                                     ${p.tenSanPham}
                                 </h6>
-                                <p class="text-danger fw-bold fs-5">
+                                <p class="text-danger fw-bold fs-5 mb-0">
                                     <fmt:formatNumber value="${p.giaCoBan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                 </p>
                             </div>
                         </a>
                         
+                        <%-- Nút tương tác --%>
                         <div class="d-grid gap-2 mt-3">
                             <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm rounded-3" 
                                     onclick="location.href='${pageContext.request.contextPath}/gio-hang?action=add&id=${p.idSanPham}'">
@@ -103,10 +113,14 @@
                 </div>
             </c:forEach>
 
+            <%-- HIỂN THỊ KHI KHÔNG CÓ DỮ LIỆU --%>
             <c:if test="${empty latestProducts}">
                 <div class="col-12 text-center py-5">
-                    <i class="bi bi-box-seam fs-1 text-muted d-block mb-3"></i>
-                    <p class="text-muted fst-italic">Hiện tại chưa có sản phẩm nào được hiển thị.</p>
+                    <div class="mb-3">
+                        <i class="bi bi-box-seam display-1 text-muted"></i>
+                    </div>
+                    <h5 class="text-muted">Hiện tại chưa có sản phẩm nào.</h5>
+                    <p class="text-muted small">Vui lòng quay lại sau hoặc kiểm tra kết nối dữ liệu.</p>
                 </div>
             </c:if>
         </div>
@@ -115,24 +129,32 @@
         <c:if test="${totalPages > 1}">
             <nav aria-label="Page navigation" class="mt-5">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="TrangChuServlet?page=${currentPage - 1}">Trước</a>
+                    <%-- Nút Trước --%>
+                    <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="TrangChuServlet?page=${currentPage - 1}">
+                            <i class="bi bi-chevron-left"></i> Trước
+                        </a>
                     </li>
                     
+                    <%-- Các số trang --%>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li class="page-item ${currentPage == i ? 'active' : ''}">
                             <a class="page-link" href="TrangChuServlet?page=${i}">${i}</a>
                         </li>
                     </c:forEach>
                     
-                    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                        <a class="page-link" href="TrangChuServlet?page=${currentPage + 1}">Sau</a>
+                    <%-- Nút Sau --%>
+                    <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="TrangChuServlet?page=${currentPage + 1}">
+                            Sau <i class="bi bi-chevron-right"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
         </c:if>
     </main>
 
+    <%-- Footer chung --%>
     <jsp:include page="../common/footer.jsp" />
 
 </body>

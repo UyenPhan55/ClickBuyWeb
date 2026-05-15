@@ -34,7 +34,7 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <a href="${pageContext.request.contextPath}/ProductDetailServlet?id=${item.id_san_pham}">
-                                                    <img src="${pageContext.request.contextPath}/uploads/san-pham/${item.url_anh}" width="70" class="me-3 rounded shadow-sm border" alt="${item.ten_san_pham}">
+                                                    <img src="${pageContext.request.contextPath}/assets/images/${p.urlAnh}" width="70" class="me-3 rounded shadow-sm border" alt="${item.ten_san_pham}">
                                                 </a>
                                                 <div>
                                                     <h6 class="mb-0">

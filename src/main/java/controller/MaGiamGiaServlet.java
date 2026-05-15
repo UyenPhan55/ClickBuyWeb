@@ -15,17 +15,15 @@ public class MaGiamGiaServlet extends HttpServlet {
 
     private final MaGiamGiaDAO dao = new MaGiamGiaDAO();
 
-    // ===== GET — Hiển thị danh sách mã giảm giá cho staff =====
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
+        // Giữ nguyên phần GET của bà để Staff xem danh sách
         String action = req.getParameter("action");
         if (action == null) action = "list";
 
         try {
             switch (action) {
-
                 case "list":
                 default:
                     List<Map<String, Object>> list = new ArrayList<>();
@@ -49,9 +47,7 @@ public class MaGiamGiaServlet extends HttpServlet {
                         }
                     }
                     req.setAttribute("danhSachMaGiamGia", list);
-                    req.getRequestDispatcher(
-                        "/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
-                       .forward(req, res);
+                    req.getRequestDispatcher("/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp").forward(req, res);
                     break;
             }
         } catch (Exception e) {
@@ -59,24 +55,30 @@ public class MaGiamGiaServlet extends HttpServlet {
         }
     }
 
-    // ===== POST — Áp dụng mã giảm giá từ giỏ hàng =====
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
+        // 1. Lấy mã voucher từ JSP gửi lên
         String code = req.getParameter("voucherCode");
         MaGiamGia mgg = dao.getMaGiamGiaByCode(code);
 
         HttpSession session = req.getSession();
+        
         if (mgg != null) {
+            // Trường hợp mã hợp lệ
             session.setAttribute("discount", mgg);
-            //  Sửa: trỏ vào GioHangServlet thay vì JSP
-            res.sendRedirect(req.getContextPath() +
-                "/GioHangServlet?status=success");
+            session.setAttribute("voucherMsg", "Áp dụng mã " + code + " thành công!");
+            
+            // QUAN TRỌNG: Điều hướng quay lại DonHangServlet (trang thanh toán)
+            res.sendRedirect(req.getContextPath() + "/DonHangServlet?action=checkout&status=success");
         } else {
-            session.setAttribute("voucherMsg", "Mã giảm giá không hợp lệ!");
-            res.sendRedirect(req.getContextPath() +
-                "/GioHangServlet?status=invalid");
+            // Trường hợp mã sai hoặc hết hạn
+            session.removeAttribute("discount"); // Xóa giảm giá cũ nếu có
+            session.setAttribute("voucherMsg", "Mã giảm giá '" + code + "' không tồn tại hoặc đã hết hạn!");
+            
+            // QUAN TRỌNG: Vẫn quay lại trang thanh toán để khách nhập mã khác
+            res.sendRedirect(req.getContextPath() + "/DonHangServlet?action=checkout&status=invalid");
         }
     }
 }

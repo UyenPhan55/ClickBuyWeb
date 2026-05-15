@@ -48,8 +48,6 @@ public class SanPhamServlet extends HttpServlet {
                     req.getRequestDispatcher("/user/danh-sach-san-pham.jsp")
                     .forward(req, res);
 
-                    break;
-
                 // ===== USER — chi tiết sản phẩm =====
                 case "chi-tiet":
                     int id = Integer.parseInt(req.getParameter("id"));

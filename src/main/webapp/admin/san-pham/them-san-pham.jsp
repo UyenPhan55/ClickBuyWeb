@@ -43,7 +43,7 @@
 
             <div class="card" style="max-width:780px;margin:auto">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+                    <a href="${pageContext.request.contextPath}/san-pham?action=list"
                        class="btn btn-sm btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i>
                     </a>
@@ -120,7 +120,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg"></i> Thêm vào hệ thống
                             </button>
-                            <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+                            <a href="${pageContext.request.contextPath}/san-pham?action=list"
                                class="btn btn-outline-secondary">
                                 <i class="bi bi-x-lg"></i> Hủy
                             </a>

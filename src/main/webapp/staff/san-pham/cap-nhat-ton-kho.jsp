@@ -119,7 +119,7 @@
                   <button type="submit" class="btn btn-primary">
                     <i class="bi bi-check-lg"></i> Xác nhận cập nhật
                   </button>
-                  <a href="${pageContext.request.contextPath}/SanPhamServlet?action=danhSach"
+                  <a href="${pageContext.request.contextPath}/san-pham?action=danhSach"
                      class="btn btn-outline">
                     <i class="bi bi-x-lg"></i> Hủy
                   </a>

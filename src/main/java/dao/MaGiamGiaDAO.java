@@ -112,4 +112,8 @@ public class MaGiamGiaDAO {
         mgg.setTrangThai(rs.getInt("trang_thai"));
         return mgg;
     }
+
+    public MaGiamGia getMaGiamGiaByCode(String code) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

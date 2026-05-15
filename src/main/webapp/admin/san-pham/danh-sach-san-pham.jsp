@@ -42,7 +42,7 @@
                         <i class="bi bi-box-seam-fill"></i> Danh sách sản phẩm
                     </div>
                     <%-- ✅ Sửa: trỏ vào Servlet --%>
-                    <a href="${pageContext.request.contextPath}/SanPhamServlet?action=showAdd"
+                    <a href="${pageContext.request.contextPath}/san-phamt?action=showAdd"
                        class="btn btn-primary btn-sm">
                         <i class="bi bi-plus-lg"></i> Thêm mới
                     </a>
@@ -100,11 +100,11 @@
                                             </td>
                                             <td>
                                                 <%--  Sửa: trỏ vào Servlet --%>
-                                                <a href="${pageContext.request.contextPath}/SanPhamServlet?action=showEdit&id=${sp.idSanPham}"
+                                                <a href="${pageContext.request.contextPath}/san-pham?action=showEdit&id=${sp.idSanPham}"
                                                    class="btn btn-sm btn-warning">
                                                     <i class="bi bi-pencil-fill"></i> Sửa
                                                 </a>
-                                                <a href="${pageContext.request.contextPath}/SanPhamServlet?action=delete&id=${sp.idSanPham}"
+                                                <a href="${pageContext.request.contextPath}/san-pham?action=delete&id=${sp.idSanPham}"
                                                    class="btn btn-sm btn-danger"
                                                    onclick="return confirm('Xác nhận xóa sản phẩm này?')">
                                                     <i class="bi bi-trash-fill"></i> Xóa

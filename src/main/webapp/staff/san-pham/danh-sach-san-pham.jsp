@@ -58,7 +58,7 @@
                 </div>
             </c:if>
 
-            <div class="card">
+            
                 <div class="card-header">
                     <div class="card-title">
                         <i class="bi bi-box-seam-fill"></i> Sản phẩm

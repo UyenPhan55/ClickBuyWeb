@@ -24,6 +24,9 @@ public class SanPhamDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
+
+        // Tạo tên biến là "sp"; new SanPham (...) là tạo object mới trong bộ nhớ
+        // => Tạo object sản phẩm mới rồi gán vào biến "sp"
                 SanPham sp = new SanPham(
                     rs.getInt("id_san_pham"),
                     rs.getString("ten_san_pham"),
@@ -33,9 +36,11 @@ public class SanPhamDAO {
                     rs.getDouble("gia_co_ban"),
                     rs.getInt("trang_thai")
                 );
-
+                
+                //Lấy id_bien_the từ database rồi gán vào object sản phẩm sp.
                 sp.setIdBienThe(rs.getInt("id_bien_the"));
-
+                
+                // Cho object "sp" vào list
                 list.add(sp);
             }
         } catch (Exception e) {

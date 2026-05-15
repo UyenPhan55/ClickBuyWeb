@@ -49,7 +49,7 @@
                         <tbody>
                             <c:choose>
                                 <c:when test="${not empty listUser}">
-                                    <c:forEach items="${listUser}" var="u">
+                                    <c:forEach items="${userList}" var="u">
                                         <tr>
                                             <td>#${u.idNguoiDung}</td>
                                             <%--  Sửa: tenDayDu thay vì hoTen --%>

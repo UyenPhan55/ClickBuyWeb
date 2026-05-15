@@ -48,11 +48,11 @@
                   <strong><fmt:formatNumber value="${sanPham.giaBan}" pattern="#,###"/>₫</strong>
                 </div>
               </div>
-              <a href="${pageContext.request.contextPath}/SanPhamServlet?action=capNhatTonKho&id=${sanPham.maSanPham}"
+              <a href="${pageContext.request.contextPath}/san-pham?action=capNhatTonKho&id=${sanPham.maSanPham}"
                  class="btn btn-outline btn-sm">
                 <i class="bi bi-pencil-square"></i> Cập nhật tồn kho
               </a>
-              <a href="${pageContext.request.contextPath}/SanPhamServlet?action=danhSach"
+              <a href="${pageContext.request.contextPath}/san-pham?action=danhSach"
                  class="btn btn-ghost btn-sm">
                 <i class="bi bi-arrow-left"></i> Quay lại
               </a>

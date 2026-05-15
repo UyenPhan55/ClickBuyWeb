@@ -10,8 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet(urlPatterns = {"/DonHangServlet", "/don-hang"})
 public class DonHangServlet extends HttpServlet {
-    private final DonHangDAO donHangDAO = new DonHangDAO();
-    private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
+private final DonHangDAO donHangDAO = new DonHangDAO();
+private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,6 +43,7 @@ public class DonHangServlet extends HttpServlet {
                     request.setAttribute("chiTietDonHang", donHangDAO.getOrderItems(idDetail));
                     request.getRequestDispatcher(SessionUtil.isStaffOrAdmin(request) ? "/staff/don-hang/chi-tiet-don-hang.jsp" : "/user/chi-tiet-don-hang.jsp").forward(request, response);
                     break;
+                    
                 case "staff-list":
                     if (!SessionUtil.isStaffOrAdmin(request)) {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN);

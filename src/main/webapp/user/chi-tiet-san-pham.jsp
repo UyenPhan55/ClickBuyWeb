@@ -3,29 +3,24 @@
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@page import="java.util.*, model.DanhGia, dao.DanhGiaDAO" %>
 
-<%-- 
-    BƯỚC 1: Xử lý dữ liệu Đánh giá từ Database
---%>
 <%
     try {
         model.SanPham currentSp = (model.SanPham)request.getAttribute("detail");
         if (currentSp != null) {
             DanhGiaDAO dgDao = new DanhGiaDAO();
-            // Lấy toàn bộ đánh giá (Bà đảm bảo DAO có hàm getAllDanhGia nhé)
+         
             List<DanhGia> allReviews = dgDao.getAllDanhGia();
             List<DanhGia> productReviews = new ArrayList<>();
             
             int totalStars = 0;
             for (DanhGia dg : allReviews) {
-                // Lọc lấy đánh giá thuộc về sản phẩm này và đã duyệt (trang_thai = 1)
-                // Lưu ý: dg.getTenSanPham() phải khớp với currentSp.getTenSanPham()
+               
                 if (dg.getTenSanPham() != null && dg.getTenSanPham().equals(currentSp.getTenSanPham()) && dg.getTrangThai() == 1) {
                     productReviews.add(dg);
                     totalStars += dg.getSoSao();
                 }
             }
             
-            // Tính số sao trung bình
             double avg = productReviews.isEmpty() ? 5.0 : (double)totalStars / productReviews.size();
             request.setAttribute("reviews", productReviews);
             request.setAttribute("avgStars", avg);
@@ -54,7 +49,7 @@
         </nav>
 
         <div class="row mb-5">
-            <%-- Ảnh sản phẩm --%>
+          
             <div class="col-md-6 text-center">
                 <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 100px; z-index: 10; border-radius: 20px;">
                     <img src="${pageContext.request.contextPath}/assets/images/${detail.urlAnh}" 
@@ -63,7 +58,6 @@
                 </div>
             </div>
 
-            <%-- Thông tin sản phẩm --%>
             <div class="col-md-6">
                 <h2 class="fw-bold mb-1">${detail.tenSanPham}</h2>
                 
@@ -80,7 +74,6 @@
                     </c:choose>
                 </div>
 
-                <%-- SỐ SAO LẤY TỪ DỮ LIỆU THẬT --%>
                 <div class="d-flex align-items-center mb-3">
                     <span class="text-warning me-2 small">
                         <c:forEach begin="1" end="5" var="i">
@@ -139,7 +132,6 @@
             </div>
         </div>
 
-        <%-- MÔ TẢ CHI TIẾT --%>
         <div class="row pt-5 border-top">
             <div class="col-12">
                 <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 15px;">
@@ -151,7 +143,6 @@
             </div>
         </div>
 
-        <%-- PHẦN THÊM MỚI: DANH SÁCH ĐÁNH GIÁ THẬT --%>
         <div class="row pt-2">
             <div class="col-12">
                 <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 15px;">
@@ -194,7 +185,6 @@
     </c:if>
 </main>
 
-<%-- GIỮ NGUYÊN CÁC PHẦN DƯỚI ĐÂY (TOAST, MODAL, SCRIPT) --%>
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
     <div id="cartToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">

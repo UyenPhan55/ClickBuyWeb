@@ -8,7 +8,7 @@ import util.LogUtil;
 import util.SessionUtil;
 import jakarta.servlet.annotation.WebServlet;
 
-@WebServlet("/DanhGiaServlet") 
+@WebServlet(name = "DanhGiaServlet", urlPatterns = {"/DanhGiaServlet", "/danh-gia"})
 
 public class DanhGiaServlet extends HttpServlet {
     private final DanhGiaDAO dao = new DanhGiaDAO();

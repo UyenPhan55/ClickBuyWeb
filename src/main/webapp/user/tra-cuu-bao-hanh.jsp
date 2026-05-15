@@ -14,23 +14,27 @@
             
             <%-- Form gửi mã về BaoHanhServlet --%>
             <form action="${pageContext.request.contextPath}/BaoHanhServlet" method="get">
+                <%-- CHỈNH SỬA 1: Thêm action lookup để Servlet chạy đúng case --%>
+                <input type="hidden" name="action" value="lookup">
+                
                 <div class="input-group mb-4 shadow-sm" style="border-radius: 10px; overflow: hidden;">
-                    <input type="text" name="ma_tra_cuu" class="form-control form-control-lg border-danger-subtle shadow-none" 
-                           placeholder="Nhập mã bảo hành (VD: BH123456)..." 
-                           value="${param.ma_tra_cuu}" required>
+                    <%-- CHỈNH SỬA 2: name="code" và value="${param.code}" để đồng bộ với Servlet --%>
+                    <input type="text" name="code" class="form-control form-control-lg border-danger-subtle shadow-none" 
+                           placeholder="Nhập mã bảo hành (VD: BH001)..." 
+                           value="${param.code}" required>
                     <button class="btn btn-danger px-4 fw-bold" type="submit">
                         <i class="bi bi-search me-1"></i> TRA CỨU
                     </button>
                 </div>
             </form>
 
-            <%-- HIỂN THỊ KẾT QUẢ --%>
-            <c:if test="${not empty warrantyInfo}">
+            <%-- HIỂN THỊ KẾT QUẢ - CHỈNH SỬA 3: Đổi từ warrantyInfo sang baoHanh cho khớp Servlet --%>
+            <c:if test="${not empty baoHanh}">
                 <div id="warrantyResult" class="text-start border-top pt-4 mt-2 animate__animated animate__fadeIn">
                     
                     <%-- 1. Alert tình trạng bảo hành --%>
                     <c:choose>
-                        <c:when test="${warrantyInfo.trangThai == 'CON_HAN'}">
+                        <c:when test="${baoHanh.trangThai == 'CON_HAN'}">
                             <div class="alert alert-success d-flex align-items-center shadow-sm border-0">
                                 <i class="bi bi-shield-check-fill fs-1 me-3"></i>
                                 <div>
@@ -39,7 +43,7 @@
                                 </div>
                             </div>
                         </c:when>
-                        <c:when test="${warrantyInfo.trangThai == 'HET_HAN'}">
+                        <c:when test="${baoHanh.trangThai == 'HET_HAN'}">
                             <div class="alert alert-secondary d-flex align-items-center shadow-sm border-0">
                                 <i class="bi bi-calendar-x-fill fs-1 me-3"></i>
                                 <div>
@@ -52,8 +56,8 @@
                             <div class="alert alert-warning d-flex align-items-center shadow-sm border-0">
                                 <i class="bi bi-exclamation-triangle-fill fs-1 me-3"></i>
                                 <div>
-                                    <h5 class="fw-bold mb-0">Tình trạng: ${warrantyInfo.trangThai}</h5>
-                                    <p class="mb-0 small">Vui lòng liên hệ hotline 1900.xxxx để được hỗ trợ chi tiết về trường hợp này.</p>
+                                    <h5 class="fw-bold mb-0">Tình trạng: ${baoHanh.trangThai}</h5>
+                                    <p class="mb-0 small">Vui lòng liên hệ hotline để được hỗ trợ chi tiết về trường hợp này.</p>
                                 </div>
                             </div>
                         </c:otherwise>
@@ -66,35 +70,36 @@
                                 <tbody>
                                     <tr>
                                         <th class="bg-light w-35 text-secondary fw-medium">Mã bảo hành</th>
-                                        <td class="fw-bold text-dark">${warrantyInfo.maBaoHanhCode}</td>
+                                        <td class="fw-bold text-dark">${baoHanh.maBaoHanhCode}</td>
                                     </tr>
                                     <tr>
                                         <th class="bg-light text-secondary fw-medium">Sản phẩm</th>
                                         <td>
-                                            <div class="fw-bold text-dark text-uppercase">${warrantyInfo.tenSanPham}</div>
+                                            <%-- CHỈNH SỬA 4: Nếu DAO chưa join bảng SanPham thì tạm thời để ID hoặc MaCode --%>
+                                            <div class="fw-bold text-dark text-uppercase">${baoHanh.maBaoHanhCode}</div>
                                             <div class="badge bg-light text-dark border mt-1 fw-normal">
-                                                Biến thể: ${warrantyInfo.tenBienThe}
+                                                ID Biến thể: ${baoHanh.idBienThe}
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-light text-secondary fw-medium">Ngày kích hoạt</th>
                                         <td class="text-primary fw-bold">
-                                            <fmt:formatDate value="${warrantyInfo.ngayBatDau}" pattern="dd/MM/yyyy" />
+                                            <fmt:formatDate value="${baoHanh.ngayBatDau}" pattern="dd/MM/yyyy" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-light text-secondary fw-medium">Ngày hết hạn</th>
                                         <td class="text-danger fw-bold">
-                                            <fmt:formatDate value="${warrantyInfo.ngayKetThuc}" pattern="dd/MM/yyyy" />
+                                            <fmt:formatDate value="${baoHanh.ngayKetThuc}" pattern="dd/MM/yyyy" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="bg-light text-secondary fw-medium">Đơn hàng gốc</th>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/chi-tiet-don-hang?id=${warrantyInfo.idDonHang}" 
+                                            <a href="${pageContext.request.contextPath}/chi-tiet-don-hang?id=${baoHanh.idDonHang}" 
                                                class="btn btn-sm btn-outline-danger py-0 fw-bold">
-                                                #CB${warrantyInfo.idDonHang} <i class="bi bi-arrow-right-short"></i>
+                                                #CB${baoHanh.idDonHang} <i class="bi bi-arrow-right-short"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -110,11 +115,11 @@
                 </div>
             </c:if>
 
-            <%-- THÔNG BÁO LỖI --%>
-            <c:if test="${not empty error}">
+            <%-- THÔNG BÁO LỖI - CHỈNH SỬA 5: Kiểm tra đúng mã code nhập vào --%>
+            <c:if test="${empty baoHanh && not empty param.code}">
                 <div class="alert alert-danger mt-4 border-0 shadow-sm animate__animated animate__shakeX">
                     <i class="bi bi-x-circle-fill me-2"></i> 
-                    Hệ thống không tìm thấy thông tin cho mã: <strong>${param.ma_tra_cuu}</strong>. Vui lòng kiểm tra lại!
+                    Hệ thống không tìm thấy thông tin cho mã: <strong>${param.code}</strong>. Vui lòng kiểm tra lại!
                 </div>
             </c:if>
         </div>

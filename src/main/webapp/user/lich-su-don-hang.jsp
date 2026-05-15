@@ -1,125 +1,48 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
-<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
 
-<main class="container my-5">
-    
-    <%-- PHẦN 1: THÔNG TIN TÀI KHOẢN --%>
-    <div class="card border-0 shadow-sm mb-5" style="border-radius: 20px; background: linear-gradient(to right, #ffffff, #fffafa);">
-        <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-4">
-                <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px;">
-                    <i class="bi bi-person-vcard fs-3"></i>
-                </div>
-                <div>
-                    <h4 class="fw-bold mb-0 text-dark">HỒ SƠ CỦA TÔI</h4>
-                    <div class="mt-1">
-                        <c:choose>
-                            <c:when test="${sessionScope.user.trangThai == 1}">
-                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 rounded-pill">
-                                    <i class="bi bi-check-circle-fill me-1"></i> Đang hoạt động
-                                </span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 rounded-pill">
-                                    <i class="bi bi-lock-fill me-1"></i> Đang bị khóa
-                                </span>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-            </div>
+<main class="container my-5 text-center py-5">
+    <div class="card border-0 shadow-sm p-5 mx-auto" style="max-width: 550px; border-radius: 25px;">
+  
+        <%-- Icon thành công --%>
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+        
+        <h2 class="fw-bold mt-3">CHÚC MỪNG BẠN!</h2>
+        
+        <p class="fs-5 text-muted">
+            <%-- 
+              SỬA TẠI ĐÂY: Dùng ${param.id} để lấy ID từ thanh địa chỉ (URL) 
+              vì DonHangServlet dùng response.sendRedirect
+            --%>
+            Đơn hàng <strong class="text-danger">#CB${param.id}</strong> của bạn đã được hệ thống ghi nhận.
+        </p>
+        
+        <p class="small text-secondary mb-4">
+            Cảm ơn bạn đã tin tưởng chọn <strong>ClickBuy</strong>. Nhân viên sẽ sớm liên hệ để xác nhận đơn hàng.
+        </p>
+
+        <hr class="my-4" style="border-style: dashed;">
+
+        <div class="d-grid gap-3 d-md-flex justify-content-center">
+            <%-- Nút tiếp tục mua sắm nên dẫn về Servlet Trang Chủ để có dữ liệu sản phẩm --%>
+            <a href="${pageContext.request.contextPath}/TrangChuServlet" 
+               class="btn btn-outline-secondary px-4 fw-bold py-2">
+                TIẾP TỤC MUA SẮM
+            </a>
             
-            <div class="row g-4">
-                <div class="col-md-4 border-end">
-                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Họ và tên</label>
-                    <span class="fs-5 fw-bold text-dark">${not empty sessionScope.user.tenDayDu ? sessionScope.user.tenDayDu : 'Chưa cập nhật'}</span>
-                </div>
-                <div class="col-md-4 border-end">
-                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Email liên lạc</label>
-                    <span class="fs-5 fw-bold text-dark">${not empty sessionScope.user.email ? sessionScope.user.email : 'Chưa cập nhật'}</span>
-                </div>
-                <div class="col-md-4">
-                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Số điện thoại</label>
-                    <span class="fs-5 fw-bold text-danger">${not empty sessionScope.user.sdt ? sessionScope.user.sdt : 'N/A'}</span>
-                </div>
-            </div>
-            
-            <hr class="my-4" style="border-style: dashed; opacity: 0.3;">
-            
-            
+            <%-- 
+              SỬA TẠI ĐÂY: 
+              1. Đổi đường dẫn về /don-hang (DonHangServlet)
+              2. Thêm action=history hoặc action=detail để đúng luồng bà muốn
+            --%>
+            <a href="${pageContext.request.contextPath}/don-hang?action=history" 
+               class="btn btn-danger px-4 fw-bold shadow-sm py-2">
+                XEM LỊCH SỬ ĐƠN HÀNG
+            </a>
         </div>
-    </div>
-
-    <%-- PHẦN 2: DANH SÁCH ĐƠN HÀNG --%>
-    <h4 class="fw-bold mb-4 border-start border-4 border-danger ps-3 text-uppercase">Lịch sử mua hàng</h4>
-    
-    <div class="card shadow-sm border-0 overflow-hidden" style="border-radius: 15px;">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="bg-light">
-                <tr class="text-uppercase small" style="letter-spacing: 0.5px;">
-                    <th class="ps-4 py-3">Mã đơn</th>
-                    <th class="py-3">Ngày đặt</th>
-                    <th class="py-3">Tổng tiền</th>
-                    <th class="py-3">Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="order" items="${danhSachDonHang}">
-                    <tr>
-                        <td class="ps-4 fw-bold text-primary">#${order.idDonHang}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${not empty order.ngayDat}">
-                                    <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy" />
-                                </c:when>
-                                <c:otherwise><span class="text-muted">N/A</span></c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td class="text-danger fw-bold">
-                            <fmt:formatNumber value="${order.tongThanhToan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${order.trangThai == 'CHO_XAC_NHAN'}">
-                                    <span class="badge rounded-pill bg-warning text-dark px-3">
-                                        <i class="bi bi-clock me-1"></i> Chờ xác nhận
-                                    </span>
-                                </c:when>
-                                <c:when test="${order.trangThai == 'DA_GIAO'}">
-                                    <span class="badge rounded-pill bg-success px-3">
-                                        <i class="bi bi-check-lg me-1"></i> Đã giao hàng
-                                    </span>
-                                </c:when>
-                                <c:when test="${order.trangThai == 'DA_HUY'}">
-                                    <span class="badge rounded-pill bg-secondary px-3">
-                                        <i class="bi bi-x-circle me-1"></i> Đã hủy
-                                    </span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="badge rounded-pill bg-info text-dark px-3">${order.trangThai}</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                </c:forEach>
-
-                <c:if test="${empty danhSachDonHang}">
-                    <tr>
-                        <td colspan="4" class="text-center py-5">
-                            <i class="bi bi-cart-x fs-1 text-muted d-block mb-3"></i>
-                            <h5 class="fw-bold text-muted">Bà chưa mua món nào hết hà!</h5>
-                            <a href="${pageContext.request.contextPath}/TrangChuServlet" class="btn btn-danger px-5 mt-3 fw-bold py-2" style="border-radius: 10px;">
-                                MUA SẮM NGAY
-                            </a>
-                        </td>
-                    </tr>
-                </c:if>
-            </tbody>
-        </table>
     </div>
 </main>
 

@@ -70,9 +70,9 @@ public class MaGiamGiaDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, mgg.getMaCode());
             ps.setString(2, mgg.getLoaiGiam());
-            ps.setBigDecimal(3, mgg.getGiaTriGiam());
-            ps.setBigDecimal(4, mgg.getDonToiThieu());
-            ps.setBigDecimal(5, mgg.getGiamToiDa());
+            ps.setDouble(3, mgg.getGiaTriGiam());
+            ps.setDouble(4, mgg.getDonToiThieu());
+            ps.setDouble(5, mgg.getGiamToiDa());
             ps.setInt(6, mgg.getSoLuongGioiHan());
             ps.setTimestamp(7, new Timestamp(mgg.getNgayBatDau().getTime()));
             ps.setTimestamp(8, new Timestamp(mgg.getNgayHetHan().getTime()));
@@ -103,9 +103,9 @@ public class MaGiamGiaDAO {
         mgg.setIdVoucher(rs.getInt("id_voucher"));
         mgg.setMaCode(rs.getString("ma_code"));
         mgg.setLoaiGiam(rs.getString("loai_giam"));
-        mgg.setGiaTriGiam(rs.getBigDecimal("gia_tri_giam"));
-        mgg.setDonToiThieu(rs.getBigDecimal("don_toi_thieu"));
-        mgg.setGiamToiDa(rs.getBigDecimal("giam_toi_da"));
+        mgg.setGiaTriGiam(rs.getDouble("gia_tri_giam"));
+        mgg.setDonToiThieu(rs.getDouble("don_toi_thieu"));
+        mgg.setGiamToiDa(rs.getDouble("giam_toi_da"));
         mgg.setSoLuongGioiHan(rs.getInt("so_luong_gioi_han"));
         mgg.setNgayBatDau(rs.getTimestamp("ngay_bat_dau"));
         mgg.setNgayHetHan(rs.getTimestamp("ngay_het_han"));

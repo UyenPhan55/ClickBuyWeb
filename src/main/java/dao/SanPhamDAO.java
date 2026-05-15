@@ -24,8 +24,7 @@ public class SanPhamDAO {
                         rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"),
                         rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai"),
-                        rs.getInt("so_luong_ton") // MỚI THÊM
+                        rs.getInt("trang_thai")    
                 ));
             }
         } catch (Exception e) {
@@ -51,8 +50,7 @@ public class SanPhamDAO {
                         rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
                         rs.getString("mo_ta"), rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai"),
-                        rs.getInt("so_luong_ton") // MỚI THÊM
+                        rs.getInt("trang_thai")
                     );
                 }
             }
@@ -73,7 +71,6 @@ public class SanPhamDAO {
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
-            ps.setInt(7, sp.getSoLuongTon()); // MỚI THÊM
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +89,6 @@ public class SanPhamDAO {
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
-            ps.setInt(7, sp.getSoLuongTon()); // MỚI THÊM
             ps.setInt(8, sp.getIdSanPham());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
@@ -127,8 +123,8 @@ public class SanPhamDAO {
                         rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
                         rs.getString("mo_ta"), rs.getString("url_anh"),
                         rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai"),
-                        rs.getInt("so_luong_ton") // MỚI THÊM
+                        rs.getInt("trang_thai")
+                       
                     ));
                 }
             }

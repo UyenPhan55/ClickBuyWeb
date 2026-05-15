@@ -63,7 +63,7 @@
                     <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
                 </div>
                 <h4 class="fw-bold mb-3">Gửi khiếu nại thành công!</h4>
-                <p class="text-muted mb-4">Hệ thống đã tiếp nhận phản hồi. Bà chờ chút xíu để quay lại danh sách nhé!</p>
+                <p class="text-muted mb-4">Hệ thống đã tiếp nhận phản hồi.</p>
                 <button type="button" class="btn btn-danger px-5 fw-bold py-2" onclick="location.reload()">OK</button>
             </div>
         </div>

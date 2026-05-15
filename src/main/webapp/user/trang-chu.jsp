@@ -74,12 +74,7 @@
                         </a>
                         
                         <div class="d-grid gap-2 mt-3">
-                            <%-- 
-                                CHỖ NÀY QUAN TRỌNG: 
-                                Tui đổi link nút "MUA NGAY" dẫn về trang CHI TIẾT.
-                                Vì DonHangServlet của ông KHÔNG có case xử lý tạo đơn hàng từ link trực tiếp.
-                                Khách vào Chi Tiết rồi bấm Mua Ngay ở đó (hiện Modal nhập địa chỉ) thì mới khớp logic 12 bước.
-                            --%>
+                 
                             <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm rounded-3" 
                                     onclick="location.href='${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}'">
                                 <i class="bi bi-cart-plus me-1"></i> MUA NGAY

@@ -6,8 +6,6 @@
 <jsp:include page="../common/navbar-user.jsp" />
 
 <main class="container my-5">
-    
-    <%-- PHẦN 1: THÔNG TIN TÀI KHOẢN (Giữ nguyên giao diện đẹp của bà) --%>
     <div class="card border-0 shadow-sm mb-5" style="border-radius: 20px; background: linear-gradient(to right, #ffffff, #fffafa);">
         <div class="card-body p-4">
             <div class="d-flex align-items-center mb-4">
@@ -50,7 +48,6 @@
         </div>
     </div>
 
-    <%-- PHẦN 2: DANH SÁCH ĐƠN HÀNG --%>
     <h4 class="fw-bold mb-4 border-start border-4 border-danger ps-3 text-uppercase">Lịch sử hoạt động</h4>
     
     <div class="card shadow-sm border-0 overflow-hidden" style="border-radius: 15px;">

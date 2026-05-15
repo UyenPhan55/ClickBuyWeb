@@ -49,7 +49,6 @@
                     </c:choose>
                 </div>
 
-                <%-- Đánh giá ảo --%>
                 <div class="d-flex align-items-center mb-3">
                     <c:set var="stars" value="${(detail.idSanPham % 2 == 0) ? 5 : 4}" />
                     <span class="text-warning me-2 small">
@@ -63,7 +62,6 @@
                     <fmt:formatNumber value="${not empty variants ? variants[0].giaBienThe : detail.giaCoBan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                 </h3>
 
-                <%-- Form chính --%>
                 <div class="mb-4 ${detail.trangThai == 0 ? 'opacity-50' : ''}">
                     <label class="fw-bold mb-2 small text-uppercase text-muted">Chọn phiên bản:</label>
                     <div class="d-flex flex-wrap gap-2">
@@ -87,22 +85,19 @@
                 </div>
 
                 <div class="d-flex gap-3 mt-4">
-                    <%-- Nút MUA NGAY: Chặn nếu ngừng kinh doanh --%>
                     <button type="button" class="btn ${detail.trangThai == 1 ? 'btn-danger' : 'btn-secondary'} fw-bold px-4 py-3 shadow-sm flex-grow-1" 
                             style="border-radius: 12px; font-size: 1.1rem;"
                             ${detail.trangThai == 1 ? 'data-bs-toggle="modal" data-bs-target="#checkoutModal" onclick="prepareCheckout()"' : 'disabled'}>
                         ${detail.trangThai == 1 ? 'MUA NGAY' : 'NGỪNG KINH DOANH'}
                     </button>
                     
-                    <%-- Nút thêm vào giỏ hàng: Chặn nếu ngừng kinh doanh --%>
-                    <form action="${pageContext.request.contextPath}/GioHangServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="action" value="add">
-                        <input type="hidden" name="id" value="${detail.idSanPham}">
-                        <button type="submit" class="btn btn-outline-danger fw-bold px-4 py-3 shadow-sm" 
-                                style="border-radius: 12px;" ${detail.trangThai == 0 ? 'disabled' : ''}>
-                            <i class="bi ${detail.trangThai == 1 ? 'bi-cart-plus' : 'bi-cart-x'} fs-4"></i>
-                        </button>
-                    </form>
+                    <%-- SỬA TẠI ĐÂY: Nút thêm giỏ hàng gọi hàm Ajax ngầm --%>
+                    <button type="button" class="btn btn-outline-danger fw-bold px-4 py-3 shadow-sm" 
+                            style="border-radius: 12px;" 
+                            ${detail.trangThai == 0 ? 'disabled' : ''}
+                            onclick="addCartAjaxDetail()">
+                        <i class="bi ${detail.trangThai == 1 ? 'bi-cart-plus' : 'bi-cart-x'} fs-4"></i>
+                    </button>
                 </div>
                 <c:if test="${detail.trangThai == 0}">
                     <p class="text-danger mt-3 small fw-bold"><i class="bi bi-info-circle me-1"></i> Sản phẩm này hiện tại không còn bán.</p>
@@ -124,7 +119,22 @@
     </c:if>
 </main>
 
-<%-- MODAL THANH TOÁN --%>
+<%-- TOAST THÔNG BÁO --%>
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="cartToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle-fill me-2"></i> Đã thêm vào giỏ hàng thành công!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<%-- IFRAME ẨN --%>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" src="about:blank" onload="handleIframeLoad()"></iframe>
+
+<%-- MODAL THANH TOÁN (Giữ nguyên) --%>
 <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
@@ -146,7 +156,6 @@
                             <small class="text-muted" id="modal-variant-name"></small>
                         </div>
                     </div>
-
                     <div class="p-3 bg-light rounded mb-3">
                         <div class="d-flex justify-content-between small mb-1">
                             <span>Đơn giá:</span>
@@ -162,7 +171,6 @@
                             <span class="fw-bold text-danger fs-5" id="modal-total-price"></span>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label class="small fw-bold">Địa chỉ nhận hàng:</label>
                         <textarea name="diaChi" class="form-control" rows="2" placeholder="Số nhà, tên đường..." required></textarea>
@@ -186,6 +194,7 @@
     let currentPrice = ${not empty variants ? variants[0].giaBienThe : detail.giaCoBan};
     let currentVariantId = "${not empty variants ? variants[0].idBienThe : ''}";
     let currentVariantName = "${not empty variants ? variants[0].tenBienThe : ''}";
+    let isAdding = false;
 
     function updatePrice(id, price, name) {
         currentPrice = price;
@@ -200,6 +209,40 @@
         let current = parseInt(input.value) || 1;
         if (val === 1) input.value = current + 1;
         else if (val === -1 && current > 1) input.value = current - 1;
+    }
+
+    // HÀM THÊM GIỎ HÀNG KHÔNG LOAD TRANG
+    function addCartAjaxDetail() {
+        const userLoggedIn = ${not empty sessionScope.user ? 'true' : 'false'};
+        if (!userLoggedIn) {
+            window.location.href = '${pageContext.request.contextPath}/dang-nhap.jsp';
+            return;
+        }
+
+        const qty = document.getElementById('buy-quantity').value;
+        isAdding = true;
+        // Sử dụng currentVariantId được cập nhật khi click chọn radio
+        const url = '${pageContext.request.contextPath}/GioHangServlet?action=add&idBienThe=' + currentVariantId + '&soLuong=' + qty; 
+        document.getElementById('hidden_iframe').src = url;
+    }
+
+    function handleIframeLoad() {
+        const iframe = document.getElementById('hidden_iframe');
+        if (isAdding && iframe.src !== "about:blank") {
+            // Hiện Toast
+            var toastEl = document.getElementById('cartToast');
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+
+            // Cập nhật số lượng Badge trên Menu
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                const qtyAdded = parseInt(document.getElementById('buy-quantity').value) || 1;
+                let currentCount = parseInt(badge.innerText.trim()) || 0;
+                badge.innerText = currentCount + qtyAdded;
+            }
+            isAdding = false;
+        }
     }
 
     function prepareCheckout() {

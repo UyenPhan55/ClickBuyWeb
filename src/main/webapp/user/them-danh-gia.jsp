@@ -69,7 +69,6 @@
 </main>
 
 <script>
-    // Chọn sao đơn giản
     const stars = document.querySelectorAll('#starContainer i');
     stars.forEach(star => {
         star.addEventListener('click', function() {
@@ -80,7 +79,6 @@
         });
     });
 
-    // Thanh thông báo tối giản ở góc dưới bên phải
     function showSimpleToast() {
         Swal.fire({
             toast: true,

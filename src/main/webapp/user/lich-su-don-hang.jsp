@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%-- Cập nhật URI sang Jakarta --%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
@@ -7,70 +6,118 @@
 <jsp:include page="../common/navbar-user.jsp" />
 
 <main class="container my-5">
-    <h3 class="fw-bold mb-4 border-start border-4 border-danger ps-3">LỊCH SỬ ĐƠN HÀNG CỦA TÔI</h3>
     
-    <div class="card shadow-sm border-0 overflow-hidden">
+    <%-- PHẦN 1: THÔNG TIN TÀI KHOẢN --%>
+    <div class="card border-0 shadow-sm mb-5" style="border-radius: 20px; background: linear-gradient(to right, #ffffff, #fffafa);">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+                <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px;">
+                    <i class="bi bi-person-vcard fs-3"></i>
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-0 text-dark">HỒ SƠ CỦA TÔI</h4>
+                    <div class="mt-1">
+                        <c:choose>
+                            <c:when test="${sessionScope.user.trangThai == 1}">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 rounded-pill">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Đang hoạt động
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 rounded-pill">
+                                    <i class="bi bi-lock-fill me-1"></i> Đang bị khóa
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4 border-end">
+                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Họ và tên</label>
+                    <span class="fs-5 fw-bold text-dark">${not empty sessionScope.user.tenDayDu ? sessionScope.user.tenDayDu : 'Chưa cập nhật'}</span>
+                </div>
+                <div class="col-md-4 border-end">
+                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Email liên lạc</label>
+                    <span class="fs-5 fw-bold text-dark">${not empty sessionScope.user.email ? sessionScope.user.email : 'Chưa cập nhật'}</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="text-muted small fw-bold d-block mb-1 text-uppercase">Số điện thoại</label>
+                    <span class="fs-5 fw-bold text-danger">${not empty sessionScope.user.sdt ? sessionScope.user.sdt : 'N/A'}</span>
+                </div>
+            </div>
+            
+            <hr class="my-4" style="border-style: dashed; opacity: 0.3;">
+            
+            <div class="small text-muted">
+                <i class="bi bi-geo-alt-fill me-1 text-danger"></i> Địa chỉ: 
+                <span class="fw-bold">${not empty sessionScope.user.diaChi ? sessionScope.user.diaChi : 'Chưa cập nhật'}</span>
+            </div>
+        </div>
+    </div>
+
+    <%-- PHẦN 2: DANH SÁCH ĐƠN HÀNG --%>
+    <h4 class="fw-bold mb-4 border-start border-4 border-danger ps-3 text-uppercase">Lịch sử mua hàng</h4>
+    
+    <div class="card shadow-sm border-0 overflow-hidden" style="border-radius: 15px;">
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
-                <tr>
-                    <th class="ps-3">Mã đơn</th>
-                    <th>Ngày đặt</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end pe-3">Hành động</th>
+                <tr class="text-uppercase small" style="letter-spacing: 0.5px;">
+                    <th class="ps-4 py-3">Mã đơn</th>
+                    <th class="py-3">Ngày đặt</th>
+                    <th class="py-3">Tổng tiền</th>
+                    <th class="py-3">Trạng thái</th>
                 </tr>
             </thead>
             <tbody>
-               
-                <c:forEach var="order" items="${orderList}">
+                <c:forEach var="order" items="${danhSachDonHang}">
                     <tr>
-                        <td class="ps-3 fw-bold text-primary">#${order.idDonHang}</td>
+                        <td class="ps-4 fw-bold text-primary">#${order.idDonHang}</td>
                         <td>
-                            <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy" />
+                            <c:choose>
+                                <c:when test="${not empty order.ngayDat}">
+                                    <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy" />
+                                </c:when>
+                                <c:otherwise><span class="text-muted">N/A</span></c:otherwise>
+                            </c:choose>
                         </td>
                         <td class="text-danger fw-bold">
-                            <%-- Định dạng tiền tệ theo chuẩn VNĐ --%>
-                            <fmt:formatNumber value="${order.tongTien}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                            <fmt:formatNumber value="${order.tongThanhToan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                         </td>
                         <td>
                             <c:choose>
                                 <c:when test="${order.trangThai == 'CHO_XAC_NHAN'}">
-                                    <span class="badge rounded-pill bg-warning text-dark">Chờ xác nhận</span>
+                                    <span class="badge rounded-pill bg-warning text-dark px-3">
+                                        <i class="bi bi-clock me-1"></i> Chờ xác nhận
+                                    </span>
                                 </c:when>
                                 <c:when test="${order.trangThai == 'DA_GIAO'}">
-                                    <span class="badge rounded-pill bg-success">Đã giao hàng</span>
+                                    <span class="badge rounded-pill bg-success px-3">
+                                        <i class="bi bi-check-lg me-1"></i> Đã giao hàng
+                                    </span>
                                 </c:when>
                                 <c:when test="${order.trangThai == 'DA_HUY'}">
-                                    <span class="badge rounded-pill bg-secondary">Đã hủy</span>
+                                    <span class="badge rounded-pill bg-secondary px-3">
+                                        <i class="bi bi-x-circle me-1"></i> Đã hủy
+                                    </span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="badge rounded-pill bg-info text-dark">${order.trangThai}</span>
+                                    <span class="badge rounded-pill bg-info text-dark px-3">${order.trangThai}</span>
                                 </c:otherwise>
                             </c:choose>
-                        </td>
-                        <td class="text-end pe-3">
-                            <a href="${pageContext.request.contextPath}/chi-tiet-don-hang?id=${order.idDonHang}" 
-                               class="btn btn-sm btn-dark shadow-sm">
-                                <i class="bi bi-eye me-1"></i> Chi tiết
-                            </a>
-                            
-                            <c:if test="${order.trangThai == 'DA_GIAO'}">
-                                <a href="${pageContext.request.contextPath}/them-danh-gia?id=${order.idDonHang}" 
-                                   class="btn btn-sm btn-outline-danger shadow-sm">
-                                    <i class="bi bi-star-fill me-1"></i> Đánh giá
-                                </a>
-                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
 
-                <c:if test="${empty orderList}">
+                <c:if test="${empty danhSachDonHang}">
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
-                            <i class="bi bi-cart-x fs-1 d-block mb-3 text-secondary"></i>
-                            <h5>Bạn chưa có đơn hàng nào</h5>
-                            <p class="small mb-4">Hãy tiếp tục khám phá các sản phẩm công nghệ mới nhất nhé!</p>
-                            <a href="${pageContext.request.contextPath}/home" class="btn btn-danger px-4 fw-bold">Mua sắm ngay</a>
+                        <td colspan="4" class="text-center py-5">
+                            <i class="bi bi-cart-x fs-1 text-muted d-block mb-3"></i>
+                            <h5 class="fw-bold text-muted">Bà chưa mua món nào hết hà!</h5>
+                            <a href="${pageContext.request.contextPath}/TrangChuServlet" class="btn btn-danger px-5 mt-3 fw-bold py-2" style="border-radius: 10px;">
+                                MUA SẮM NGAY
+                            </a>
                         </td>
                     </tr>
                 </c:if>

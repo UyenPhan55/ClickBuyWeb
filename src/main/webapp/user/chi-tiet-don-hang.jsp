@@ -10,7 +10,7 @@
         .track-line { height: 4px; background-color: #eee; position: relative; top: 20px; z-index: 1; }
         .track-line-active { 
             height: 100%; background-color: #28a745; 
-            <%-- Sửa trang_thai -> trangThai --%>
+ 
             width: ${order.trangThai == 'CHO_XAC_NHAN' ? '25%' : 
                     order.trangThai == 'DA_XAC_NHAN' ? '50%' : 
                     order.trangThai == 'DANG_GIAO' ? '75%' : '100%'}; 
@@ -46,30 +46,7 @@
                 </a>
             </div>
 
-            <%-- Thanh tiến trình trạng thái --%>
-            <div class="position-relative mb-5 px-5">
-                <div class="track-line">
-                    <div class="track-line-active"></div> 
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="step-item ${order.trangThai != null ? 'completed' : ''}">
-                        <div class="step-icon">📦</div>
-                        <div class="step-text">Đã đặt hàng</div>
-                    </div>
-                    <div class="step-item ${order.trangThai == 'DA_XAC_NHAN' || order.trangThai == 'DANG_GIAO' || order.trangThai == 'DA_GIAO' ? 'completed' : ''}">
-                        <div class="step-icon">💳</div>
-                        <div class="step-text">Đã xác nhận</div>
-                    </div>
-                    <div class="step-item ${order.trangThai == 'DANG_GIAO' ? 'active' : (order.trangThai == 'DA_GIAO' ? 'completed' : '')}">
-                        <div class="step-icon">🚚</div>
-                        <div class="step-text">Đang giao</div>
-                    </div>
-                    <div class="step-item ${order.trangThai == 'DA_GIAO' ? 'completed' : ''}">
-                        <div class="step-icon">✅</div>
-                        <div class="step-text">Đã nhận hàng</div>
-                    </div>
-                </div>
-            </div>
+
 
             <div class="row pt-4 mt-4 border-top">
                 <%-- CỘT TRÁI: DANH SÁCH SẢN PHẨM --%>
@@ -93,18 +70,18 @@
                     </c:forEach>
                 </div>
 
-                <%-- CỘT PHẢI: THÔNG TIN NHẬN HÀNG --%>
+                
                 <div class="col-md-5 ps-md-4">
                     <h6 class="fw-bold mb-3 text-uppercase small text-secondary">Thông tin nhận hàng</h6>
                     
                     <div class="d-flex mb-2">
                         <i class="bi bi-person me-2 text-danger"></i>
-                        <%-- SỬA: ten_day_du -> tenDayDu, id_nguoi_dung -> idNguoiDung --%>
+                       
                         <span class="fw-bold text-dark">${sessionScope.user.tenDayDu} (ID: #USR${sessionScope.user.idNguoiDung})</span>
                     </div>
                     <div class="d-flex mb-3">
                         <i class="bi bi-telephone me-2 text-danger"></i>
-                        <%-- SỬA: sdt_nguoi_nhan -> sdtNguoiNhan --%>
+                       
                         <span class="fw-bold text-dark">${order.sdtNguoiNhan != null ? order.sdtNguoiNhan : sessionScope.user.sdt}</span>
                     </div>
                     
@@ -112,7 +89,7 @@
                         <i class="bi bi-geo-alt me-2 text-danger"></i>
                         <div class="small text-muted">
                             <span class="fw-bold text-dark">Địa chỉ nhận hàng:</span><br>
-                            <%-- SỬA: dia_chi -> diaChi --%>
+                       
                             ${order.diaChi != null ? order.diaChi : sessionScope.user.diaChi}
                         </div>
                     </div>
@@ -121,7 +98,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             
                             <span class="small fw-bold text-dark">
-                                <%-- SỬA: ngay_dat -> ngayDat --%>
+                               
                                 <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy HH:mm:ss" />
                             </span>
                         </div>

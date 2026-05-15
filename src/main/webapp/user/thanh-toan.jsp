@@ -34,7 +34,11 @@
 <c:set var="finalTotal" value="${tempTotal - discountAmount}" />
 
 <main class="container my-5">
-    <form action="${pageContext.request.contextPath}/DonHangServlet" method="post">
+    <%-- 
+      Dùng một Form chính cho toàn bộ trang. 
+      Action mặc định là DonHangServlet để chốt đơn.
+    --%>
+    <form action="${pageContext.request.contextPath}/don-hang" method="post">
         <input type="hidden" name="action" value="place">
         
         <div class="row">
@@ -45,7 +49,8 @@
                     
                     <div class="mb-3">
                         <label class="form-label fw-bold">Họ tên người nhận</label>
-                        <input type="text" name="hoTen" class="form-control shadow-none py-2" 
+                        <%-- Lưu ý: Kiểm tra tên biến 'tenDayDu' trong model User của bà --%>
+                        <input type="text" name="tenDayDu" class="form-control shadow-none py-2" 
                                value="${sessionScope.user.tenDayDu}" required>
                     </div>
                     
@@ -75,7 +80,6 @@
                         </span>
                     </div>
                     
-                    <%-- HIỂN THỊ MÃ ĐÃ ÁP DỤNG --%>
                     <c:if test="${discountAmount > 0}">
                         <div class="d-flex justify-content-between mb-2 text-success fw-bold">
                             <span>Giảm giá (${sessionScope.discount.maCode}):</span>
@@ -88,34 +92,41 @@
                         <span class="text-success fw-bold">Miễn phí</span>
                     </div>
                     
-                    <%-- PHẦN CHỌN MÃ GIẢM GIÁ (Lấy động từ MySQL) --%>
+                    <%-- PHẦN VOUCHER --%>
                     <div class="mt-2 p-3 border rounded-3 bg-light">
                         <label class="small fw-bold mb-2 text-muted text-uppercase">Mã giảm giá (Voucher)</label>
                         <div class="input-group">
+                            <%-- Quan trọng: Dùng đúng tên 'voucherCode' cho Servlet nhận diện --%>
                             <select name="voucherCode" class="form-select shadow-none">
                                 <option value="">-- Chọn mã giảm giá --</option>
-                                <%-- ĐÂY LÀ ĐOẠN LẤY DỮ LIỆU TỪ MYSQL NÈ BÀ --%>
                                 <c:forEach var="v" items="${danhSachVoucher}">
                                     <option value="${v.maCode}" ${sessionScope.discount.maCode == v.maCode ? 'selected' : ''}>
-                                        ${v.maCode} - Giảm ${v.loaiGiam eq 'PHAN_TRAM' ? v.giaTriGiam : ''}
-                                        <c:if test="${v.loaiGiam eq 'PHAN_TRAM'}">%</c:if>
-                                        <c:if test="${v.loaiGiam ne 'PHAN_TRAM'}"><fmt:formatNumber value="${v.giaTriGiam}" />đ</c:if>
+                                        ${v.maCode} - Giảm 
+                                        <c:choose>
+                                            <c:when test="${v.loaiGiam eq 'PHAN_TRAM'}">${v.giaTriGiam}%</c:when>
+                                            <c:otherwise><fmt:formatNumber value="${v.giaTriGiam}" />đ</c:otherwise>
+                                        </c:choose>
                                     </option>
                                 </c:forEach>
                             </select>
                             
+                            <%-- 
+                                Nút này sẽ "phá" luồng mặc định của Form để gửi về MaGiamGiaServlet.
+                                Tui đổi formaction thành '/ma-giam-gia' cho khớp với Servlet của bà.
+                            --%>
                             <button class="btn btn-dark fw-bold px-3" type="submit" 
-                                    formaction="${pageContext.request.contextPath}/MaGiamGiaServlet">
+                                    formaction="${pageContext.request.contextPath}/ma-giam-gia">
                                 ÁP DỤNG
                             </button>
                         </div>
                         
-                        <%-- Cần ID này để DonHangDAO lưu vào DB khi đặt hàng --%>
+                        <%-- Giữ ID Voucher để gửi sang DonHangServlet khi chốt đơn --%>
                         <input type="hidden" name="idVoucher" value="${sessionScope.discount.idVoucher}">
                         
                         <c:if test="${not empty sessionScope.voucherMsg}">
                             <div class="mt-2 small text-danger">
                                 <i class="bi bi-exclamation-triangle-fill me-1"></i> ${sessionScope.voucherMsg}
+                                <%-- Xóa thông báo sau khi hiện để lần sau không hiện lại --%>
                                 <c:remove var="voucherMsg" scope="session" />
                             </div>
                         </c:if>

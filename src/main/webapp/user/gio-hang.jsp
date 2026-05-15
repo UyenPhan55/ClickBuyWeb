@@ -92,7 +92,7 @@
         <c:otherwise>
             <div class="text-center py-5">
                 <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
-                <h4 class="mt-3">Giỏ hàng trống trơn hà bà ơi!</h4>
+                <h4 class="mt-3">Giỏ hàng trống</h4>
                 <a href="${pageContext.request.contextPath}/TrangChuServlet" class="btn btn-danger mt-3">MUA SẮM NGAY</a>
             </div>
         </c:otherwise>

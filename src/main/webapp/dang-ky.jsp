@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%-- Cập nhật sang URI Jakarta chuẩn cho dự án --%>
+
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>

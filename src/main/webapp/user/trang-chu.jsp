@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClickBuy - Hệ thống bán lẻ điện thoại toàn quốc</title>
     
-    <%-- Header chung --%>
     <jsp:include page="../common/header.jsp" />
     
     <style>
@@ -24,39 +23,19 @@
             transform: translateY(-10px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
         }
-        .product-link {
-            text-decoration: none;
-            color: inherit;
-        }
-        .btn-buy {
-            background-color: #d70018;
-            color: white;
-            transition: 0.2s;
-        }
-        .btn-buy:hover {
-            background-color: #b50014;
-            color: white;
-        }
-        /* CSS cho phân trang */
-        .pagination .page-link {
-            color: #d70018;
-            border-radius: 5px;
-            margin: 0 3px;
-        }
-        .pagination .page-item.active .page-link {
-            background-color: #d70018;
-            border-color: #d70018;
-            color: white;
-        }
+        .product-link { text-decoration: none; color: inherit; }
+        .btn-buy { background-color: #d70018; color: white; transition: 0.2s; border: none; }
+        .btn-buy:hover { background-color: #b50014; color: white; }
+        .pagination .page-link { color: #d70018; border-radius: 5px; margin: 0 3px; }
+        .pagination .page-item.active .page-link { background-color: #d70018; border-color: #d70018; color: white; }
     </style>
 </head>
 <body style="background-color: #f8f9fa;">
 
-    <%-- Thanh điều hướng --%>
     <jsp:include page="../common/navbar-user.jsp" />
 
     <main class="container my-5">
-        <%-- THÔNG BÁO CHÀO MỪNG (Dùng từ Servlet: welcomeMsg) --%>
+        <%-- THÔNG BÁO CHÀO MỪNG --%>
         <c:if test="${not empty welcomeMsg}">
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 ${welcomeMsg}
@@ -64,7 +43,7 @@
             </div>
         </c:if>
 
-        <%-- TIÊU ĐỀ VÀ THÔNG TIN TRANG --%>
+        <%-- TIÊU ĐỀ --%>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold border-start border-4 border-danger ps-3 text-uppercase mb-0">
                 Sản phẩm nổi bật
@@ -75,13 +54,11 @@
         </div>
         
         <div class="row">
-            <%-- VÒNG LẶP HIỂN THỊ SẢN PHẨM (Khớp với attribute: latestProducts) --%>
             <c:forEach var="p" items="${latestProducts}">
                 <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                     <div class="card p-3 border-0 shadow-sm h-100 product-card">
-                        <%-- Link chi tiết sản phẩm --%>
+                        <%-- Link chi tiết --%>
                         <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}" class="product-link">
-                            <%-- Xử lý ảnh: Nếu ko có ảnh thì hiện ảnh lỗi/mặc định --%>
                             <img src="${pageContext.request.contextPath}/assets/images/${not empty p.urlAnh ? p.urlAnh : 'no-image.png'}" 
                                  class="card-img-top img-fluid mb-3" 
                                  style="height: 220px; object-fit: contain;" 
@@ -98,12 +75,14 @@
                             </div>
                         </a>
                         
-                        <%-- Nút tương tác --%>
+                        <%-- NÚT TƯƠNG TÁC: Đã sửa link để khớp với Filter --%>
                         <div class="d-grid gap-2 mt-3">
+                            <%-- Khi bấm nút này, nó sẽ gửi đến GioHangServlet -> Bị Filter tóm nếu chưa login --%>
                             <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm rounded-3" 
-                                    onclick="location.href='${pageContext.request.contextPath}/gio-hang?action=add&id=${p.idSanPham}'">
+                                    onclick="location.href='${pageContext.request.contextPath}/GioHangServlet?action=add&id=${p.idSanPham}'">
                                 <i class="bi bi-cart-plus me-1"></i> MUA NGAY
                             </button>
+                            
                             <button type="button" class="btn btn-outline-secondary fw-bold btn-sm rounded-3" 
                                     onclick="location.href='${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}'">
                                 CHI TIẾT
@@ -113,37 +92,30 @@
                 </div>
             </c:forEach>
 
-            <%-- HIỂN THỊ KHI KHÔNG CÓ DỮ LIỆU --%>
             <c:if test="${empty latestProducts}">
                 <div class="col-12 text-center py-5">
-                    <div class="mb-3">
-                        <i class="bi bi-box-seam display-1 text-muted"></i>
-                    </div>
-                    <h5 class="text-muted">Hiện tại chưa có sản phẩm nào.</h5>
-                    <p class="text-muted small">Vui lòng quay lại sau hoặc kiểm tra kết nối dữ liệu.</p>
+                    <i class="bi bi-box-seam display-1 text-muted"></i>
+                    <h5 class="text-muted mt-3">Hiện tại chưa có sản phẩm nào.</h5>
                 </div>
             </c:if>
         </div>
 
-        <%-- PHẦN PHÂN TRANG (PAGINATION) --%>
+        <%-- PHÂN TRANG --%>
         <c:if test="${totalPages > 1}">
             <nav aria-label="Page navigation" class="mt-5">
                 <ul class="pagination justify-content-center">
-                    <%-- Nút Trước --%>
                     <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
                         <a class="page-link" href="TrangChuServlet?page=${currentPage - 1}">
                             <i class="bi bi-chevron-left"></i> Trước
                         </a>
                     </li>
                     
-                    <%-- Các số trang --%>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li class="page-item ${currentPage == i ? 'active' : ''}">
                             <a class="page-link" href="TrangChuServlet?page=${i}">${i}</a>
                         </li>
                     </c:forEach>
                     
-                    <%-- Nút Sau --%>
                     <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
                         <a class="page-link" href="TrangChuServlet?page=${currentPage + 1}">
                             Sau <i class="bi bi-chevron-right"></i>
@@ -154,7 +126,6 @@
         </c:if>
     </main>
 
-    <%-- Footer chung --%>
     <jsp:include page="../common/footer.jsp" />
 
 </body>

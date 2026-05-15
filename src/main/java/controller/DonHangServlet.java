@@ -2,17 +2,22 @@ package controller;
 
 import dao.DonHangDAO;
 import dao.SanPhamTrongGioDAO;
+import dao.MaGiamGiaDAO; 
+import model.MaGiamGia;
+import model.SanPhamTrongGio;
 import java.io.IOException;
+import java.util.List;
+import java.math.BigDecimal;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import util.SessionUtil;
 import jakarta.servlet.annotation.WebServlet;
 
-@WebServlet("/DonHangServlet")   
-
+@WebServlet("/DonHangServlet")
 public class DonHangServlet extends HttpServlet {
-private final DonHangDAO donHangDAO = new DonHangDAO();
-private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
+    private final DonHangDAO donHangDAO = new DonHangDAO();
+    private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
+    private final MaGiamGiaDAO maGiamGiaDAO = new MaGiamGiaDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +35,21 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
 
             switch (action) {
                 case "checkout":
-                    request.setAttribute("danhSachGioHang", gioHangDAO.getItemsByUserId(idNguoiDung));
+                    // 1. Lấy danh sách sản phẩm để hiện ở trang thanh toán
+                    List<SanPhamTrongGio> listItems = gioHangDAO.getItemsByUserId(idNguoiDung);
+                    request.setAttribute("danhSachGioHang", listItems);
+                    
+                    // 2. Tính tạm tính (Dùng BigDecimal cho chính xác giống DAO)
+                    BigDecimal tempTotal = BigDecimal.ZERO;
+                    for (SanPhamTrongGio item : listItems) {
+                        tempTotal = tempTotal.add(item.getGiaBienThe().multiply(BigDecimal.valueOf(item.getSoLuong())));
+                    }
+                    request.setAttribute("tempTotal", tempTotal);
+
+                    // 3. Đổ danh sách Voucher từ MySQL ra ô chọn (Dropdown)
+                    List<MaGiamGia> listVouchers = maGiamGiaDAO.getAllVouchers(); 
+                    request.setAttribute("danhSachVoucher", listVouchers);
+
                     request.getRequestDispatcher("/user/thanh-toan.jsp").forward(request, response);
                     break;
 
@@ -61,7 +80,7 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
                 case "cancel":
                     int idCancel = Integer.parseInt(request.getParameter("id"));
                     donHangDAO.cancelOrderByUser(idCancel, idNguoiDung, request.getRemoteAddr());
-                    response.sendRedirect(request.getContextPath() + "/don-hang?action=history");
+                    response.sendRedirect(request.getContextPath() + "/DonHangServlet?action=history");
                     break;
 
                 case "history":
@@ -71,6 +90,7 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
                     break;
             }
         } catch (Exception e) {
+            e.printStackTrace(); // In lỗi ra console để bà dễ debug
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/loi.jsp").forward(request, response);
         }
@@ -92,10 +112,21 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
             if ("place".equals(action)) {
                 String diaChi = request.getParameter("diaChi");
                 String sdtNguoiNhan = request.getParameter("sdtNguoiNhan");
-                String voucherParam = request.getParameter("idVoucher");
-                Integer idVoucher = (voucherParam == null || voucherParam.trim().isEmpty()) ? null : Integer.parseInt(voucherParam);
+                
+                // Lấy idVoucher từ ô Select (Dropdown) gửi lên
+                String voucherParam = request.getParameter("idVoucher"); 
+                Integer idVoucher = null;
+                if (voucherParam != null && !voucherParam.trim().isEmpty()) {
+                    idVoucher = Integer.parseInt(voucherParam);
+                }
+                
+                // Gọi DAO đặt hàng
                 int idDonHang = donHangDAO.placeOrder(idNguoiDung, diaChi, sdtNguoiNhan, idVoucher, request.getRemoteAddr());
-                response.sendRedirect(request.getContextPath() + "/don-hang?action=success&id=" + idDonHang);
+                
+                // Xóa mã giảm giá đã áp dụng trong Session để không bị tính cho đơn sau
+                request.getSession().removeAttribute("discount");
+                
+                response.sendRedirect(request.getContextPath() + "/DonHangServlet?action=success&id=" + idDonHang);
                 return;
             }
 
@@ -111,8 +142,9 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
                 return;
             }
 
-            response.sendRedirect(request.getContextPath() + "/don-hang?action=history");
+            response.sendRedirect(request.getContextPath() + "/DonHangServlet?action=history");
         } catch (Exception e) {
+            e.printStackTrace();
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/loi.jsp").forward(request, response);
         }

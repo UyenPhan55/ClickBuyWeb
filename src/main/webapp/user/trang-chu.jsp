@@ -35,7 +35,6 @@
     <jsp:include page="../common/navbar-user.jsp" />
 
     <main class="container my-5">
-        <%-- THÔNG BÁO CHÀO MỪNG --%>
         <c:if test="${not empty welcomeMsg}">
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 ${welcomeMsg}
@@ -43,7 +42,6 @@
             </div>
         </c:if>
 
-        <%-- TIÊU ĐỀ --%>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-bold border-start border-4 border-danger ps-3 text-uppercase mb-0">
                 Sản phẩm nổi bật
@@ -75,11 +73,15 @@
                             </div>
                         </a>
                         
-                        <%-- NÚT TƯƠNG TÁC: Đã sửa link để khớp với Filter --%>
                         <div class="d-grid gap-2 mt-3">
-                            <%-- Khi bấm nút này, nó sẽ gửi đến GioHangServlet -> Bị Filter tóm nếu chưa login --%>
+                            <%-- 
+                                CHỖ NÀY QUAN TRỌNG: 
+                                Tui đổi link nút "MUA NGAY" dẫn về trang CHI TIẾT.
+                                Vì DonHangServlet của ông KHÔNG có case xử lý tạo đơn hàng từ link trực tiếp.
+                                Khách vào Chi Tiết rồi bấm Mua Ngay ở đó (hiện Modal nhập địa chỉ) thì mới khớp logic 12 bước.
+                            --%>
                             <button type="button" class="btn btn-buy fw-bold py-2 shadow-sm rounded-3" 
-                                    onclick="location.href='${pageContext.request.contextPath}/GioHangServlet?action=add&id=${p.idSanPham}'">
+                                    onclick="location.href='${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}'">
                                 <i class="bi bi-cart-plus me-1"></i> MUA NGAY
                             </button>
                             
@@ -109,13 +111,11 @@
                             <i class="bi bi-chevron-left"></i> Trước
                         </a>
                     </li>
-                    
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li class="page-item ${currentPage == i ? 'active' : ''}">
                             <a class="page-link" href="TrangChuServlet?page=${i}">${i}</a>
                         </li>
                     </c:forEach>
-                    
                     <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
                         <a class="page-link" href="TrangChuServlet?page=${currentPage + 1}">
                             Sau <i class="bi bi-chevron-right"></i>

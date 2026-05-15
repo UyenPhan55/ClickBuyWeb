@@ -10,7 +10,7 @@
         <div class="alert alert-warning text-center shadow-sm" style="border-radius: 15px;">
             <i class="bi bi-exclamation-triangle fs-1 d-block mb-3"></i>
             <h4>Không tìm thấy sản phẩm!</h4>
-            <p>Vui lòng kiểm tra lại ID hoặc <a href="TrangChuServlet" class="fw-bold text-danger">Quay lại trang chủ</a></p>
+            <p>Vui lòng kiểm tra lại ID hoặc <a href="${pageContext.request.contextPath}/TrangChuServlet" class="fw-bold text-danger">Quay lại trang chủ</a></p>
         </div>
     </c:if>
 
@@ -27,7 +27,8 @@
             <div class="col-md-6 text-center">
                 <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 100px; z-index: 10; border-radius: 20px;">
                     <img src="${pageContext.request.contextPath}/assets/images/${detail.urlAnh}" 
-                         class="img-fluid" style="max-height: 450px; object-fit: contain;" alt="${detail.tenSanPham}">
+                         class="img-fluid ${detail.trangThai == 0 ? 'grayscale' : ''}" 
+                         style="max-height: 450px; object-fit: contain;" alt="${detail.tenSanPham}">
                 </div>
             </div>
 
@@ -43,7 +44,7 @@
                             <span class="badge bg-success-subtle text-success fw-bold border border-success-subtle">Đang kinh doanh</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="badge bg-secondary-subtle text-secondary fw-bold border border-secondary-subtle">Ngừng kinh doanh</span>
+                            <span class="badge bg-secondary text-white fw-bold border border-secondary">Ngừng kinh doanh</span>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -63,50 +64,67 @@
                 </h3>
 
                 <%-- Form chính --%>
-                <div class="mb-4">
+                <div class="mb-4 ${detail.trangThai == 0 ? 'opacity-50' : ''}">
                     <label class="fw-bold mb-2 small text-uppercase text-muted">Chọn phiên bản:</label>
                     <div class="d-flex flex-wrap gap-2">
                         <c:forEach var="bt" items="${variants}" varStatus="status">
                             <input type="radio" class="btn-check" name="variant_option" id="v_${bt.idBienThe}" 
                                    value="${bt.idBienThe}" ${status.first ? 'checked' : ''}
+                                   ${detail.trangThai == 0 ? 'disabled' : ''}
                                    onchange="updatePrice('${bt.idBienThe}', ${bt.giaBienThe}, '${bt.tenBienThe}')">
                             <label class="btn btn-outline-danger px-3 py-2 fw-bold variant-btn" for="v_${bt.idBienThe}">${bt.tenBienThe}</label>
                         </c:forEach>
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 ${detail.trangThai == 0 ? 'opacity-50' : ''}">
                     <label class="fw-bold mb-2 small text-uppercase text-muted">Số lượng mua:</label>
                     <div class="input-group shadow-sm" style="width: 120px;">
-                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">-</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)" ${detail.trangThai == 0 ? 'disabled' : ''}>-</button>
                         <input type="number" id="buy-quantity" class="form-control text-center shadow-none border-secondary" value="1" min="1" readonly>
-                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)" ${detail.trangThai == 0 ? 'disabled' : ''}>+</button>
                     </div>
                 </div>
 
                 <div class="d-flex gap-3 mt-4">
-                    <%-- Nút này sẽ mở Modal thanh toán --%>
-                    <button type="button" class="btn btn-danger fw-bold px-4 py-3 shadow-sm flex-grow-1" 
+                    <%-- Nút MUA NGAY: Chặn nếu ngừng kinh doanh --%>
+                    <button type="button" class="btn ${detail.trangThai == 1 ? 'btn-danger' : 'btn-secondary'} fw-bold px-4 py-3 shadow-sm flex-grow-1" 
                             style="border-radius: 12px; font-size: 1.1rem;"
-                            data-bs-toggle="modal" data-bs-target="#checkoutModal" onclick="prepareCheckout()">
-                        MUA NGAY
+                            ${detail.trangThai == 1 ? 'data-bs-toggle="modal" data-bs-target="#checkoutModal" onclick="prepareCheckout()"' : 'disabled'}>
+                        ${detail.trangThai == 1 ? 'MUA NGAY' : 'NGỪNG KINH DOANH'}
                     </button>
                     
-                    <%-- Nút thêm vào giỏ hàng --%>
+                    <%-- Nút thêm vào giỏ hàng: Chặn nếu ngừng kinh doanh --%>
                     <form action="${pageContext.request.contextPath}/GioHangServlet" method="post" style="display:inline;">
                         <input type="hidden" name="action" value="add">
                         <input type="hidden" name="id" value="${detail.idSanPham}">
-                        <button type="submit" class="btn btn-outline-danger fw-bold px-4 py-3 shadow-sm" style="border-radius: 12px;">
-                            <i class="bi bi-cart-plus fs-4"></i>
+                        <button type="submit" class="btn btn-outline-danger fw-bold px-4 py-3 shadow-sm" 
+                                style="border-radius: 12px;" ${detail.trangThai == 0 ? 'disabled' : ''}>
+                            <i class="bi ${detail.trangThai == 1 ? 'bi-cart-plus' : 'bi-cart-x'} fs-4"></i>
                         </button>
                     </form>
+                </div>
+                <c:if test="${detail.trangThai == 0}">
+                    <p class="text-danger mt-3 small fw-bold"><i class="bi bi-info-circle me-1"></i> Sản phẩm này hiện tại không còn bán.</p>
+                </c:if>
+            </div>
+        </div>
+
+        <%-- MÔ TẢ CHI TIẾT --%>
+        <div class="row pt-5 border-top">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 15px;">
+                    <h5 class="fw-bold border-bottom pb-3 mb-3 text-uppercase text-danger">Thông tin chi tiết</h5>
+                    <div class="content-detail" style="line-height: 1.8;">
+                        ${not empty detail.moTa ? detail.moTa : "Đang cập nhật nội dung cho sản phẩm này..."}
+                    </div>
                 </div>
             </div>
         </div>
     </c:if>
 </main>
 
-<%-- MODAL THANH TOÁN (Xác nhận và gửi action=place) --%>
+<%-- MODAL THANH TOÁN --%>
 <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
@@ -116,7 +134,6 @@
             </div>
             <form action="${pageContext.request.contextPath}/DonHangServlet" method="post">
                 <div class="modal-body p-4">
-                    <%-- Dữ liệu gửi đi cho DonHangServlet --%>
                     <input type="hidden" name="action" value="place">
                     <input type="hidden" name="idSanPham" value="${detail.idSanPham}">
                     <input type="hidden" name="id_bien_the" id="modal-id-bien-the">
@@ -202,6 +219,8 @@
 <style>
     .variant-btn { border-radius: 10px; min-width: 90px; border: 2px solid #dee2e6; color: #333; transition: 0.2s; }
     .btn-check:checked + .variant-btn { border-color: #d70018 !important; color: #d70018 !important; background-color: #fff !important; box-shadow: 0 0 0 1px #d70018; }
+    .btn-check:disabled + .variant-btn { opacity: 0.5; cursor: not-allowed; }
+    .grayscale { filter: grayscale(100%); opacity: 0.6; }
     .breadcrumb-item + .breadcrumb-item::before { content: ">"; }
     .badge { padding: 0.5em 0.8em; border-radius: 8px; }
 </style>

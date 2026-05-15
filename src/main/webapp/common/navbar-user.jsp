@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <style>
     .navbar { padding: 10px 0 !important; }
@@ -24,19 +25,21 @@
         padding-bottom: 5px;
         color: #ffffff !important;
     }
+    /* Chỉnh sửa badge cho đẹp và chuẩn vị trí */
     .cart-badge, .noti-badge {
         font-family: Arial, sans-serif !important;
-        font-size: 10px !important;
-        padding: 2px 5px !important;
-        top: 5px !important;
-        left: 75% !important;
-        border: 1.5px solid #212529;
+        font-size: 11px !important;
+        font-weight: bold !important;
+        padding: 2px 6px !important;
+        top: 0 !important;
+        left: 80% !important;
+        border: 2px solid #212529;
+        border-radius: 50rem !important;
     }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
     <div class="container">
-        <%-- CHỈNH SỬA 1: Logo dẫn về Trang chủ (thường hiện SP mới nhất) --%>
         <a class="navbar-brand" href="${pageContext.request.contextPath}/TrangChuServlet">
             CLICKBUY
         </a>
@@ -48,56 +51,54 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <%-- CHỈNH SỬA 2: Nút Sản phẩm PHẢI có action=danh-sach để hiện đủ Realme, Vivo, Oppo... --%>
                     <a class="nav-link" href="${pageContext.request.contextPath}/san-pham?action=danh-sach">Sản phẩm</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/BaoHanhServlet">Bảo hành</a>
                 </li>
                 <li class="nav-item">
-                    <%-- CHỈNH SỬA 3: Khiếu nại dẫn về Servlet để load danh sách đơn hàng cho user --%>
                     <a class="nav-link" href="${pageContext.request.contextPath}/KhieuNaiServlet?action=mine">Khiếu nại</a>
                 </li>
             </ul>
        
             <ul class="navbar-nav ms-auto align-items-center">
+                <%-- THÔNG BÁO --%>
                 <li class="nav-item me-2">
-                    <a class="nav-link position-relative d-inline-block p-2" href="${pageContext.request.contextPath}/user/danh-sach-thong-bao.jsp">
-                        <span style="font-size: 20px;">🔔</span>
+                    <a class="nav-link position-relative d-inline-block p-2" href="${pageContext.request.contextPath}/ThongBaoServlet">
+                        <i class="bi bi-bell fs-5"></i>
                         <c:if test="${not empty totalNoti && totalNoti > 0}">
-                            <span class="position-absolute translate-middle badge rounded-pill bg-danger noti-badge">
+                            <span class="position-absolute translate-middle badge bg-danger noti-badge">
                                 ${totalNoti}
                             </span>
                         </c:if>
                     </a>
                 </li>
 
+                <%-- GIỎ HÀNG: Đã thêm ID để nhảy số --%>
                 <li class="nav-item me-3">
-                    <%-- CHỈNH SỬA 4: Giỏ hàng cũng nên qua Servlet để cập nhật số lượng mới nhất --%>
-                    <a class="nav-link position-relative d-inline-block p-2" href="${pageContext.request.contextPath}/user/gio-hang.jsp">
-                        <span style="font-size: 20px;">🛒</span>
-                        <c:if test="${not empty cartCount && cartCount > 0}">
-                            <span class="position-absolute translate-middle badge rounded-pill bg-danger cart-badge">
-                                ${cartCount}
-                            </span>
-                        </c:if>
+                    <a class="nav-link position-relative d-inline-block p-2" href="${pageContext.request.contextPath}/GioHangServlet?action=view">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span id="cart-badge" class="position-absolute translate-middle badge bg-danger cart-badge">
+                            <%-- Hiển thị size của list giỏ hàng hoặc 0 --%>
+                            ${not empty danhSachGioHang ? danhSachGioHang.size() : 0}
+                        </span>
                     </a>
                 </li>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <li class="nav-item me-2">
-                            <a class="nav-link text-warning" href="${pageContext.request.contextPath}/user/lich-su-don-hang.jsp">
-                                👤 ${sessionScope.user.tenDayDu} 
+                            <a class="nav-link text-warning fw-bold" href="${pageContext.request.contextPath}/DonHangServlet?action=history">
+                                <i class="bi bi-person-circle me-1"></i> ${sessionScope.user.tenDayDu} 
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-outline-light btn-sm" href="${pageContext.request.contextPath}/AuthServlet?action=logout">Đăng xuất</a>
+                            <a class="btn btn-outline-light btn-sm rounded-pill px-3" href="${pageContext.request.contextPath}/AuthServlet?action=logout">Đăng xuất</a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="nav-item">
-                            <a class="btn btn-outline-danger btn-sm fw-bold px-3" href="${pageContext.request.contextPath}/dang-nhap.jsp">
+                            <a class="btn btn-danger btn-sm fw-bold px-4 rounded-pill shadow-sm" href="${pageContext.request.contextPath}/dang-nhap.jsp">
                                 Đăng nhập
                             </a>
                         </li>
@@ -118,7 +119,6 @@
             links.forEach(function(item) {
                 var href = item.getAttribute('href');
                 if (href) {
-                    // Kiểm tra khớp URL và tham số action
                     if (path.includes("san-pham") && search.includes("action=danh-sach") && href.includes("action=danh-sach")) {
                         item.classList.add('active-custom');
                     } else if (path.includes("KhieuNaiServlet") && href.includes("KhieuNaiServlet")) {

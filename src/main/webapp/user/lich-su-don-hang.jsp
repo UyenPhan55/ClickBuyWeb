@@ -50,10 +50,7 @@
             
             <hr class="my-4" style="border-style: dashed; opacity: 0.3;">
             
-            <div class="small text-muted">
-                <i class="bi bi-geo-alt-fill me-1 text-danger"></i> Địa chỉ: 
-                <span class="fw-bold">${not empty sessionScope.user.diaChi ? sessionScope.user.diaChi : 'Chưa cập nhật'}</span>
-            </div>
+            
         </div>
     </div>
 

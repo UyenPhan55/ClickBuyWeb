@@ -10,7 +10,7 @@
         <div class="alert alert-warning text-center shadow-sm" style="border-radius: 15px;">
             <i class="bi bi-exclamation-triangle fs-1 d-block mb-3"></i>
             <h4>Không tìm thấy sản phẩm!</h4>
-            <p>Vui lòng kiểm tra lại ID hoặc <a href="TrangChuServlet" class="fw-bold text-danger">Quay lại trang chủ</a></p>
+            <p>Vui lòng kiểm tra lại ID hoặc <a href="${pageContext.request.contextPath}/TrangChuServlet" class="fw-bold text-danger">Quay lại trang chủ</a></p>
         </div>
     </c:if>
 
@@ -36,7 +36,26 @@
             <div class="col-md-6">
                 <h2 class="fw-bold mb-1">${detail.tenSanPham}</h2>
                 
-                <%-- Đánh giá ảo --%>
+                <%-- 1. THÔNG TIN NSX & TRẠNG THÁI (Lấy từ DB) --%>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="text-muted small">NSX: <strong class="text-dark">${not empty detail.nhaSanXuat ? detail.nhaSanXuat : 'Đang cập nhật'}</strong></span>
+                    <span class="text-muted">|</span>
+                    
+                    <c:choose>
+                        <c:when test="${detail.trangThai == 1}">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle fw-bold">
+                                <i class="bi bi-check-circle-fill me-1"></i> Đang kinh doanh
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-bold">
+                                <i class="bi bi-x-circle-fill me-1"></i> Ngừng kinh doanh
+                            </span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <%-- 2. ĐÁNH GIÁ ẢO --%>
                 <div class="d-flex align-items-center mb-3">
                     <c:set var="stars" value="${(detail.idSanPham % 2 == 0) ? 5 : 4}" />
                     <span class="text-warning me-2 small">
@@ -49,11 +68,14 @@
                     </span>
                 </div>
 
+                <p class="text-muted small mb-3">Mã SP: SP00${detail.idSanPham}</p>
+
+                <%-- 3. GIÁ BÁN --%>
                 <h3 class="text-danger fw-bold mb-4" id="display-price">
                     <fmt:formatNumber value="${not empty variants ? variants[0].giaBienThe : detail.giaCoBan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                 </h3>
 
-                <%-- FORM GỬI ĐẾN GIOHANGSERVLET (Để khớp với Filter của ông) --%>
+                <%-- 4. FORM MUA HÀNG --%>
                 <form action="${pageContext.request.contextPath}/GioHangServlet" method="post" id="purchase-form">
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="id" value="${detail.idSanPham}">
@@ -91,7 +113,6 @@
 
                     <%-- Nút bấm --%>
                     <div class="d-flex gap-3 mt-4">
-                        <%-- Nếu chưa đăng nhập, Filter sẽ tự chặn khi submit form này --%>
                         <button type="submit" name="buy_now" value="true" 
                                 class="btn btn-danger fw-bold px-4 py-3 shadow-sm flex-grow-1" 
                                 style="border-radius: 12px; font-size: 1.1rem;">
@@ -110,6 +131,18 @@
                 </div>
             </div>
         </div>
+        
+        <%-- 5. MÔ TẢ CHI TIẾT --%>
+        <div class="row pt-5 border-top">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 15px;">
+                    <h5 class="fw-bold border-bottom pb-3 mb-3 text-uppercase text-danger">Thông tin chi tiết</h5>
+                    <div class="content-detail" style="line-height: 1.8;">
+                        ${not empty detail.moTa ? detail.moTa : "Đang cập nhật nội dung cho sản phẩm này..."}
+                    </div>
+                </div>
+            </div>
+        </div>
     </c:if>
 </main>
 
@@ -119,6 +152,7 @@
     .variant-btn { border-radius: 10px; min-width: 90px; border: 2px solid #dee2e6; color: #333; transition: 0.2s; }
     .btn-check:checked + .variant-btn { border-color: #d70018 !important; color: #d70018 !important; background-color: #fff !important; box-shadow: 0 0 0 1px #d70018; }
     .breadcrumb-item + .breadcrumb-item::before { content: ">"; }
+    .badge { padding: 0.5em 0.8em; border-radius: 8px; }
 </style>
 
 <script>
@@ -134,13 +168,4 @@
         if (val === 1) input.value = current + 1;
         else if (val === -1 && current > 1) input.value = current - 1;
     }
-
-    // Kiểm tra đăng nhập bằng JS trước khi submit (Tùy chọn - để UX mượt hơn)
-    <c:if test="${empty sessionScope.user}">
-    document.getElementById('purchase-form').addEventListener('submit', function(e) {
-        // Thực tế không cần chặn ở đây vì Filter đã chặn ở Server rồi, 
-        // nhưng ông có thể alert một cái cho thân thiện:
-        // alert("Bạn cần đăng nhập để mua hàng!");
-    });
-    </c:if>
 </script>

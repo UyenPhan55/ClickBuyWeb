@@ -5,13 +5,11 @@
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
 
-<%-- BƯỚC 1: TÍNH TỔNG TIỀN TẠM TÍNH --%>
 <c:set var="tempTotal" value="0" />
 <c:forEach var="item" items="${danhSachGioHang}">
     <c:set var="tempTotal" value="${tempTotal + (item.giaBienThe * item.soLuong)}" />
 </c:forEach>
 
-<%-- BƯỚC 2: TÍNH TOÁN SỐ TIỀN GIẢM GIÁ TỪ SESSION --%>
 <c:set var="discountAmount" value="0" />
 <c:if test="${not empty sessionScope.discount}">
     <c:set var="mgg" value="${sessionScope.discount}" />
@@ -34,10 +32,7 @@
 <c:set var="finalTotal" value="${tempTotal - discountAmount}" />
 
 <main class="container my-5">
-    <%-- 
-      Dùng một Form chính cho toàn bộ trang. 
-      Action mặc định là DonHangServlet để chốt đơn.
-    --%>
+    
     <form action="${pageContext.request.contextPath}/don-hang" method="post">
         <input type="hidden" name="action" value="place">
         

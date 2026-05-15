@@ -10,7 +10,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/SanPhamServlet")
+@WebServlet(name = "SanPhamServlet", urlPatterns = {"/san-pham"})
 public class SanPhamServlet extends HttpServlet {
 
     private final SanPhamDAO spDAO = new SanPhamDAO();

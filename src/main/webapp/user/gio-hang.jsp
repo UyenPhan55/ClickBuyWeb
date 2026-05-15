@@ -33,13 +33,13 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${item.idSanPham}">
+                                                <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${item.idBienThe}">
                                                     <img src="${pageContext.request.contextPath}/assets/images/${item.urlAnh}" 
                                                          width="70" class="me-3 rounded shadow-sm border" alt="${item.tenSanPham}">
                                                 </a>
                                                 <div>
                                                     <h6 class="mb-0">
-                                                        <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${item.idSanPham}" class="text-decoration-none text-dark fw-bold">
+                                                        <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${item.idBienThe}" class="text-decoration-none text-dark fw-bold">
                                                             ${item.tenSanPham}
                                                         </a>
                                                     </h6>

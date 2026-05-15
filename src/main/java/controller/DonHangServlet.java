@@ -8,7 +8,7 @@ import jakarta.servlet.http.*;
 import util.SessionUtil;
 import jakarta.servlet.annotation.WebServlet;
 
-@WebServlet("/DonHangServlet")   
+@WebServlet(urlPatterns = {"/DonHangServlet", "/don-hang"})
 public class DonHangServlet extends HttpServlet {
     private final DonHangDAO donHangDAO = new DonHangDAO();
     private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();

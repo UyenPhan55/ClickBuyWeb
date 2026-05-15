@@ -71,22 +71,18 @@
 </div>
 
 <script>
-    // Mẹo: Khi nhấn Submit, hiện Modal trước rồi mới gửi Form thật
+   
     document.getElementById('complaintForm').onsubmit = function(e) {
-        e.preventDefault(); // Dừng gửi form ngay lập tức
-        
-        // Hiện cái Modal lên
+        e.preventDefault(); 
         var myModal = new bootstrap.Modal(document.getElementById('successModal'));
         myModal.show();
         
-        // Chờ 2 giây cho bà kịp thấy cái Modal rồi mới gửi dữ liệu về Servlet
         var form = this;
         setTimeout(function() {
             form.submit();
         }, 2000);
     };
 
-    // Kiểm tra xem nếu vừa load lại trang sau khi gửi xong (dựa vào URL)
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('status') === 'success') {

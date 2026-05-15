@@ -111,9 +111,9 @@
 
                                 <%-- NÚT ĐÁNH GIÁ (Chỉ hiện khi đã giao hàng) --%>
                                 <c:if test="${order.trangThai == 'DA_GIAO'}">
-                                    <a href="${pageContext.request.contextPath}/danh-gia?action=add&idDonHang=${order.idDonHang}" 
-                                       class="btn btn-sm btn-danger px-3 shadow-sm" style="border-radius: 8px;">
-                                        <i class="bi bi-star-fill"></i> Đánh giá
+                                    <a href="user/them-danh-gia.jsp?idSanPham=${item.idSanPham}&idDonHang=${item.idDonHang}" 
+                                        class="btn btn-danger">
+                                        Đánh giá
                                     </a>
                                 </c:if>
                             </div>

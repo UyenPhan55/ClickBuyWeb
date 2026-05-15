@@ -7,7 +7,6 @@
 
 <main class="container my-5">
     <c:choose>
-        <%-- Kiểm tra nếu có sản phẩm trong giỏ --%>
         <c:when test="${not empty danhSachGioHang}">
             <h3 class="fw-bold mb-4 text-uppercase border-start border-4 border-danger ps-3">GIỎ HÀNG CỦA BẠN</h3>
             
@@ -45,7 +44,7 @@
                                             <fmt:formatNumber value="${item.giaBienThe}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                         </td>
                                         <td>
-                                            <%-- Cập nhật số lượng --%>
+                                          
                                             <form action="${pageContext.request.contextPath}/GioHangServlet" method="post">
                                                 <input type="hidden" name="action" value="update">
                                                 <input type="hidden" name="idBienThe" value="${item.idBienThe}">
@@ -70,7 +69,6 @@
                     </div>
                 </div>
 
-                <%-- Tóm tắt đơn hàng và nút đi đến thanh toán --%>
                 <div class="col-lg-4">
                     <div class="card p-4 border-0 shadow-sm" style="border-radius: 20px;">
                         <h5 class="fw-bold mb-3">TỔNG CỘNG</h5>
@@ -80,7 +78,7 @@
                                 <fmt:formatNumber value="${totalCartMoney}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                             </span>
                         </div>
-                        <%-- QUAN TRỌNG: Nút này dẫn bà sang trang Thanh Toán thực sự --%>
+                       
                         <a href="${pageContext.request.contextPath}/DonHangServlet?action=checkout" 
                            class="btn btn-danger btn-lg w-100 fw-bold py-3 shadow">
                             TIẾN HÀNH THANH TOÁN

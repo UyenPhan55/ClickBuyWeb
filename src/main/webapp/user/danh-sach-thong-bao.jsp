@@ -52,7 +52,6 @@
             <div class="col-md-8">
                 
                 <div class="mb-4 d-flex justify-content-between align-items-center">
-                    <%-- Sửa lại đường dẫn quay về TrangChuServlet cho chuẩn --%>
                     <a href="${pageContext.request.contextPath}/TrangChuServlet" class="back-link">
                         <i class="bi bi-arrow-left"></i> Quay về trang chủ
                     </a>
@@ -75,7 +74,6 @@
                             <c:set var="icon" value="${n.loaiThongBao == 'KHUYEN_MAI' ? '🎁' : (n.loaiThongBao == 'DON_HANG' ? '🚚' : '⚙️')}" />
                             <c:set var="typeName" value="${n.loaiThongBao == 'KHUYEN_MAI' ? 'KHUYẾN MÃI' : (n.loaiThongBao == 'DON_HANG' ? 'ĐƠN HÀNG' : 'HỆ THỐNG')}" />
 
-                            <%-- Thẻ link đến chi tiết hoặc đánh dấu đã đọc --%>
                             <a href="${pageContext.request.contextPath}/ThongBaoServlet?action=read&id=${n.idThongBao}" 
                                class="card noti-card p-3 mb-3 ${isUnread ? 'noti-unread' : 'noti-read'}">
                                 <div class="d-flex align-items-start">

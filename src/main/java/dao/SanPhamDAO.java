@@ -12,20 +12,31 @@ public class SanPhamDAO {
     // 1. LẤY DANH SÁCH SẢN PHẨM (Thêm rs.getInt("so_luong_ton"))
     public List<SanPham> getAllSanPham() {
         List<SanPham> list = new ArrayList<>();
-        String sql = "SELECT * FROM san_pham ORDER BY id_san_pham DESC"; 
+        String sql =
+            "SELECT sp.*, " +
+            "MIN(bt.id_bien_the) AS id_bien_the " +
+            "FROM san_pham sp " +
+            "LEFT JOIN bien_the_san_pham bt " +
+            "ON sp.id_san_pham = bt.id_san_pham " +
+            "GROUP BY sp.id_san_pham " +
+            "ORDER BY sp.id_san_pham DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                list.add(new SanPham(
-                        rs.getInt("id_san_pham"),
-                        rs.getString("ten_san_pham"),
-                        rs.getString("mo_ta"),
-                        rs.getString("url_anh"),
-                        rs.getString("nha_san_xuat"),
-                        rs.getDouble("gia_co_ban"),
-                        rs.getInt("trang_thai")    
-                ));
+                SanPham sp = new SanPham(
+                    rs.getInt("id_san_pham"),
+                    rs.getString("ten_san_pham"),
+                    rs.getString("mo_ta"),
+                    rs.getString("url_anh"),
+                    rs.getString("nha_san_xuat"),
+                    rs.getDouble("gia_co_ban"),
+                    rs.getInt("trang_thai")
+                );
+
+                sp.setIdBienThe(rs.getInt("id_bien_the"));
+
+                list.add(sp);
             }
         } catch (Exception e) {
             e.printStackTrace();

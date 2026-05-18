@@ -9,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
+import dao.SanPhamTrongGioDAO;
+import util.SessionUtil;
 
 @WebServlet(name = "SanPhamServlet", urlPatterns = {"/san-pham"})
 public class SanPhamServlet extends HttpServlet {
@@ -26,11 +28,26 @@ public class SanPhamServlet extends HttpServlet {
         try {
             switch (action) {
 
-                // ===== USER — trang danh sách sản phẩm =====
+                // ===== USER — trang danh sách sản phẩm =====            
                 case "danh-sach":
+
                     req.setAttribute("listSP", spDAO.getAllSanPham());
+
+                    SanPhamTrongGioDAO gioDAO = new SanPhamTrongGioDAO();
+
+                    Integer idNguoiDung = SessionUtil.getIdNguoiDung(req);
+
+                    int soLuongGio = 0;
+
+                    if (idNguoiDung != null) {
+                    soLuongGio = gioDAO.countItems(idNguoiDung);
+                    }
+
+                    req.setAttribute("soLuongGio", soLuongGio);
+
                     req.getRequestDispatcher("/user/danh-sach-san-pham.jsp")
-                       .forward(req, res);
+                    .forward(req, res);
+
                     break;
 
                 // ===== USER — chi tiết sản phẩm =====

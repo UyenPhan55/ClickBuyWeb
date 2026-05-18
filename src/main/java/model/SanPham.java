@@ -7,7 +7,8 @@ public class SanPham {
     private String urlAnh;
     private String nhaSanXuat;
     private double giaCoBan;
-    private int trangThai; 
+    private int trangThai;
+    private int idBienThe;
 
     public SanPham() {
     }
@@ -23,6 +24,9 @@ public class SanPham {
     }
 
     // --- GETTER & SETTER ---
+    public int getIdBienThe() {return idBienThe;}
+    public void setIdBienThe(int idBienThe) {this.idBienThe = idBienThe;}
+    
     public int getIdSanPham() { return idSanPham; }
     public void setIdSanPham(int idSanPham) { this.idSanPham = idSanPham; }
 

@@ -78,9 +78,7 @@
                 <li class="nav-item me-3">
                     <a class="nav-link position-relative d-inline-block p-2" href="${pageContext.request.contextPath}/GioHangServlet?action=view">
                         <i class="bi bi-cart3 fs-5"></i>
-                        <span id="cart-badge" class="position-absolute translate-middle badge bg-danger cart-badge">
-                            <%-- Hiển thị size của list giỏ hàng hoặc 0 --%>
-                            ${not empty danhSachGioHang ? danhSachGioHang.size() : 0}
+                        <span id="cart-badge" class="position-absolute translate-middle badge bg-danger cart-badge">${soLuongGio}
                         </span>
                     </a>
                 </li>

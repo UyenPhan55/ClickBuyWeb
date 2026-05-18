@@ -41,7 +41,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <button class="btn btn-outline-danger btn-sm w-100 fw-bold py-2" style="border-radius: 8px;"
-                                                        onclick="addCartAjax('${p.idSanPham}')">
+                                                        onclick="addCartAjax('${p.idBienThe}')">
                                                     <i class="bi bi-cart-plus"></i>
                                                 </button>
                                             </div>

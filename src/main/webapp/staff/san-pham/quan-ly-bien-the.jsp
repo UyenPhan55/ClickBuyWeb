@@ -36,19 +36,19 @@
         <div class="card" style="margin-bottom:16px">
           <div class="card-body" style="padding:16px">
             <div style="display:flex;gap:16px;align-items:center">
-              <img src="${not empty sanPham.hinhAnh ? sanPham.hinhAnh : ''}"
+              <img src="${not empty sanPham.urlAnh ? pageContext.request.contextPath.concat('/uploads/san-pham/').concat(sanPham.urlAnh) : ''}"
                    style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0"
                    onerror="this.style.display='none'">
               <div style="flex:1">
                 <div style="font-weight:700;font-size:15px">${sanPham.tenSanPham}</div>
                 <div style="color:var(--text-muted);font-size:12.5px;margin-top:3px">
-                  Mã: <strong>${sanPham.maSanPham}</strong>
-                  &nbsp;|&nbsp; Danh mục: ${sanPham.tenDanhMuc}
+                  Mã: <strong>${sanPham.idSanPham}</strong>
+                  &nbsp;|&nbsp; Danh mục: ${sanPham.nhaSanXuat}
                   &nbsp;|&nbsp; Giá bán:
-                  <strong><fmt:formatNumber value="${sanPham.giaBan}" pattern="#,###"/>₫</strong>
+                  <strong><fmt:formatNumber value="${sanPham.giaCoBan}" pattern="#,###"/>₫</strong>
                 </div>
               </div>
-              <a href="${pageContext.request.contextPath}/san-pham?action=capNhatTonKho&id=${sanPham.maSanPham}"
+              <a href="${pageContext.request.contextPath}/san-pham?action=capNhatTonKho&id=${sanPham.idSanPham}"
                  class="btn btn-outline btn-sm">
                 <i class="bi bi-pencil-square"></i> Cập nhật tồn kho
               </a>
@@ -174,9 +174,9 @@
         </h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form method="post" action="${pageContext.request.contextPath}/SanPhamServlet">
+      <form method="post" action="${pageContext.request.contextPath}/san-pham">
         <input type="hidden" name="action" value="capNhatTonKhoBienThe">
-        <input type="hidden" name="maSanPham" value="${sanPham.maSanPham}">
+        <input type="hidden" name="idSanPham" value="${sanPham.idSanPham}">
         <input type="hidden" name="maBienThe" id="modal-maBienThe">
         <div class="modal-body" style="padding:16px 18px">
           <div style="margin-bottom:12px">

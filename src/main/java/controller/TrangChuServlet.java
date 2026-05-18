@@ -23,9 +23,9 @@ public class TrangChuServlet extends HttpServlet {
         if (user != null) {
             try {
                 int cartCount = gioDAO.countItems(user.getIdNguoiDung());
-                req.getSession().setAttribute("cartCount", cartCount);
+                req.getSession().setAttribute("soLuongGio", cartCount);
             } catch (Exception e) {
-                req.getSession().setAttribute("cartCount", 0);
+                req.getSession().setAttribute("soLuongGio", 0);
             }
 
             // ===== 2. THÔNG BÁO CHÀO SAU ĐĂNG NHẬP =====

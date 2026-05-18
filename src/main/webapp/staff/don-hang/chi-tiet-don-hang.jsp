@@ -115,7 +115,10 @@
                                                                         object-fit:cover;
                                                                         border-radius:8px;"
                                                                  onerror="this.src='https://placehold.co/44x44?text=SP'">
+                                                            
+                                                            <%--  Sửa: tenSanPham thay idSanPham --%>                                           
                                                             <div class="fw-bold">
+                                                                
                                                                 ${item.tenSanPham}
                                                             </div>
                                                         </div>

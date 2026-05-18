@@ -2,7 +2,9 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <div class="sidebar">
-    <a href="${pageContext.request.contextPath}/AdminServlet" class="sidebar-brand">
+
+    <a href="${pageContext.request.contextPath}/AdminServlet?action=dashboard" 
+       class="sidebar-brand">
         <div class="sb-logo">A</div>
         <div>
             <div class="sb-brand-name">CLICKBUY</div>
@@ -13,15 +15,17 @@
     <ul class="sidebar-nav">
         <div class="nav-section">Tổng quan</div>
         <li class="nav-item">
-            <a href="${pageContext.request.contextPath}/AdminServlet"
-               class="nav-link ${empty param.action ? 'active' : ''}">
+            <%-- ✅ Qua AdminServlet → AdminFilter chạy → check role --%>
+            <a href="${pageContext.request.contextPath}/AdminServlet?action=dashboard" 
+               class="nav-link active">
                 <i class="fa-solid fa-chart-line"></i> Dashboard
             </a>
         </li>
 
         <div class="nav-section">Quản lý</div>
         <li class="nav-item">
-            <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+
+            <a href="${pageContext.request.contextPath}/sanpham?action=list"
                class="nav-link">
                 <i class="fa-solid fa-box"></i> Sản phẩm
             </a>
@@ -33,7 +37,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="${pageContext.request.contextPath}/NguoiDungServlet"
+            <a href="${pageContext.request.contextPath}/NguoiDungServlet?action=list" 
                class="nav-link">
                 <i class="fa-solid fa-users"></i> Tài khoản
             </a>
@@ -57,7 +61,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="${pageContext.request.contextPath}/LichSuHoatDongServlet?action=list"
+            <a href="${pageContext.request.contextPath}/LichSuHoatDongServlet?action=list" 
                class="nav-link">
                 <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử
             </a>

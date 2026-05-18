@@ -7,9 +7,9 @@
 
 <main class="container my-5">
     <c:choose>
+        <%-- TRƯỜNG HỢP CÓ SẢN PHẨM TRONG GIỎ --%>
         <c:when test="${not empty danhSachGioHang}">
-            <h3 class="fw-bold mb-4 text-uppercase border-start border-4 border-danger ps-3">GIỎ HÀNG CỦA BẠN</h3>
-            
+            <h3 class="fw-bold mb-4 uppercase">GIỎ HÀNG CỦA BẠN</h3>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="card p-3 mb-4 border-0 shadow-sm" style="border-radius: 15px;">
@@ -24,10 +24,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:set var="totalCartMoney" value="0" />
+                                <c:set var="tempTotal" value="0" />
                                 <c:forEach var="item" items="${danhSachGioHang}">
-                                    <c:set var="itemThanhTien" value="${item.giaBienThe * item.soLuong}" />
-                                    <c:set var="totalCartMoney" value="${totalCartMoney + itemThanhTien}" />
+                                    <c:set var="subTotal" value="${item.gia_ban * item.so_luong}" />
+                                    <c:set var="tempTotal" value="${tempTotal + subTotal}" />
                                     
                                     <tr>
                                         <td>

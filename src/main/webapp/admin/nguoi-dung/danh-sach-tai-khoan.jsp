@@ -2,6 +2,10 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%--  Thêm check role ở đầu trang  --%>
+<c:if test="${empty sessionScope.user || sessionScope.user.idVaiTro != 1}">
+    <c:redirect url="${pageContext.request.contextPath}/AuthServlet?action=logout"/>
+</c:if>
 <c:set var="pageTitle" value="Quản lý tài khoản"/>
 
 <!DOCTYPE html>
@@ -48,11 +52,10 @@
                         </thead>
                         <tbody>
                             <c:choose>
-                                <c:when test="${not empty listUser}">
+                                <c:when test="${not empty userList}">
                                     <c:forEach items="${userList}" var="u">
                                         <tr>
                                             <td>#${u.idNguoiDung}</td>
-                                            <%--  Sửa: tenDayDu thay vì hoTen --%>
                                             <td>${u.tenDayDu}</td>
                                             <td>${u.email}</td>
                                             <td>${u.sdt}</td>
@@ -76,29 +79,40 @@
                                             </td>
                                             <td>
                                                 <c:choose>
+
                                                     <c:when test="${u.trangThai == 1}">
-                                                        <span class="badge bg-success">Hoạt động</span>
+                                                        <form action="${pageContext.request.contextPath}/NguoiDungServlet"
+                                                              method="post"
+                                                              style="display:inline"
+                                                              onsubmit="return confirm('Khóa tài khoản ${u.tenDayDu}?')">
+
+                                                            <input type="hidden" name="action" value="lock">
+                                                            <input type="hidden" name="id" value="${u.idNguoiDung}">
+
+                                                            <button type="submit"
+                                                                    class="btn btn-sm btn-outline-danger">
+
+                                                                <i class="bi bi-lock-fill"></i> Khóa
+                                                            </button>
+                                                        </form>
                                                     </c:when>
+
                                                     <c:otherwise>
-                                                        <span class="badge bg-danger">Bị khóa</span>
+                                                        <form action="${pageContext.request.contextPath}/NguoiDungServlet"
+                                                              method="post"
+                                                              style="display:inline">
+
+                                                            <input type="hidden" name="action" value="unlock">
+                                                            <input type="hidden" name="id" value="${u.idNguoiDung}">
+
+                                                            <button type="submit"
+                                                                    class="btn btn-sm btn-outline-success">
+
+                                                                <i class="bi bi-unlock-fill"></i> Mở khóa
+                                                            </button>
+                                                        </form>
                                                     </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${u.trangThai == 1}">
-                                                        <a href="${pageContext.request.contextPath}/NguoiDungServlet?action=lock&id=${u.idNguoiDung}"
-                                                           class="btn btn-sm btn-outline-danger"
-                                                           onclick="return confirm('Khóa tài khoản này?')">
-                                                            <i class="bi bi-lock-fill"></i> Khóa
-                                                        </a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a href="${pageContext.request.contextPath}/NguoiDungServlet?action=unlock&id=${u.idNguoiDung}"
-                                                           class="btn btn-sm btn-outline-success">
-                                                            <i class="bi bi-unlock-fill"></i> Mở
-                                                        </a>
-                                                    </c:otherwise>
+
                                                 </c:choose>
                                             </td>
                                         </tr>

@@ -19,7 +19,7 @@
             <div class="stat-card">
                 <div class="stat-icon ic-blue"><i class="bi bi-box-seam-fill"></i></div>
                 <div>
-                    <div class="stat-val">${tongSanPham != null ? tongSanPham : 0}</div>
+                    <div class="stat-val">${totalProducts != null ? totalProducts : 0}</div>
                     <div class="stat-lbl">Tổng sản phẩm</div>
                 </div>
             </div>

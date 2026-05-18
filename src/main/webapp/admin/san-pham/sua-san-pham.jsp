@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body" style="padding:24px">
                     <%--  Sửa: action trỏ vào SanPhamServlet --%>
-                    <form action="${pageContext.request.contextPath}/SanPhamServlet"
+                    <form action="${pageContext.request.contextPath}/san-pham"
                           method="post">
                         <input type="hidden" name="action" value="update">
                         <input type="hidden" name="id_san_pham" value="${sanPham.idSanPham}">

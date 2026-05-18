@@ -42,32 +42,32 @@
               <%-- Thông tin sản phẩm đang chọn --%>
               <c:if test="${not empty sanPham}">
                 <div style="display:flex;gap:14px;align-items:center;padding:14px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:20px">
-                  <img src="${not empty sanPham.hinhAnh ? sanPham.hinhAnh : ''}"
+                  <img src="${not empty sanPham.urlAnh ? pageContext.request.contextPath.concat('/uploads/san-pham/').concat(sanPham.urlAnh): ''}"                    
                        style="width:58px;height:58px;object-fit:cover;border-radius:10px;border:1px solid var(--border);flex-shrink:0"
                        onerror="this.style.display='none'">
                   <div>
                     <div style="font-weight:700;font-size:14px">${sanPham.tenSanPham}</div>
                     <div style="color:var(--text-muted);font-size:12px;margin-top:2px">
-                      Mã: ${sanPham.maSanPham} &nbsp;|&nbsp; ${sanPham.tenDanhMuc}
+                      Mã: ${sanPham.idSanPham} &nbsp;|&nbsp; ${sanPham.nhaSanXuat}
                     </div>
                     <div style="margin-top:6px">
                       <span class="badge
-                        <c:choose>
-                          <c:when test="${sanPham.soLuongTon == 0}">badge-danger</c:when>
-                          <c:when test="${sanPham.soLuongTon <= 5}">badge-warning</c:when>
-                          <c:otherwise>badge-success</c:otherwise>
-                        </c:choose>">
-                        <i class="bi bi-box-seam"></i>
-                        Tồn kho hiện tại: ${sanPham.soLuongTon}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </c:if>
+                        
+                            <%-- ✅ Bỏ soLuongTon của SanPham Thông tin tồn kho từng biến thể hiển thị ở bảng bên dưới --%>
+            <div style="margin-top:6px">
+                <span class="badge ${sanPham.trangThai == 1
+                                    ? 'badge-success'
+                                    : 'badge-neutral'}">
+                    ${sanPham.trangThai == 1 ? 'Đang bán' : 'Tạm ngưng'}
+                </span>
+            </div>
+        </div>
+    </div>
+</c:if>
 
-              <form method="post" action="${pageContext.request.contextPath}/SanPhamServlet">
+              <form method="post" action="${pageContext.request.contextPath}/san-pham">
                 <input type="hidden" name="action"     value="capNhatTonKho">
-                <input type="hidden" name="maSanPham"  value="${sanPham.maSanPham}">
+                <input type="hidden" name="idSanPham"  value="${sanPham.idSanPham}">
 
                 <%-- Loại thao tác --%>
                 <div class="form-group">

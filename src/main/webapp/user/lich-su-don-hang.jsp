@@ -122,7 +122,7 @@
                     <tr>
                         <td colspan="5" class="text-center py-5">
                             <i class="bi bi-cart-x fs-1 text-muted d-block mb-3"></i>
-                            <h5 class="fw-bold text-muted">Bà chưa mua món nào hết hà!</h5>
+                            <h5 class="fw-bold text-muted">Bạn chưa có đơn hàng nào</h5>
                             <a href="${pageContext.request.contextPath}/TrangChuServlet" class="btn btn-danger px-5 mt-3 fw-bold py-2" style="border-radius: 10px;">
                                 MUA SẮM NGAY
                             </a>

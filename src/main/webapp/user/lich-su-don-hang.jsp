@@ -105,7 +105,15 @@
                                    class="btn btn-sm btn-outline-primary px-3 shadow-sm" style="border-radius: 8px;">
                                     <i class="bi bi-eye-fill"></i> Chi tiết
                                 </a>
+                                <c:if test="${order.trangThai == 'CHO_XAC_NHAN'}">
+                                    <a href="${pageContext.request.contextPath}/don-hang?action=cancel&id=${order.idDonHang}"
+                                        class="btn btn-sm btn-outline-danger px-3 shadow-sm"
+                                        style="border-radius: 8px;"
+                                        onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')">
 
+                                        <i class="bi bi-x-circle-fill"></i> Hủy đơn
+                                    </a>
+                                </c:if>
                                 <%-- NÚT ĐÁNH GIÁ (Chỉ hiện khi đã giao hàng) --%>
                                 <c:if test="${order.trangThai == 'DA_GIAO'}">
                                     <a href="user/them-danh-gia.jsp?idSanPham=${item.idSanPham}&idDonHang=${item.idDonHang}" 

@@ -7,7 +7,7 @@ import jakarta.servlet.http.*;
 import util.SessionUtil;
 import jakarta.servlet.annotation.WebServlet;
 
-@WebServlet("/ThongBaoServlet") 
+@WebServlet(urlPatterns = {"/ThongBaoServlet", "/thong-bao"}) 
 
 public class ThongBaoServlet extends HttpServlet {
     private final ThongBaoDAO dao = new ThongBaoDAO();

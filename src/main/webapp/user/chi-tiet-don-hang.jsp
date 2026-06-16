@@ -65,6 +65,12 @@
                                 <div class="text-danger fw-bold">
                                     <fmt:formatNumber value="${item.donGia}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                 </div>
+                                <c:if test="${order.trangThai == 'DA_GIAO' || order.trangThai == 'HOAN_THANH'}">
+                                    <a href="${pageContext.request.contextPath}/user/them-danh-gia.jsp?idDonHang=${order.idDonHang}&idBienThe=${item.idBienThe}"
+                                       class="btn btn-sm btn-outline-danger mt-2">
+                                        <i class="bi bi-star-fill"></i> Đánh giá
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </c:forEach>

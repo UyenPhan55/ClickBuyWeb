@@ -12,7 +12,7 @@ import java.util.List;
 import dao.SanPhamTrongGioDAO;
 import util.SessionUtil;
 
-@WebServlet(name = "SanPhamServlet", urlPatterns = {"/san-pham"})
+@WebServlet(name = "SanPhamServlet", urlPatterns = {"/san-pham", "/SanPhamServlet"})
 public class SanPhamServlet extends HttpServlet {
 
     private final SanPhamDAO spDAO = new SanPhamDAO();
@@ -47,6 +47,7 @@ public class SanPhamServlet extends HttpServlet {
 
                     req.getRequestDispatcher("/user/danh-sach-san-pham.jsp")
                     .forward(req, res);
+                    break;
 
                 // ===== USER — chi tiết sản phẩm =====
                 case "chi-tiet":
@@ -70,7 +71,7 @@ public class SanPhamServlet extends HttpServlet {
 
                 // ===== ADMIN — form thêm sản phẩm =====
                 case "add":
-                    req.getRequestDispatcher("/staff/san-pham/them-san-pham.jsp")
+                    req.getRequestDispatcher("/admin/san-pham/them-san-pham.jsp")
                        .forward(req, res);
                     break;
 
@@ -78,7 +79,7 @@ public class SanPhamServlet extends HttpServlet {
                 case "edit":
                     int idEdit = Integer.parseInt(req.getParameter("id"));
                     req.setAttribute("sanPham", spDAO.getSanPhamById(idEdit));
-                    req.getRequestDispatcher("/staff/san-pham/sua-san-pham.jsp")
+                    req.getRequestDispatcher("/admin/san-pham/sua-san-pham.jsp")
                        .forward(req, res);
                     break;
 
@@ -86,7 +87,7 @@ public class SanPhamServlet extends HttpServlet {
                 case "delete":
                     int idXoa = Integer.parseInt(req.getParameter("id"));
                     spDAO.deleteSanPham(idXoa);
-                    res.sendRedirect(req.getContextPath() + "/SanPhamServlet?action=list");
+                    res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
                     break;
 
                 // ===== USER — tìm kiếm =====
@@ -132,7 +133,7 @@ public class SanPhamServlet extends HttpServlet {
                     spAdd.setGiaCoBan(Double.parseDouble(req.getParameter("gia_co_ban")));
                     spAdd.setTrangThai(Integer.parseInt(req.getParameter("trang_thai")));
                     spDAO.addSanPham(spAdd);
-                    res.sendRedirect(req.getContextPath() + "/SanPhamServlet?action=list");
+                    res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
                     break;
 
                 // ===== ADMIN — sửa sản phẩm =====
@@ -146,7 +147,7 @@ public class SanPhamServlet extends HttpServlet {
                     spSua.setGiaCoBan(Double.parseDouble(req.getParameter("gia_co_ban")));
                     spSua.setTrangThai(Integer.parseInt(req.getParameter("trang_thai")));
                     spDAO.updateSanPham(spSua);
-                    res.sendRedirect(req.getContextPath() + "/SanPhamServlet?action=list");
+                    res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
                     break;
 
                 default:

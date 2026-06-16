@@ -82,7 +82,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title"><i class="bi bi-cart3"></i> Đơn hàng gần đây</div>
-                            <a href="${pageContext.request.contextPath}/staff/don-hang/danh-sach-don-hang.jsp"
+                            <a href="${pageContext.request.contextPath}/DonHangServlet?action=staff-list"
                                class="btn btn-outline btn-sm">Xem tất cả <i class="bi bi-arrow-right"></i></a>
                         </div>
                         <div class="card-body p0">
@@ -99,26 +99,26 @@
                                             <c:when test="${not empty danhSachDonHang}">
                                                 <c:forEach var="dh" items="${danhSachDonHang}" begin="0" end="4">
                                                     <tr>
-                                                        <td><strong>#${dh.maDonHang}</strong></td>
-                                                        <td>${dh.tenKhachHang}</td>
+                                                        <td><strong>#${dh.idDonHang}</strong></td>
+                                                        <td>${dh.tenNguoiDung}</td>
                                                         <td><fmt:formatDate value="${dh.ngayDat}" pattern="dd/MM/yyyy"/></td>
                                                         <td style="font-weight:700">
-                                                            <fmt:formatNumber value="${dh.tongTien}" pattern="#,###"/>₫
+                                                            <fmt:formatNumber value="${dh.tongThanhToan}" pattern="#,###"/>₫
                                                         </td>
                                                         <td>
                                                             <span class="badge
                                                                 <c:choose>
-                                                                    <c:when test="${dh.trangThai == 'cho_xac_nhan'}">badge-warning</c:when>
-                                                                    <c:when test="${dh.trangThai == 'dang_giao'}">badge-info</c:when>
-                                                                    <c:when test="${dh.trangThai == 'da_giao'}">badge-success</c:when>
-                                                                    <c:when test="${dh.trangThai == 'da_huy'}">badge-danger</c:when>
+                                                                    <c:when test="${dh.trangThai == 'CHO_XAC_NHAN'}">badge-warning</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DANG_GIAO'}">badge-info</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DA_GIAO' || dh.trangThai == 'HOAN_THANH'}">badge-success</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DA_HUY'}">badge-danger</c:when>
                                                                     <c:otherwise>badge-neutral</c:otherwise>
                                                                 </c:choose>">
                                                                 <c:choose>
-                                                                    <c:when test="${dh.trangThai == 'cho_xac_nhan'}">Chờ xác nhận</c:when>
-                                                                    <c:when test="${dh.trangThai == 'dang_giao'}">Đang giao</c:when>
-                                                                    <c:when test="${dh.trangThai == 'da_giao'}">Đã giao</c:when>
-                                                                    <c:when test="${dh.trangThai == 'da_huy'}">Đã hủy</c:when>
+                                                                    <c:when test="${dh.trangThai == 'CHO_XAC_NHAN'}">Chờ xác nhận</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DANG_GIAO'}">Đang giao</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DA_GIAO' || dh.trangThai == 'HOAN_THANH'}">Đã giao</c:when>
+                                                                    <c:when test="${dh.trangThai == 'DA_HUY'}">Đã hủy</c:when>
                                                                     <c:otherwise>${dh.trangThai}</c:otherwise>
                                                                 </c:choose>
                                                             </span>
@@ -148,7 +148,7 @@
                             <div class="card-title"><i class="bi bi-lightning-charge-fill"></i> Việc cần làm</div>
                         </div>
                         <div class="card-body" style="padding:12px;display:flex;flex-direction:column;gap:10px;">
-                            <a href="${pageContext.request.contextPath}/staff/khieu-nai/danh-sach-khieu-nai.jsp" style="text-decoration:none">
+                            <a href="${pageContext.request.contextPath}/KhieuNaiServlet?action=staff-list" style="text-decoration:none">
                                 <div class="stat-card" style="padding:13px">
                                     <div class="stat-icon ic-red" style="width:40px;height:40px;border-radius:10px;font-size:17px">
                                         <i class="bi bi-chat-left-text-fill"></i>
@@ -160,7 +160,7 @@
                                     <i class="bi bi-chevron-right" style="color:var(--text-muted)"></i>
                                 </div>
                             </a>
-                            <a href="${pageContext.request.contextPath}/staff/bao-hanh/danh-sach-bao-hanh.jsp" style="text-decoration:none">
+                            <a href="${pageContext.request.contextPath}/BaoHanhServlet?action=list" style="text-decoration:none">
                                 <div class="stat-card" style="padding:13px">
                                     <div class="stat-icon ic-yellow" style="width:40px;height:40px;border-radius:10px;font-size:17px">
                                         <i class="bi bi-shield-exclamation"></i>
@@ -172,7 +172,7 @@
                                     <i class="bi bi-chevron-right" style="color:var(--text-muted)"></i>
                                 </div>
                             </a>
-                            <a href="${pageContext.request.contextPath}/staff/don-hang/danh-sach-don-hang.jsp" style="text-decoration:none">
+                            <a href="${pageContext.request.contextPath}/DonHangServlet?action=staff-list" style="text-decoration:none">
                                 <div class="stat-card" style="padding:13px">
                                     <div class="stat-icon ic-blue" style="width:40px;height:40px;border-radius:10px;font-size:17px">
                                         <i class="bi bi-hourglass-split"></i>

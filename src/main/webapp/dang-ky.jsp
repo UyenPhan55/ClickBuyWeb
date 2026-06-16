@@ -26,7 +26,7 @@
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="mb-3">
-                    <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="back-to-home">
+                    <a href="${pageContext.request.contextPath}/TrangChuServlet" class="back-to-home">
                         <i class="bi bi-arrow-left"></i> Quay về trang chủ
                     </a>
                 </div>

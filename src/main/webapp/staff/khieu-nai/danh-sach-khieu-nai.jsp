@@ -48,11 +48,11 @@
                         </thead>
                         <tbody>
                             <c:choose>
-                                <c:when test="${not empty complaints}">
-                                    <c:forEach var="kn" items="${complaints}">
+                                <c:when test="${not empty danhSachKhieuNai}">
+                                    <c:forEach var="kn" items="${danhSachKhieuNai}">
                                         <tr>
                                             <td>#${kn.idKhieuNai}</td>
-                                            <td>${kn.tenKhachHang}</td>
+                                            <td>${kn.tenNguoiDung}</td>
                                             <td>#CB${kn.idDonHang}</td>
                                             <td style="max-width:200px;overflow:hidden;
                                                         text-overflow:ellipsis;white-space:nowrap">

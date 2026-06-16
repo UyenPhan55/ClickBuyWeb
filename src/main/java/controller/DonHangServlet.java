@@ -1,5 +1,6 @@
 package controller;
 
+import model.DonHang;
 import dao.DonHangDAO;
 import dao.SanPhamTrongGioDAO;
 import java.io.IOException;
@@ -35,11 +36,14 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
                     break;
                 case "detail":
                     int idDetail = Integer.parseInt(request.getParameter("id"));
+                    DonHang donHang;
                     if (SessionUtil.isStaffOrAdmin(request)) {
-                        request.setAttribute("donHang", donHangDAO.getOrderById(idDetail));
+                        donHang = donHangDAO.getOrderById(idDetail);
                     } else {
-                        request.setAttribute("donHang", donHangDAO.getOrderByIdAndUser(idDetail, idNguoiDung));
+                        donHang = donHangDAO.getOrderByIdAndUser(idDetail, idNguoiDung);
                     }
+                    request.setAttribute("donHang", donHang);
+                    request.setAttribute("order", donHang);
                     request.setAttribute("chiTietDonHang", donHangDAO.getOrderItems(idDetail));
                     request.getRequestDispatcher(SessionUtil.isStaffOrAdmin(request) ? "/staff/don-hang/chi-tiet-don-hang.jsp" : "/user/chi-tiet-don-hang.jsp").forward(request, response);
                     break;

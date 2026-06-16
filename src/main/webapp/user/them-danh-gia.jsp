@@ -4,8 +4,6 @@
 <jsp:include page="../common/header.jsp" />
 <jsp:include page="../common/navbar-user.jsp" />
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <style>
     .eval-container {
         max-width: 600px;
@@ -18,13 +16,14 @@
     .eval-header { text-align: center; margin-bottom: 30px; }
     .star-rating {
         font-size: 2.8rem;
-        color: #ffc107;
+        color: #ccc;
         cursor: pointer;
         margin-bottom: 25px;
         display: flex;
         justify-content: center;
         gap: 15px;
     }
+    .star-rating .active { color: #ffc107; }
     .btn-submit-eval {
         background-color: #d70018;
         color: #fff;
@@ -42,56 +41,62 @@
     <div class="eval-container">
         <div class="eval-header">
             <h3 class="fw-bold text-danger text-uppercase mb-2">Đánh giá sản phẩm</h3>
-            <p class="text-muted mt-3">Bạn cảm thấy sản phẩm thế nào?</p>
+            <p class="text-muted mt-3">Đơn hàng #${param.idDonHang}</p>
         </div>
 
-        <form id="simpleForm">
-            <div class="star-rating" id="starContainer">
-                <i class="bi bi-star-fill" data-value="1"></i>
-                <i class="bi bi-star-fill" data-value="2"></i>
-                <i class="bi bi-star-fill" data-value="3"></i>
-                <i class="bi bi-star-fill" data-value="4"></i>
-                <i class="bi bi-star-fill" data-value="5"></i>
-            </div>
+        <c:if test="${empty sessionScope.user}">
+            <div class="alert alert-warning">Vui lòng <a href="${pageContext.request.contextPath}/dang-nhap.jsp">đăng nhập</a> để đánh giá.</div>
+        </c:if>
 
-            <div class="mb-4 text-start">
-                <label class="form-label fw-bold small text-uppercase text-secondary">Cảm nhận</label>
-                <textarea class="form-control shadow-none" rows="4" 
-                          placeholder="Viết đánh giá..." 
-                          style="border-radius: 10px; border: 1px solid #ddd;"></textarea>
-            </div>
+        <c:if test="${not empty sessionScope.user}">
+            <form action="${pageContext.request.contextPath}/danh-gia" method="post">
+                <input type="hidden" name="action" value="add">
+                <input type="hidden" name="idDonHang" value="${param.idDonHang}">
+                <input type="hidden" name="idBienThe" value="${param.idBienThe}">
+                <input type="hidden" name="soSao" id="soSao" value="5">
 
-            <button type="button" onclick="showSimpleToast()" class="btn btn-submit-eval shadow-sm">
-                GỬI ĐÁNH GIÁ
-            </button>
-        </form>
+                <div class="star-rating" id="starContainer">
+                    <i class="bi bi-star-fill active" data-value="1"></i>
+                    <i class="bi bi-star-fill active" data-value="2"></i>
+                    <i class="bi bi-star-fill active" data-value="3"></i>
+                    <i class="bi bi-star-fill active" data-value="4"></i>
+                    <i class="bi bi-star-fill active" data-value="5"></i>
+                </div>
+
+                <div class="mb-4 text-start">
+                    <label class="form-label fw-bold small text-uppercase text-secondary">Cảm nhận</label>
+                    <textarea name="noiDung" class="form-control shadow-none" rows="4"
+                              placeholder="Viết đánh giá..."
+                              style="border-radius: 10px; border: 1px solid #ddd;" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-submit-eval shadow-sm">
+                    GỬI ĐÁNH GIÁ
+                </button>
+            </form>
+        </c:if>
     </div>
 </main>
 
 <script>
     const stars = document.querySelectorAll('#starContainer i');
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const val = parseInt(this.getAttribute('data-value'));
-            stars.forEach(s => {
-                s.style.color = (parseInt(s.getAttribute('data-value')) <= val) ? '#ffc107' : '#ccc';
-            });
-        });
-    });
+    const soSaoInput = document.getElementById('soSao');
+    let selected = 5;
 
-    function showSimpleToast() {
-        Swal.fire({
-            toast: true,
-            position: 'bottom-end', // Góc dưới bên phải
-            icon: 'success',
-            title: 'Đã gửi đánh giá',
-            showConfirmButton: false,
-            timer: 2000, // Hiện 2 giây thôi cho nhanh
-            timerProgressBar: false, // Bỏ thanh chạy
-            showClass: { popup: 'animate__animated animate__fadeInUp' }, // Hiệu ứng hiện lên nhẹ nhàng
-            hideClass: { popup: 'animate__animated animate__fadeOutDown' } // Hiệu ứng biến mất nhẹ nhàng
+    function paintStars(val) {
+        stars.forEach(s => {
+            const v = parseInt(s.getAttribute('data-value'));
+            s.classList.toggle('active', v <= val);
         });
     }
+
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            selected = parseInt(this.getAttribute('data-value'));
+            soSaoInput.value = selected;
+            paintStars(selected);
+        });
+    });
 </script>
 
 <jsp:include page="../common/footer.jsp" />

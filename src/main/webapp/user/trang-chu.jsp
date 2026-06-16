@@ -23,7 +23,14 @@
             transform: translateY(-10px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
         }
-        .product-link { text-decoration: none; color: inherit; }
+        /* Sửa lỗi lệch chữ: Thêm hiển thị flex để thẻ <a> chiếm toàn bộ chiều rộng card */
+        .product-link { 
+            text-decoration: none; 
+            color: inherit; 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; 
+        }
         .btn-buy { background-color: #d70018; color: white; transition: 0.2s; border: none; }
         .btn-buy:hover { background-color: #b50014; color: white; }
         .pagination .page-link { color: #d70018; border-radius: 5px; margin: 0 3px; }
@@ -53,24 +60,28 @@
         
         <div class="row">
             <c:forEach var="p" items="${latestProducts}">
-                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                    <div class="card p-3 border-0 shadow-sm h-100 product-card">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card p-3 border-0 shadow-sm h-100 product-card d-flex flex-column">
                         <%-- Link chi tiết --%>
                         <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}" class="product-link">
-                            <img src="${pageContext.request.contextPath}/assets/images/${not empty p.urlAnh ? p.urlAnh : 'no-image.png'}" 
-                                 class="card-img-top img-fluid mb-3" 
-                                 style="height: 220px; object-fit: contain;" 
-                                 alt="${p.tenSanPham}">
                             
-                            <div class="card-body p-0 d-flex flex-column text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3" style="height: 160px; width: 100%;">
+                                <img src="${pageContext.request.contextPath}/${not empty p.urlAnh ? p.urlAnh : 'assets/images/no-image.png'}" 
+                                     class="img-fluid" 
+                                     style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                                     alt="${p.tenSanPham}">
+                            </div>
+                            
+                            <div class="card-body p-0 d-flex flex-column text-center flex-grow-1">
                                 <h6 class="card-title fw-bold text-dark mb-2" 
                                     style="height: 45px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                                     ${p.tenSanPham}
                                 </h6>
-                                <p class="text-danger fw-bold fs-5 mb-0">
+                                <p class="text-danger fw-bold fs-5 mb-0 mt-auto">
                                     <fmt:formatNumber value="${p.giaCoBan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                 </p>
                             </div>
+
                         </a>
                         
                         <div class="d-grid gap-2 mt-3">

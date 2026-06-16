@@ -115,10 +115,11 @@
                                     </a>
                                 </c:if>
                                 <%-- NÚT ĐÁNH GIÁ (Chỉ hiện khi đã giao hàng) --%>
-                                <c:if test="${order.trangThai == 'DA_GIAO'}">
-                                    <a href="user/them-danh-gia.jsp?idSanPham=${item.idSanPham}&idDonHang=${item.idDonHang}" 
-                                        class="btn btn-danger">
-                                        Đánh giá
+                                <c:if test="${order.trangThai == 'DA_GIAO' || order.trangThai == 'HOAN_THANH'}">
+                                    <a href="${pageContext.request.contextPath}/don-hang?action=detail&id=${order.idDonHang}"
+                                        class="btn btn-sm btn-danger px-3 shadow-sm"
+                                        style="border-radius: 8px;">
+                                        <i class="bi bi-star-fill"></i> Đánh giá
                                     </a>
                                 </c:if>
                             </div>

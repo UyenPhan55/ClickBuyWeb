@@ -21,7 +21,7 @@
 
         <%-- SẢN PHẨM — trỏ vào SanPhamServlet --%>
         <li>
-            <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
+            <a href="${pageContext.request.contextPath}/san-pham?action=list"
                class="${param.action=='list' ? 'active' : ''}">
                 <i class="bi bi-phone"></i> Sản phẩm
             </a>

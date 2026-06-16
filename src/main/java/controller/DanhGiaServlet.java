@@ -29,7 +29,7 @@ public class DanhGiaServlet extends HttpServlet {
                 request.getRequestDispatcher("/staff/danh-gia/quan-ly-danh-gia.jsp").forward(request, response);
                 return;
             }
-            response.sendRedirect(request.getContextPath() + "/trang-chu");
+            response.sendRedirect(request.getContextPath() + "/TrangChuServlet");
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/loi.jsp").forward(request, response);
@@ -83,7 +83,7 @@ public class DanhGiaServlet extends HttpServlet {
                 return;
             }
 
-            response.sendRedirect(request.getContextPath() + "/trang-chu");
+            response.sendRedirect(request.getContextPath() + "/TrangChuServlet");
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/loi.jsp").forward(request, response);

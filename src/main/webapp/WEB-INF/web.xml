@@ -5,15 +5,6 @@
          https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
     
-    <servlet>
-        <servlet-name>SanPhamServlet</servlet-name>
-        <servlet-class>controller.SanPhamServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SanPhamServlet</servlet-name>
-        <url-pattern>/SanPhamServlet</url-pattern>
-    </servlet-mapping>
-    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

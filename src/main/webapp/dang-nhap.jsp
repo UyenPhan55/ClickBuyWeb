@@ -46,7 +46,7 @@
             <div class="col-md-4 col-sm-8">
                 
                 <div class="mb-3">
-                    <a href="${pageContext.request.contextPath}/user/trang-chu.jsp" class="back-to-home">
+                    <a href="${pageContext.request.contextPath}/TrangChuServlet" class="back-to-home">
                         <i class="bi bi-arrow-left"></i> Quay về trang chủ
                     </a>
                 </div>

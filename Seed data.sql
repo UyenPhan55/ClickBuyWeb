@@ -1,4 +1,4 @@
-san_phamCREATE DATABASE IF NOT EXISTS clickbuy
+CREATE DATABASE IF NOT EXISTS clickbuy
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 

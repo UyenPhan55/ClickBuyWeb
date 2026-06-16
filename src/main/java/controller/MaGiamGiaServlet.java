@@ -32,11 +32,9 @@ public class MaGiamGiaServlet extends HttpServlet {
                 case "list":
                     // Lấy danh sách mã giảm giá từ Database thông qua DAO
                     List<MaGiamGia> list = mggDAO.getAll();
-                    request.setAttribute("listMGG", list);
+                    request.setAttribute("danhSachMaGiamGia", list);
 
-                    // Chuyển dữ liệu sang trang JSP để hiển thị
-                    // Lưu ý: Đổi lại đường dẫn "/admin/ma-giam-gia.jsp" cho khớp với thư mục thật của nhóm bạn nhé
-                    request.getRequestDispatcher("/admin/ma-giam-gia.jsp")
+                    request.getRequestDispatcher("/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                            .forward(request, response);
                     break;
 
@@ -59,7 +57,7 @@ public class MaGiamGiaServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
-            request.getRequestDispatcher("/admin/ma-giam-gia.jsp")
+            request.getRequestDispatcher("/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                    .forward(request, response);
         }
     }
@@ -81,12 +79,10 @@ public class MaGiamGiaServlet extends HttpServlet {
             session.setAttribute("discount", mgg);
 
             // Áp mã thành công thì quay lại giỏ hàng
-            response.sendRedirect(request.getContextPath() + "/GioHangServlet?status=success");
+            response.sendRedirect(request.getContextPath() + "/gio-hang?action=view&status=success");
         } else {
             session.setAttribute("voucherMsg", "Mã giảm giá không hợp lệ!");
-
-            // Áp mã thất bại thì quay lại giỏ hàng và báo lỗi
-            response.sendRedirect(request.getContextPath() + "/GioHangServlet?status=invalid");
+            response.sendRedirect(request.getContextPath() + "/gio-hang?action=view&status=invalid");
         }
     }
 }

@@ -198,15 +198,15 @@
                         </div>
                         <div class="card-body">
                             <%--  Sửa: method GET thay POST --%>
-                            <form method="get"
+                            <form method="post"
                                   action="${pageContext.request.contextPath}/DonHangServlet"
                                   class="d-flex gap-2 align-items-end flex-wrap">
                                 <input type="hidden" name="action" value="updateStatus">
-                                <input type="hidden" name="id" value="${donHang.idDonHang}">
+                                <input type="hidden" name="idDonHang" value="${donHang.idDonHang}">
 
                                 <div style="flex:1;min-width:200px">
                                     <label class="form-label">Trạng thái mới</label>
-                                    <select name="status" class="form-select" required>
+                                    <select name="trangThai" class="form-select" required>
                                         <option value="CHO_XAC_NHAN"
                                             ${donHang.trangThai=='CHO_XAC_NHAN'?'selected':''}>
                                             Chờ xác nhận

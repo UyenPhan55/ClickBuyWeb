@@ -78,7 +78,7 @@ public class SanPhamDAO {
 
     // 3. THÊM SẢN PHẨM MỚI (Thêm cột so_luong_ton vào câu INSERT)
     public boolean addSanPham(SanPham sp) {
-        String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai, so_luong_ton) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sp.getTenSanPham());
@@ -96,7 +96,7 @@ public class SanPhamDAO {
 
     // 4. CẬP NHẬT SẢN PHẨM (Thêm so_luong_ton=? vào câu UPDATE)
     public boolean updateSanPham(SanPham sp) {
-        String sql = "UPDATE san_pham SET ten_san_pham=?, mo_ta=?, url_anh=?, nha_san_xuat=?, gia_co_ban=?, trang_thai=?, so_luong_ton=? WHERE id_san_pham=?";
+        String sql = "UPDATE san_pham SET ten_san_pham=?, mo_ta=?, url_anh=?, nha_san_xuat=?, gia_co_ban=?, trang_thai=? WHERE id_san_pham=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sp.getTenSanPham());
@@ -105,7 +105,7 @@ public class SanPhamDAO {
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
-            ps.setInt(8, sp.getIdSanPham());
+            ps.setInt(7, sp.getIdSanPham());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

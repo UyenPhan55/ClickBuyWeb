@@ -80,6 +80,16 @@
                             <span>Giảm giá (${sessionScope.discount.maCode}):</span>
                             <span>-<fmt:formatNumber value="${discountAmount}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
                         </div>
+
+                        <%--  THÊM: ghi chú mức giảm tối đa để khách hiểu vì sao số tiền giảm bị giới hạn --%>
+                        <c:if test="${sessionScope.discount.loaiGiam eq 'PHAN_TRAM' && sessionScope.discount.giamToiDa > 0}">
+                            <div class="text-muted mb-2" style="font-size: 12px; margin-top: -6px;">
+                                <i class="bi bi-info-circle"></i>
+                                Mã giảm ${sessionScope.discount.giaTriGiam}%, tối đa
+                                <fmt:formatNumber value="${sessionScope.discount.giamToiDa}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                                /đơn
+                            </div>
+                        </c:if>
                     </c:if>
                     
                     <div class="d-flex justify-content-between mb-3">
@@ -98,7 +108,13 @@
                                     <option value="${v.maCode}" ${sessionScope.discount.maCode == v.maCode ? 'selected' : ''}>
                                         ${v.maCode} - Giảm 
                                         <c:choose>
-                                            <c:when test="${v.loaiGiam eq 'PHAN_TRAM'}">${v.giaTriGiam}%</c:when>
+                                            <c:when test="${v.loaiGiam eq 'PHAN_TRAM'}">
+                                                ${v.giaTriGiam}%
+                                                <%--  THÊM: hiện mức giảm tối đa ngay trong option để khách thấy trước khi chọn --%>
+                                                <c:if test="${v.giamToiDa > 0}">
+                                                    (tối đa <fmt:formatNumber value="${v.giamToiDa}" pattern="#,###"/>đ)
+                                                </c:if>
+                                            </c:when>
                                             <c:otherwise><fmt:formatNumber value="${v.giaTriGiam}" />đ</c:otherwise>
                                         </c:choose>
                                     </option>

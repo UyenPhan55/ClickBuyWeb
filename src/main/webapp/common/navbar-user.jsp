@@ -76,37 +76,33 @@
                     </a>
                 </li>
 
-                <%-- GIỎ HÀNG: Đã thêm ID để nhảy số --%>
+                <%-- GIỎ HÀNG: Luôn giữ lại tag HTML để JavaScript có thể tìm thấy và update số lượng --%>
                 <li class="nav-item me-3">
                     <a class="nav-link position-relative d-inline-block p-2" 
                        href="${pageContext.request.contextPath}/GioHangServlet?action=view">
                         <i class="bi bi-cart3 fs-5"></i>
-
-                        <c:if test="${not empty soLuongGio && soLuongGio> 0}">
-                            <span id="cart-badge" 
-                                  class="position-absolute translate-middle badge bg-danger cart-badge">
-                                ${soLuongGio}
-                            </span>c
-                        </c:if>
+                        
+                        <span id="cart-badge" 
+                              class="position-absolute translate-middle badge bg-danger cart-badge ${empty soLuongGio || soLuongGio == 0 ? 'd-none' : ''}">
+                            ${not empty soLuongGio ? soLuongGio : 0}
+                        </span>
                     </a>
                 </li>
+                
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
 
-                        <%-- ✅ Nút shortcut về trang quản trị theo role --%>
+                        <%-- ✅ Đã sửa lỗi xuống dòng gây lỗi 404 link Admin --%>
                         <c:if test="${sessionScope.user.idVaiTro == 1}">
                             <li class="nav-item me-2">
-                                <a class="btn btn-sm btn-outline-warning fw-bold"
-                                   href="${pageContext.request.contextPath}
-                                   /AdminServlet?action=dashboard">
+                                <a class="btn btn-sm btn-outline-warning fw-bold" href="${pageContext.request.contextPath}/AdminServlet?action=dashboard">
                                     ⚙️ Admin
                                 </a>
                             </li>
                         </c:if>
                         <c:if test="${sessionScope.user.idVaiTro == 2}">
                             <li class="nav-item me-2">
-                                <a class="btn btn-sm btn-outline-info fw-bold"
-                                   href="${pageContext.request.contextPath}/StaffServlet?action=dashboard">
+                                <a class="btn btn-sm btn-outline-info fw-bold" href="${pageContext.request.contextPath}/StaffServlet?action=dashboard">
                                     🛠️ Staff
                                 </a>
                             </li>
@@ -115,8 +111,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="nav-item">
-                            <a class="btn btn-outline-danger btn-sm fw-bold px-3"
-                               href="${pageContext.request.contextPath}/dang-nhap.jsp">
+                            <a class="btn btn-outline-danger btn-sm fw-bold px-3" href="${pageContext.request.contextPath}/dang-nhap.jsp">
                                 Đăng nhập
                             </a>
                         </li>
@@ -132,8 +127,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-outline-light btn-sm rounded-pill px-3" 
-                               href="${pageContext.request.contextPath}/AuthServlet?action=logout">
+                            <a class="btn btn-outline-light btn-sm rounded-pill px-3" href="${pageContext.request.contextPath}/AuthServlet?action=logout">
                                 Đăng xuất
                             </a>
                         </li>
@@ -156,7 +150,8 @@
                 if (href) {
                     if (path.includes("san-pham") && search.includes("action=danh-sach") && href.includes("action=danh-sach")) {
                         item.classList.add('active-custom');
-                    } else if (path.includes("KhieuNaiServlet") && href.includes("KhieuNaiServlet")) {
+                    } else if (path.includes("khieu-nai") && href.includes("khieu-nai")) { 
+                        // Đã sửa từ KhieuNaiServlet thành khieu-nai khớp với href
                         item.classList.add('active-custom');
                     } else if (path.includes("BaoHanhServlet") && href.includes("BaoHanhServlet")) {
                         item.classList.add('active-custom');

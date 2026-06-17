@@ -24,10 +24,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <%-- ĐÃ SỬA: Tạo biến tạm để cộng dồn tổng tiền giỏ hàng --%>
                                 <c:set var="tempTotal" value="0" />
+                                
                                 <c:forEach var="item" items="${danhSachGioHang}">
-                                    <c:set var="subTotal" value="${item.gia_ban * item.so_luong}" />
-                                    <c:set var="tempTotal" value="${tempTotal + subTotal}" />
+                                    <%-- ĐÃ SỬA: Lấy hàm getThanhTien() từ Model và cộng dồn vào tổng --%>
+                                    <c:set var="tempTotal" value="${tempTotal + item.thanhTien}" />
                                     
                                     <tr>
                                         <td>
@@ -44,7 +46,6 @@
                                             <fmt:formatNumber value="${item.giaBienThe}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                         </td>
                                         <td>
-                                          
                                             <form action="${pageContext.request.contextPath}/GioHangServlet" method="post">
                                                 <input type="hidden" name="action" value="update">
                                                 <input type="hidden" name="idBienThe" value="${item.idBienThe}">
@@ -53,8 +54,9 @@
                                                        onchange="this.form.submit()">
                                             </form>
                                         </td>
+                                        <%-- ĐÃ SỬA: Sửa lại cú pháp gọi thành tiền từng món (${item.thanhTien}) --%>
                                         <td class="text-center text-danger fw-bold">
-                                            <fmt:formatNumber value="${itemThanhTien}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                                            <fmt:formatNumber value="${item.thanhTien}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                                         </td>
                                         <td class="text-end">
                                             <a href="${pageContext.request.contextPath}/GioHangServlet?action=remove&idBienThe=${item.idBienThe}" 
@@ -74,11 +76,12 @@
                         <h5 class="fw-bold mb-3">TỔNG CỘNG</h5>
                         <div class="d-flex justify-content-between mb-4">
                             <span>Tạm tính:</span>
+                            <%-- ĐÃ SỬA: Thay thế biến lỗi bằng biến tính tổng tempTotal ở vòng lặp trên --%>
                             <span class="fs-4 fw-bold text-danger">
-                                <fmt:formatNumber value="${totalCartMoney}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                                <fmt:formatNumber value="${tempTotal}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
                             </span>
                         </div>
-                       
+                        
                         <a href="${pageContext.request.contextPath}/DonHangServlet?action=checkout" 
                            class="btn btn-danger btn-lg w-100 fw-bold py-3 shadow">
                             TIẾN HÀNH THANH TOÁN

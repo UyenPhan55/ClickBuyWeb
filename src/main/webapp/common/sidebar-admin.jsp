@@ -15,7 +15,7 @@
     <ul class="sidebar-nav">
         <div class="nav-section">Tổng quan</div>
         <li class="nav-item">
-            <%-- ✅ Qua AdminServlet → AdminFilter chạy → check role --%>
+            <%--  Qua AdminServlet → AdminFilter chạy → check role --%>
             <a href="${pageContext.request.contextPath}/AdminServlet?action=dashboard" 
                class="nav-link active">
                 <i class="fa-solid fa-chart-line"></i> Dashboard
@@ -25,7 +25,7 @@
         <div class="nav-section">Quản lý</div>
         <li class="nav-item">
 
-            <a href="${pageContext.request.contextPath}/sanpham?action=list"
+            <a href="${pageContext.request.contextPath}/san-pham?action=list"
                class="nav-link">
                 <i class="fa-solid fa-box"></i> Sản phẩm
             </a>

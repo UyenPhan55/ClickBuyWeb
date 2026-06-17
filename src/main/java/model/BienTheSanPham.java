@@ -1,16 +1,18 @@
 package model;
 
+import java.math.BigDecimal; // Thêm import này
+
 public class BienTheSanPham {
     private int idBienThe;
     private int idSanPham;
     private String tenBienThe;
-    private double giaBienThe;
+    private BigDecimal giaBienThe; // Đã sửa từ double sang BigDecimal
     private int soLuongTon;
 
     public BienTheSanPham() {
     }
 
-    public BienTheSanPham(int idBienThe, int idSanPham, String tenBienThe, double giaBienThe, int soLuongTon) {
+    public BienTheSanPham(int idBienThe, int idSanPham, String tenBienThe, BigDecimal giaBienThe, int soLuongTon) {
         this.idBienThe = idBienThe;
         this.idSanPham = idSanPham;
         this.tenBienThe = tenBienThe;
@@ -27,8 +29,8 @@ public class BienTheSanPham {
     public String getTenBienThe() { return tenBienThe; }
     public void setTenBienThe(String tenBienThe) { this.tenBienThe = tenBienThe; }
 
-    public double getGiaBienThe() { return giaBienThe; }
-    public void setGiaBienThe(double giaBienThe) { this.giaBienThe = giaBienThe; }
+    public BigDecimal getGiaBienThe() { return giaBienThe; }
+    public void setGiaBienThe(BigDecimal giaBienThe) { this.giaBienThe = giaBienThe; }
 
     public int getSoLuongTon() { return soLuongTon; }
     public void setSoLuongTon(int soLuongTon) { this.soLuongTon = soLuongTon; }

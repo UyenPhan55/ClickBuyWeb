@@ -7,6 +7,7 @@ import model.SanPhamTrongGio;
 public class SanPhamTrongGioDAO {
     private final GioHangDAO gioHangDAO = new GioHangDAO();
 
+    // Lấy danh sách sản phẩm trong giỏ theo ID người dùng (Đã JOIN đầy đủ thông tin hiển thị)
     public List<SanPhamTrongGio> getItemsByUserId(int idNguoiDung) throws SQLException {
         String sql = "SELECT ct.*, sp.ten_san_pham, sp.url_anh, bt.ten_bien_the, bt.gia_bien_the, bt.so_luong_ton " +
                      "FROM gio_hang gh " +
@@ -18,12 +19,15 @@ public class SanPhamTrongGioDAO {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idNguoiDung);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(map(rs));
+                while (rs.next()) {
+                    list.add(map(rs));
+                }
             }
         }
         return list;
     }
 
+    // Thêm sản phẩm vào giỏ hàng (Có kiểm tra tồn kho chống mua quá số lượng)
     public boolean addItem(int idNguoiDung, int idBienThe, int soLuong) throws SQLException {
         if (soLuong <= 0) throw new SQLException("Số lượng phải lớn hơn 0");
         try (Connection conn = DBConnection.getConnection()) {
@@ -32,6 +36,7 @@ public class SanPhamTrongGioDAO {
                 int idGioHang = gioHangDAO.getOrCreateCartId(conn, idNguoiDung);
                 int tonKho = getStockForUpdate(conn, idBienThe);
                 int soLuongHienTai = getCurrentQuantity(conn, idGioHang, idBienThe);
+                
                 if (soLuongHienTai + soLuong > tonKho) {
                     throw new SQLException("Số lượng trong giỏ vượt quá tồn kho");
                 }
@@ -55,6 +60,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Cập nhật số lượng sản phẩm trực tiếp tại trang giỏ hàng
     public boolean updateQuantity(int idNguoiDung, int idBienThe, int soLuong) throws SQLException {
         if (soLuong <= 0) return removeItem(idNguoiDung, idBienThe);
         try (Connection conn = DBConnection.getConnection()) {
@@ -82,6 +88,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Xóa một sản phẩm ra khỏi giỏ hàng
     public boolean removeItem(int idNguoiDung, int idBienThe) throws SQLException {
         String sql = "DELETE ct FROM san_pham_trong_gio ct JOIN gio_hang gh ON ct.id_gio_hang = gh.id_gio_hang " +
                      "WHERE gh.id_nguoi_dung = ? AND ct.id_bien_the = ?";
@@ -92,6 +99,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Xóa toàn bộ giỏ hàng (Thường dùng sau khi đặt hàng thành công)
     public boolean clearCart(int idNguoiDung) throws SQLException {
         String sql = "DELETE ct FROM san_pham_trong_gio ct JOIN gio_hang gh ON ct.id_gio_hang = gh.id_gio_hang WHERE gh.id_nguoi_dung = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -100,6 +108,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Đếm tổng số lượng sản phẩm để hiển thị lên Icon giỏ hàng ở Header
     public int countItems(int idNguoiDung) throws SQLException {
         String sql = "SELECT COALESCE(SUM(ct.so_luong), 0) FROM gio_hang gh JOIN san_pham_trong_gio ct ON gh.id_gio_hang = ct.id_gio_hang WHERE gh.id_nguoi_dung = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -110,6 +119,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Lấy số lượng tồn kho và Khóa dòng (FOR UPDATE) để tránh tranh chấp dữ liệu khi nhiều người mua cùng lúc
     private int getStockForUpdate(Connection conn, int idBienThe) throws SQLException {
         String sql = "SELECT so_luong_ton FROM bien_the_san_pham WHERE id_bien_the = ? FOR UPDATE";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -121,6 +131,7 @@ public class SanPhamTrongGioDAO {
         throw new SQLException("Không tìm thấy biến thể sản phẩm");
     }
 
+    // Lấy số lượng hiện tại của sản phẩm đó đang có sẵn trong giỏ
     private int getCurrentQuantity(Connection conn, int idGioHang, int idBienThe) throws SQLException {
         String sql = "SELECT so_luong FROM san_pham_trong_gio WHERE id_gio_hang = ? AND id_bien_the = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -132,6 +143,7 @@ public class SanPhamTrongGioDAO {
         }
     }
 
+    // Ánh xạ dữ liệu từ ResultSet vào đối tượng SanPhamTrongGio
     private SanPhamTrongGio map(ResultSet rs) throws SQLException {
         SanPhamTrongGio item = new SanPhamTrongGio();
         item.setIdGioHang(rs.getInt("id_gio_hang"));

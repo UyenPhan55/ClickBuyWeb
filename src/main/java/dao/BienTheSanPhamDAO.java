@@ -21,7 +21,7 @@ public class BienTheSanPhamDAO {
                         rs.getInt("id_bien_the"),
                         rs.getInt("id_san_pham"),
                         rs.getString("ten_bien_the"),
-                        rs.getDouble("gia_bien_the"),
+                        rs.getBigDecimal("gia_bien_the"),
                         rs.getInt("so_luong_ton")
                     ));
                 }

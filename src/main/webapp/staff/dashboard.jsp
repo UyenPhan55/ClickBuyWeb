@@ -85,7 +85,7 @@
                             <a href="${pageContext.request.contextPath}/DonHangServlet?action=staff-list"
                                class="btn btn-outline btn-sm">Xem tất cả <i class="bi bi-arrow-right"></i></a>
                         </div>
-                        <div class="card-body p0">
+                        <div class="card-body p-0">
                             <div class="tbl-wrap">
                                 <table class="tbl">
                                     <thead>

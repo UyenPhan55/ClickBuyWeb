@@ -261,22 +261,38 @@
     function handleIframeLoad() {
         const iframe = document.getElementById('hidden_iframe');
         if (isAdding && iframe.src !== "about:blank") {
-            if (isBuyNow) {
+            try {
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                const responseText = iframeDocument.body.innerText.trim();
+                
+                if (responseText.includes("success")) {
+                    if (isBuyNow) {
+                        isAdding = false;
+                        isBuyNow = false;
+                        window.location.href = '${pageContext.request.contextPath}/don-hang?action=checkout';
+                    } else {
+                        var toastEl = document.getElementById('cartToast');
+                        var toast = new bootstrap.Toast(toastEl);
+                        toast.show();
+
+                        const badge = document.getElementById('cart-badge');
+                        if (badge) {
+                            const qtyAdded = parseInt(document.getElementById('buy-quantity').value) || 1;
+                            let currentCount = parseInt(badge.innerText.trim()) || 0;
+                            badge.innerText = currentCount + qtyAdded;
+                            badge.classList.remove('d-none');
+                        }
+                        isAdding = false;
+                    }
+                } else {
+                    alert("Không thể thêm vào giỏ hàng. Lỗi từ máy chủ: " + responseText);
+                    isAdding = false;
+                    isBuyNow = false;
+                }
+            } catch (e) {
+                console.error("Lỗi đọc phản hồi giỏ hàng:", e);
                 isAdding = false;
                 isBuyNow = false;
-                window.location.href = '${pageContext.request.contextPath}/don-hang?action=checkout';
-            } else {
-                var toastEl = document.getElementById('cartToast');
-                var toast = new bootstrap.Toast(toastEl);
-                toast.show();
-
-                const badge = document.getElementById('cart-badge');
-                if (badge) {
-                    const qtyAdded = parseInt(document.getElementById('buy-quantity').value) || 1;
-                    let currentCount = parseInt(badge.innerText.trim()) || 0;
-                    badge.innerText = currentCount + qtyAdded;
-                }
-                isAdding = false;
             }
         }
     }

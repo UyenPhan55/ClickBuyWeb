@@ -29,14 +29,19 @@ public class GioHangServlet extends HttpServlet {
             switch (action) {
                 case "add":
                     String idBienTheParam = request.getParameter("idBienThe");
-                    String idSanPhamParam = request.getParameter("idSanPham");
                     String soLuongParam = request.getParameter("soLuong");
+                    System.out.println("[DEBUG GIOHANG] idBienTheParam=\"" + idBienTheParam + "\", soLuongParam=\"" + soLuongParam + "\"");
 
-                    if (idBienTheParam != null && idSanPhamParam != null && soLuongParam != null) {
+                    if (idBienTheParam != null && !idBienTheParam.trim().isEmpty() && soLuongParam != null && !soLuongParam.trim().isEmpty()) {
                         try {
-                            int idBT = Integer.parseInt(idBienTheParam);
-                            int sl = Integer.parseInt(soLuongParam);
-                            gioDao.addItem(idNguoiDung, idBT, sl); 
+                            int idBT = Integer.parseInt(idBienTheParam.trim());
+                            int sl = Integer.parseInt(soLuongParam.trim());
+                            gioDao.addItem(idNguoiDung, idBT, sl);
+                            
+                            // Cập nhật số lượng sản phẩm trong giỏ hàng vào Session
+                            int cartCount = gioDao.countItems(idNguoiDung);
+                            request.getSession().setAttribute("soLuongGio", cartCount);
+                            
                             response.getWriter().write("success");
                         } catch (NumberFormatException e) {
                             response.getWriter().write("error_format");
@@ -46,8 +51,32 @@ public class GioHangServlet extends HttpServlet {
                     }
                     break;
 
+                case "update":
+                    String idBTUpdateParam = request.getParameter("idBienThe");
+                    String qtyUpdateParam = request.getParameter("soLuong");
+                    if (idBTUpdateParam != null && qtyUpdateParam != null) {
+                        try {
+                            int idBT = Integer.parseInt(idBTUpdateParam);
+                            int qty = Integer.parseInt(qtyUpdateParam);
+                            gioDao.updateQuantity(idNguoiDung, idBT, qty);
+                            
+                            // Cập nhật số lượng sản phẩm trong giỏ vào Session
+                            int count = gioDao.countItems(idNguoiDung);
+                            request.getSession().setAttribute("soLuongGio", count);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    response.sendRedirect("gio-hang?action=view");
+                    break;
+
                 case "remove":
                     gioDao.removeItem(idNguoiDung, Integer.parseInt(request.getParameter("idBienThe")));
+                    
+                    // Cập nhật số lượng sản phẩm trong giỏ hàng vào Session
+                    int cartCount = gioDao.countItems(idNguoiDung);
+                    request.getSession().setAttribute("soLuongGio", cartCount);
+                    
                     response.sendRedirect("gio-hang?action=view");
                     break;
 

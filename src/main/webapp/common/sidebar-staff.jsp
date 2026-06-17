@@ -1,68 +1,64 @@
 <%@ page pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
-<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
 <div class="sidebar">
-    <div class="sidebar-brand">
-        <a href="${pageContext.request.contextPath}/StaffServlet">
-            CLICKBUY Staff
-        </a>
-    </div>
-    <ul class="sidebar-menu">
 
-        <%-- DASHBOARD --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/StaffServlet"
-               class="${empty param.action ? 'active' : ''}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-        </li>
-
-        <%-- SẢN PHẨM — trỏ vào SanPhamServlet --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/san-pham?action=list"
-               class="${param.action=='list' ? 'active' : ''}">
-                <i class="bi bi-phone"></i> Sản phẩm
-            </a>
-        </li>
-
-        <%-- ĐƠN HÀNG — trỏ vào DonHangServlet --%>
-        <li>
-    <a href="${pageContext.request.contextPath}/DonHangServlet?action=staff-list"
-       class="${(param.action == 'staff-list' || requestScope.activeAction == 'staff-list') ? 'active' : ''}">
-        <i class="bi bi-cart3"></i> Đơn hàng
+    <a href="${pageContext.request.contextPath}/StaffServlet" 
+       class="sidebar-brand">
+        <div class="sb-logo">S</div>
+        <div>
+            <div class="sb-brand-name">CLICKBUY</div>
+            <span class="sb-brand-role">STAFF</span>
+        </div>
     </a>
-        </li>
 
-
-        <%-- MÃ GIẢM GIÁ — trỏ vào MaGiamGiaServlet --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/MaGiamGiaServlet?action=list">
-                <i class="bi bi-tag"></i> Mã giảm giá
+    <ul class="sidebar-nav">
+        <div class="nav-section">Tổng quan</div>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/StaffServlet" 
+               class="nav-link ${empty param.action ? 'active' : ''}">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
             </a>
         </li>
 
-        <%-- BẢO HÀNH — trỏ vào BaoHanhServlet --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/BaoHanhServlet?action=list">
-                <i class="bi bi-shield-check"></i> Bảo hành
+        <div class="nav-section">Quản lý</div>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/san-pham?action=list"
+               class="nav-link ${param.action == 'list' ? 'active' : ''}">
+                <i class="fa-solid fa-box"></i> Sản phẩm
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/DonHangServlet?action=staff-list"
+               class="nav-link ${(param.action == 'staff-list' || requestScope.activeAction == 'staff-list') ? 'active' : ''}">
+                <i class="fa-solid fa-cart-shopping"></i> Đơn hàng
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/MaGiamGiaServlet?action=list"
+               class="nav-link ${param.action == 'list-voucher' || param.action == 'list' ? 'active' : ''}">
+                <i class="fa-solid fa-tag"></i> Mã giảm giá
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/BaoHanhServlet?action=list"
+               class="nav-link ${param.action == 'list-warranty' || param.action == 'list' ? 'active' : ''}">
+                <i class="fa-solid fa-shield"></i> Bảo hành
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/KhieuNaiServlet?action=staff-list"
+               class="nav-link ${param.action == 'staff-list' ? 'active' : ''}">
+                <i class="fa-solid fa-triangle-exclamation"></i> Khiếu nại
             </a>
         </li>
 
-        <%-- KHIẾU NẠI — trỏ vào KhieuNaiServlet --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/KhieuNaiServlet?action=staff-list">
-                <i class="bi bi-exclamation-triangle"></i> Khiếu nại
+        <div class="nav-section">Tài khoản</div>
+        <li class="nav-item">
+            <a href="${pageContext.request.contextPath}/AuthServlet?action=logout"
+               class="nav-link">
+                <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
             </a>
         </li>
-
-        <%-- ĐĂNG XUẤT --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/AuthServlet?action=logout">
-                <i class="bi bi-box-arrow-right"></i> Đăng xuất
-            </a>
-        </li>
-
     </ul>
 </div>

@@ -8,7 +8,7 @@
 /* ── Biến toàn cục ─────────────────────────────────────────── */
 :root {
   /* Sidebar — giống staff */
-  --sb-width        : 245px;
+  --sb-width        : 250px;
   --sb-bg           : #0d1b2a;
   --sb-header-bg    : #091422;
   --sb-text         : #8da5be;
@@ -94,7 +94,7 @@ a { text-decoration: none; }
 .sidebar-brand {
   display: flex; align-items: center; gap: 11px;
   padding: 0 17px;
-  min-height: 70px;           /* Admin topnav cao hơn staff (70 vs 64) */
+  min-height: 66px;           /* Admin topnav cao hơn staff (70 vs 64) */
   background: var(--sb-header-bg);
   border-bottom: 1px solid rgba(124,58,237,.15);
   text-decoration: none; flex-shrink: 0;
@@ -202,7 +202,7 @@ a { text-decoration: none; }
    TOPNAV — Admin: cao hơn (70px vs 64px), border tím
    ============================================================ */
 .topnav {
-  height: 70px;
+  height: 66px;
   background: var(--bg-card);
   border-bottom: 2px solid rgba(124,58,237,.12);
   padding: 0 26px;

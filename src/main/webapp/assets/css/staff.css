@@ -8,7 +8,7 @@
 /* ── Biến toàn cục ─────────────────────────────────────────── */
 :root {
   /* Sidebar */
-  --sb-width        : 255px;
+  --sb-width        : 250px;
   --sb-bg           : #0d1b2a;
   --sb-header-bg    : #091422;
   --sb-text         : #8da5be;
@@ -266,7 +266,7 @@ a { text-decoration: none; }
    TOPNAV
    ============================================================ */
 .topnav {
-  height: 64px;
+  height: 66px;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
   padding: 0 24px;
@@ -352,7 +352,7 @@ a { text-decoration: none; }
 }
 .card-title i { color: var(--primary-light); }
 .card-body { padding: 20px; }
-.card-body.p0 { padding: 0; }
+.card-body.p0, .card-body.p-0 { padding: 0; }
 
 /* ============================================================
    STAT CARDS (dashboard)

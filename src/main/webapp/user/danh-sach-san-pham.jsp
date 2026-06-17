@@ -87,14 +87,26 @@
     function handleIframeLoad() {
         const iframe = document.getElementById('hidden_iframe');
         if (isAdding && iframe.src !== "about:blank") {
-            var toastEl = document.getElementById('cartToast');
-            var toast = new bootstrap.Toast(toastEl);
-            toast.show();
+            try {
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                const responseText = iframeDocument.body.innerText.trim();
+                
+                if (responseText.includes("success")) {
+                    var toastEl = document.getElementById('cartToast');
+                    var toast = new bootstrap.Toast(toastEl);
+                    toast.show();
 
-            const badge = document.getElementById('cart-badge');
-            if (badge) {
-                let currentCount = parseInt(badge.innerText.trim()) || 0;
-                badge.innerText = currentCount + 1;
+                    const badge = document.getElementById('cart-badge');
+                    if (badge) {
+                        let currentCount = parseInt(badge.innerText.trim()) || 0;
+                        badge.innerText = currentCount + 1;
+                        badge.classList.remove('d-none');
+                    }
+                } else {
+                    alert("Không thể thêm vào giỏ hàng. Lỗi từ máy chủ: " + responseText);
+                }
+            } catch (e) {
+                console.error("Lỗi đọc phản hồi giỏ hàng:", e);
             }
             isAdding = false;
         }

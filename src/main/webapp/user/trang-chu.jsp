@@ -66,10 +66,10 @@
                         <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}" class="product-link">
                             
                             <div class="d-flex align-items-center justify-content-center mb-3" style="height: 160px; width: 100%;">
-                                <img src="${pageContext.request.contextPath}/${not empty p.urlAnh ? p.urlAnh : 'assets/images/no-image.png'}" 
-                                     class="img-fluid" 
-                                     style="max-height: 100%; max-width: 100%; object-fit: contain;" 
-                                     alt="${p.tenSanPham}">
+                                <img src="${pageContext.request.contextPath}/assets/images/${not empty p.urlAnh ? p.urlAnh : 'no-image.jpg'}" 
+                                    class="img-fluid" 
+                                    style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                                    alt="${p.tenSanPham}">
                             </div>
                             
                             <div class="card-body p-0 d-flex flex-column text-center flex-grow-1">

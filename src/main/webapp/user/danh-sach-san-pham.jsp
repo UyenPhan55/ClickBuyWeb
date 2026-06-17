@@ -22,7 +22,7 @@
                                 <div class="card p-3 border-0 shadow-sm h-100 text-center product-card" style="border-radius: 15px; transition: 0.3s;">
                                     <a href="${pageContext.request.contextPath}/san-pham?action=chi-tiet&id=${p.idSanPham}" class="text-decoration-none text-dark">
                                         <div class="mb-3 position-relative" style="height: 180px;">
-                                            <img src="${pageContext.request.contextPath}/${not empty p.urlAnh ? p.urlAnh : 'assets/images/no-image.png'}" 
+                                            <img src="${pageContext.request.contextPath}/assets/images/${not empty p.urlAnh ? p.urlAnh : 'no-image.png'}" 
                                                 class="img-fluid h-100" style="object-fit: contain;" alt="${p.tenSanPham}">
                                         </div>
                                         <h6 class="fw-bold mb-1 text-truncate">${p.tenSanPham}</h6>

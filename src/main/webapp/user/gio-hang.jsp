@@ -34,7 +34,7 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="${pageContext.request.contextPath}/${item.urlAnh}" 
+                                                <img src="${pageContext.request.contextPath}/assets/images/${item.urlAnh}" 
                                                     width="60" class="me-3 rounded border" alt="${item.tenSanPham}"
                                                     onerror="this.onerror=null;this.src='https://placehold.co/60x60?text=SP'">
                                                 <div>

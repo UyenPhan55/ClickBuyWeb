@@ -21,8 +21,12 @@ public class GioHangServlet extends HttpServlet {
         Integer idNguoiDung = SessionUtil.getIdNguoiDung(request);
 
         try {
-            if (idNguoiDung == null && !action.equals("view")) {
-                response.sendRedirect(request.getContextPath() + "/dang-nhap.jsp");
+            if (idNguoiDung == null) {
+                if ("add".equals(action)) {
+                    response.getWriter().write("error_auth");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/dang-nhap.jsp");
+                }
                 return;
             }
 
@@ -32,10 +36,26 @@ public class GioHangServlet extends HttpServlet {
                     String soLuongParam = request.getParameter("soLuong");
                     System.out.println("[DEBUG GIOHANG] idBienTheParam=\"" + idBienTheParam + "\", soLuongParam=\"" + soLuongParam + "\"");
 
-                    if (idBienTheParam != null && !idBienTheParam.trim().isEmpty() && soLuongParam != null && !soLuongParam.trim().isEmpty()) {
+                    boolean isIdBienTheValid = idBienTheParam != null && 
+                                              !idBienTheParam.trim().isEmpty() && 
+                                              !"null".equalsIgnoreCase(idBienTheParam.trim()) && 
+                                              !"undefined".equalsIgnoreCase(idBienTheParam.trim());
+                                              
+                    boolean isSoLuongValid = soLuongParam != null && 
+                                            !soLuongParam.trim().isEmpty() && 
+                                            !"null".equalsIgnoreCase(soLuongParam.trim()) && 
+                                            !"undefined".equalsIgnoreCase(soLuongParam.trim());
+
+                    if (isIdBienTheValid && isSoLuongValid) {
                         try {
                             int idBT = Integer.parseInt(idBienTheParam.trim());
                             int sl = Integer.parseInt(soLuongParam.trim());
+                            
+                            if (idBT <= 0) {
+                                response.getWriter().write("error_invalid_id");
+                                break;
+                            }
+                            
                             gioDao.addItem(idNguoiDung, idBT, sl);
                             
                             // Cập nhật số lượng sản phẩm trong giỏ hàng vào Session
@@ -44,6 +64,8 @@ public class GioHangServlet extends HttpServlet {
                             
                             response.getWriter().write("success");
                         } catch (NumberFormatException e) {
+                            System.err.println("[GioHangServlet ERROR] Không thể parse tham số thành số: idBienThe=\"" + idBienTheParam + "\", soLuong=\"" + soLuongParam + "\"");
+                            e.printStackTrace();
                             response.getWriter().write("error_format");
                         }
                     } else {

@@ -114,21 +114,24 @@
                 </div>
 
                 <div class="d-flex gap-3 mt-4">
-                    <button type="button" class="btn ${detail.trangThai == 1 ? 'btn-danger' : 'btn-secondary'} fw-bold px-4 py-3 shadow-sm flex-grow-1" 
+                    <button type="button" class="btn ${(detail.trangThai == 1 && not empty variants) ? 'btn-danger' : 'btn-secondary'} fw-bold px-4 py-3 shadow-sm flex-grow-1" 
                             style="border-radius: 12px; font-size: 1.1rem;"
-                            ${detail.trangThai == 1 ? 'onclick="buyNow()"' : 'disabled'}>
-                        ${detail.trangThai == 1 ? 'MUA NGAY' : 'NGỪNG KINH DOANH'}
+                            ${(detail.trangThai == 1 && not empty variants) ? 'onclick="buyNow()"' : 'disabled'}>
+                        ${(detail.trangThai == 1 && not empty variants) ? 'MUA NGAY' : (empty variants ? 'CHƯA CÓ HÀNG' : 'NGỪNG KINH DOANH')}
                     </button>
                     
                     <button type="button" class="btn btn-outline-danger fw-bold px-4 py-3 shadow-sm" 
                             style="border-radius: 12px;" 
-                            ${detail.trangThai == 0 ? 'disabled' : ''}
+                            ${(detail.trangThai == 1 && not empty variants) ? '' : 'disabled'}
                             onclick="addCartAjaxDetail()">
-                        <i class="bi ${detail.trangThai == 1 ? 'bi-cart-plus' : 'bi-cart-x'} fs-4"></i>
+                        <i class="bi ${(detail.trangThai == 1 && not empty variants) ? 'bi-cart-plus' : 'bi-cart-x'} fs-4"></i>
                     </button>
                 </div>
                 <c:if test="${detail.trangThai == 0}">
                     <p class="text-danger mt-3 small fw-bold"><i class="bi bi-info-circle me-1"></i> Sản phẩm này hiện tại không còn bán.</p>
+                </c:if>
+                <c:if test="${detail.trangThai == 1 && empty variants}">
+                    <p class="text-danger mt-3 small fw-bold"><i class="bi bi-info-circle me-1"></i> Sản phẩm này chưa được cấu hình phiên bản bán hàng.</p>
                 </c:if>
             </div>
         </div>
@@ -225,10 +228,25 @@
         else if (val === -1 && current > 1) input.value = current - 1;
     }
 
+    function isVariantIdValid(variantId) {
+        if (!variantId) return false;
+        const trimmed = String(variantId).trim();
+        if (trimmed === "" || trimmed === "0" || trimmed === "null" || trimmed === "undefined") {
+            return false;
+        }
+        const parsed = parseInt(trimmed, 10);
+        return !isNaN(parsed) && parsed > 0;
+    }
+
     function addCartAjaxDetail() {
         const userLoggedIn = ${not empty sessionScope.user ? 'true' : 'false'};
         if (!userLoggedIn) {
             window.location.href = '${pageContext.request.contextPath}/dang-nhap.jsp';
+            return;
+        }
+
+        if (!isVariantIdValid(currentVariantId)) {
+            alert('Sản phẩm này chưa được chọn phiên bản hoặc chưa có phiên bản để bán. Vui lòng kiểm tra lại!');
             return;
         }
 
@@ -249,6 +267,11 @@
             return;
         }
 
+        if (!isVariantIdValid(currentVariantId)) {
+            alert('Sản phẩm này chưa được chọn phiên bản hoặc chưa có phiên bản để bán. Vui lòng kiểm tra lại!');
+            return;
+        }
+
         const qty = document.getElementById('buy-quantity').value;
         isAdding = true;
         isBuyNow = true;
@@ -265,11 +288,11 @@
                 const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
                 const responseText = iframeDocument.body.innerText.trim();
                 
-                if (responseText.includes("success")) {
+                if (responseText === "success") {
                     if (isBuyNow) {
                         isAdding = false;
                         isBuyNow = false;
-                        window.location.href = '${pageContext.request.contextPath}/don-hang?action=checkout';
+                        window.location.href = '${pageContext.request.contextPath}/DonHangServlet?action=checkout';
                     } else {
                         var toastEl = document.getElementById('cartToast');
                         var toast = new bootstrap.Toast(toastEl);
@@ -284,8 +307,23 @@
                         }
                         isAdding = false;
                     }
+                } else if (responseText === "error_auth") {
+                    alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!");
+                    isAdding = false;
+                    isBuyNow = false;
+                    window.location.href = '${pageContext.request.contextPath}/dang-nhap.jsp';
                 } else {
-                    alert("Không thể thêm vào giỏ hàng. Lỗi từ máy chủ: " + responseText);
+                    let friendlyError = "Không thể thêm vào giỏ hàng.";
+                    if (responseText === "error_format") {
+                        friendlyError += " (Lỗi định dạng dữ liệu từ máy chủ)";
+                    } else if (responseText === "error_missing_params") {
+                        friendlyError += " (Thiếu thông tin biến thể)";
+                    } else if (responseText === "error_invalid_id") {
+                        friendlyError += " (Biến thể không hợp lệ)";
+                    } else {
+                        friendlyError += " Lỗi: " + responseText;
+                    }
+                    alert(friendlyError);
                     isAdding = false;
                     isBuyNow = false;
                 }

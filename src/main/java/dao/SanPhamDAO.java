@@ -37,8 +37,12 @@ public class SanPhamDAO {
                     rs.getInt("trang_thai")
                 );
                 
-                //Lấy id_bien_the từ database rồi gán vào object sản phẩm sp.
-                sp.setIdBienThe(rs.getInt("id_bien_the"));
+                //Lấy id_bien_the từ database rồi gán vào object sản phẩm sp (tự tạo mặc định nếu chưa có)
+                int idBT = rs.getInt("id_bien_the");
+                if (idBT == 0) {
+                    idBT = createDefaultVariant(sp.getIdSanPham(), sp.getGiaCoBan());
+                }
+                sp.setIdBienThe(idBT);
                 
                 // Cho object "sp" vào list
                 list.add(sp);
@@ -147,7 +151,11 @@ public class SanPhamDAO {
                         rs.getString("nha_san_xuat"), rs.getDouble("gia_co_ban"),
                         rs.getInt("trang_thai")
                     );
-                    sp.setIdBienThe(rs.getInt("id_bien_the"));
+                    int idBT = rs.getInt("id_bien_the");
+                    if (idBT == 0) {
+                        idBT = createDefaultVariant(sp.getIdSanPham(), sp.getGiaCoBan());
+                    }
+                    sp.setIdBienThe(idBT);
                     list.add(sp);
                 }
             }
@@ -155,5 +163,23 @@ public class SanPhamDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    private int createDefaultVariant(int idSanPham, double giaCoBan) {
+        String sql = "INSERT INTO bien_the_san_pham (id_san_pham, ten_bien_the, gia_bien_the, so_luong_ton) VALUES (?, 'Tiêu chuẩn', ?, 100)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, idSanPham);
+            ps.setBigDecimal(2, java.math.BigDecimal.valueOf(giaCoBan));
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

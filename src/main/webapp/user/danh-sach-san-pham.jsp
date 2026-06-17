@@ -73,11 +73,26 @@
 <script>
     let isAdding = false;
 
+    function isIdValid(id) {
+        if (!id) return false;
+        const trimmed = String(id).trim();
+        if (trimmed === "" || trimmed === "0" || trimmed === "null" || trimmed === "undefined") {
+            return false;
+        }
+        const parsed = parseInt(trimmed, 10);
+        return !isNaN(parsed) && parsed > 0;
+    }
+
     function addCartAjax(id) {
         <c:if test="${empty sessionScope.user}">
             window.location.href = '${pageContext.request.contextPath}/dang-nhap.jsp';
             return;
         </c:if>
+
+        if (!isIdValid(id)) {
+            alert('Sản phẩm này hiện tại chưa có phiên bản để bán. Vui lòng liên hệ nhân viên cửa hàng!');
+            return;
+        }
 
         isAdding = true;
         const url = '${pageContext.request.contextPath}/GioHangServlet?action=add&idBienThe=' + id + '&soLuong=1'; 
@@ -91,7 +106,7 @@
                 const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
                 const responseText = iframeDocument.body.innerText.trim();
                 
-                if (responseText.includes("success")) {
+                if (responseText === "success") {
                     var toastEl = document.getElementById('cartToast');
                     var toast = new bootstrap.Toast(toastEl);
                     toast.show();
@@ -102,8 +117,21 @@
                         badge.innerText = currentCount + 1;
                         badge.classList.remove('d-none');
                     }
+                } else if (responseText === "error_auth") {
+                    alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!");
+                    window.location.href = '${pageContext.request.contextPath}/dang-nhap.jsp';
                 } else {
-                    alert("Không thể thêm vào giỏ hàng. Lỗi từ máy chủ: " + responseText);
+                    let friendlyError = "Không thể thêm vào giỏ hàng.";
+                    if (responseText === "error_format") {
+                        friendlyError += " (Lỗi định dạng dữ liệu từ máy chủ)";
+                    } else if (responseText === "error_missing_params") {
+                        friendlyError += " (Thiếu thông tin biến thể)";
+                    } else if (responseText === "error_invalid_id") {
+                        friendlyError += " (Biến thể không hợp lệ)";
+                    } else {
+                        friendlyError += " Lỗi: " + responseText;
+                    }
+                    alert(friendlyError);
                 }
             } catch (e) {
                 console.error("Lỗi đọc phản hồi giỏ hàng:", e);

@@ -8,6 +8,10 @@
         Integer userId = util.SessionUtil.getIdNguoiDung(request);
         if(userId != null) {
             request.setAttribute("ordersForSelect", dhDao.getOrdersByUser(userId));
+            if (request.getAttribute("danhSachKhieuNai") == null) {
+                dao.KhieuNaiDAO knDao = new dao.KhieuNaiDAO();
+                request.setAttribute("danhSachKhieuNai", knDao.getKhieuNaiByUser(userId));
+            }
         }
     } catch (Exception e) { e.printStackTrace(); }
 %>
@@ -51,6 +55,85 @@
                     GỬI KHIẾU NẠI NGAY
                 </button>
             </form>
+        </div>
+
+        <div class="card shadow-sm border-0 p-4 mt-5" style="border-radius: 20px;">
+            <h4 class="fw-bold text-center mb-4 text-dark">LỊCH SỬ KHIẾU NẠI</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr class="table-danger text-uppercase">
+                            <th scope="col" style="font-size: 0.85rem;">Mã khiếu nại</th>
+                            <th scope="col" style="font-size: 0.85rem;">Đơn hàng</th>
+                            <th scope="col" style="font-size: 0.85rem;">Nội dung</th>
+                            <th scope="col" style="font-size: 0.85rem;">Hoàn tiền</th>
+                            <th scope="col" style="font-size: 0.85rem;">Ngày gửi</th>
+                            <th scope="col" style="font-size: 0.85rem;">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty danhSachKhieuNai}">
+                                <c:forEach var="kn" items="${danhSachKhieuNai}">
+                                    <tr>
+                                        <td class="fw-bold text-danger">#${kn.idKhieuNai}</td>
+                                        <td>#CB${kn.idDonHang}</td>
+                                        <td>
+                                            <div class="text-truncate" style="max-width: 150px;" title="${kn.noiDung}">
+                                                ${kn.noiDung}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${kn.yeuCauTraHang == 1}">
+                                                    <span class="badge bg-warning text-dark">Có</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="badge bg-light text-secondary">Không</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td style="font-size: 0.85rem;">
+                                            <fmt:formatDate value="${kn.ngayGui}" pattern="dd/MM/yyyy HH:mm" />
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${kn.trangThai == 'CHO_XU_LY'}">
+                                                    <span class="badge bg-danger">Chờ xử lý</span>
+                                                </c:when>
+                                                <c:when test="${kn.trangThai == 'DA_PHAN_HOI'}">
+                                                    <span class="badge bg-success">Đã phản hồi</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="badge bg-secondary">${kn.trangThai}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                    <c:if test="${not empty kn.phanHoi}">
+                                        <tr class="table-light">
+                                            <td colspan="6" class="ps-4">
+                                                <div class="small text-muted" style="font-style: italic;">
+                                                    <i class="bi bi-reply-all-fill me-1 text-danger"></i> 
+                                                    <strong>ClickBuy phản hồi:</strong> "${kn.phanHoi}"
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                                        Bạn chưa gửi khiếu nại nào.
+                                    </td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </main>

@@ -8,7 +8,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import model.NguoiDung;
 
-@WebServlet("/TrangChuServlet")
+@WebServlet(urlPatterns = {"/TrangChuServlet", "/trang-chu"}) 
 public class TrangChuServlet extends HttpServlet {
 
     private final SanPhamDAO sanPhamDAO = new SanPhamDAO();
@@ -18,14 +18,17 @@ public class TrangChuServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        // ===== 1. CẬP NHẬT BADGE GIỎ HÀNG =====
+        // ===== 1. CẬP NHẬT BADGE GIỎ HÀNG & THÔNG BÁO =====
         NguoiDung user = (NguoiDung) req.getSession().getAttribute("user");
         if (user != null) {
             try {
                 int cartCount = gioDAO.countItems(user.getIdNguoiDung());
                 req.getSession().setAttribute("soLuongGio", cartCount);
+                int notiCount = new dao.ThongBaoDAO().countUnread(user.getIdNguoiDung());
+                req.getSession().setAttribute("totalNoti", notiCount);
             } catch (Exception e) {
                 req.getSession().setAttribute("soLuongGio", 0);
+                req.getSession().setAttribute("totalNoti", 0);
             }
 
             // ===== 2. THÔNG BÁO CHÀO SAU ĐĂNG NHẬP =====

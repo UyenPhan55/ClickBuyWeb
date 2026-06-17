@@ -105,10 +105,7 @@
                                 </c:forEach>
                             </select>
                             
-                            <%-- 
-                                Nút này sẽ "phá" luồng mặc định của Form để gửi về MaGiamGiaServlet.
-                                Tui đổi formaction thành '/ma-giam-gia' cho khớp với Servlet của bà.
-                            --%>
+                            
                             <button class="btn btn-dark fw-bold px-3" type="submit" 
                                     formaction="${pageContext.request.contextPath}/ma-giam-gia">
                                 ÁP DỤNG

@@ -78,11 +78,11 @@ public class MaGiamGiaServlet extends HttpServlet {
         if (mgg != null) {
             session.setAttribute("discount", mgg);
 
-            // Áp mã thành công thì quay lại giỏ hàng
-            response.sendRedirect(request.getContextPath() + "/gio-hang?action=view&status=success");
+            // Áp mã thành công thì quay lại trang thanh toán
+            response.sendRedirect(request.getContextPath() + "/don-hang?action=checkout&status=success");
         } else {
             session.setAttribute("voucherMsg", "Mã giảm giá không hợp lệ!");
-            response.sendRedirect(request.getContextPath() + "/gio-hang?action=view&status=invalid");
+            response.sendRedirect(request.getContextPath() + "/don-hang?action=checkout&status=invalid");
         }
     }
 }

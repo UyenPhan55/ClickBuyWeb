@@ -39,4 +39,10 @@ public class NguoiDungServlet extends HttpServlet {
         req.getRequestDispatcher("/admin/nguoi-dung/danh-sach-tai-khoan.jsp")
            .forward(req, res);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        doGet(req, res);
+    }
 }

@@ -134,14 +134,15 @@
             <form action="${pageContext.request.contextPath}/KhieuNaiServlet"
                   method="post">
                 <input type="hidden" name="action" value="reply">
-                <input type="hidden" name="id_khieu_nai" id="hiddenIdKhieuNai">
+                <input type="hidden" name="idKhieuNai" id="hiddenIdKhieuNai">
+                <input type="hidden" name="trangThai" value="DA_PHAN_HOI">
                 <div class="modal-header">
                     <h5 class="modal-title">Phản hồi khiếu nại</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <label class="form-label fw-semibold">Nội dung phản hồi</label>
-                    <textarea name="phan_hoi" class="form-control" rows="4"
+                    <textarea name="phanHoi" class="form-control" rows="4"
                               placeholder="Nhập phản hồi..." required></textarea>
                 </div>
                 <div class="modal-footer">

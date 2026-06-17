@@ -101,10 +101,29 @@
                     </div>
 
                     <div class="pt-3 border-top mt-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            
+                        <h6 class="fw-bold mb-3 text-uppercase small text-secondary">Tóm tắt thanh toán</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Tạm tính:</span>
+                            <span class="fw-bold text-dark small">
+                                <fmt:formatNumber value="${order.tamTinh}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Giảm giá:</span>
+                            <span class="fw-bold text-success small">
+                                -<fmt:formatNumber value="${order.giamGia}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                            </span>
+                        </div>
+                        <hr class="my-2">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold text-dark fs-6">Tổng thanh toán:</span>
+                            <span class="fw-bold text-danger fs-5">
+                                <fmt:formatNumber value="${order.tongThanhToan}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Thời gian đặt:</span>
                             <span class="small fw-bold text-dark">
-                               
                                 <fmt:formatDate value="${order.ngayDat}" pattern="dd/MM/yyyy HH:mm:ss" />
                             </span>
                         </div>

@@ -35,12 +35,6 @@
     </a>
         </li>
 
-        <%-- NGƯỜI DÙNG — trỏ vào NguoiDungServlet --%>
-        <li>
-            <a href="${pageContext.request.contextPath}/NguoiDungServlet">
-                <i class="bi bi-people"></i> Người dùng
-            </a>
-        </li>
 
         <%-- MÃ GIẢM GIÁ — trỏ vào MaGiamGiaServlet --%>
         <li>

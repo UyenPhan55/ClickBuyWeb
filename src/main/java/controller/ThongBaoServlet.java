@@ -39,7 +39,9 @@ public class ThongBaoServlet extends HttpServlet {
             }
 
             request.setAttribute("danhSachThongBao", dao.getThongBaoByUser(idNguoiDung));
-            request.setAttribute("soThongBaoChuaDoc", dao.countUnread(idNguoiDung));
+            int unreadCount = dao.countUnread(idNguoiDung);
+            request.setAttribute("soThongBaoChuaDoc", unreadCount);
+            request.getSession().setAttribute("totalNoti", unreadCount);
             request.getRequestDispatcher("/user/danh-sach-thong-bao.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());

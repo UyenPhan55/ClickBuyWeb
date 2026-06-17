@@ -8,12 +8,12 @@ import model.NguoiDung;
 
 // Chặn các URL cần đăng nhập — chưa đăng nhập thì về trang login
 @WebFilter(urlPatterns = {
-    "/GioHangServlet",
-    "/DonHangServlet",
-    "/DanhGiaServlet",
-    "/KhieuNaiServlet",
-    "/ThongBaoServlet",
-    "/BaoHanhServlet"
+    "/GioHangServlet", "/gio-hang",
+    "/DonHangServlet", "/don-hang",
+    "/DanhGiaServlet", "/danh-gia",
+    "/KhieuNaiServlet", "/khieu-nai",
+    "/ThongBaoServlet", "/thong-bao",
+    "/BaoHanhServlet", "/bao-hanh"
 })
 public class LoginFilter implements Filter {
 

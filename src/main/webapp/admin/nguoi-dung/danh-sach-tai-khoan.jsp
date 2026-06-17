@@ -79,41 +79,53 @@
                                             </td>
                                             <td>
                                                 <c:choose>
-
+                                                    <c:when test="${u.trangThai == 1}">
+                                                        <span class="badge bg-success-subtle text-success border border-success-subtle">Hoạt động</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Bị khóa</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td>
+                                                <c:choose>
                                                     <c:when test="${u.trangThai == 1}">
                                                         <form action="${pageContext.request.contextPath}/NguoiDungServlet"
                                                               method="post"
                                                               style="display:inline"
                                                               onsubmit="return confirm('Khóa tài khoản ${u.tenDayDu}?')">
-
                                                             <input type="hidden" name="action" value="lock">
                                                             <input type="hidden" name="id" value="${u.idNguoiDung}">
-
                                                             <button type="submit"
                                                                     class="btn btn-sm btn-outline-danger">
-
                                                                 <i class="bi bi-lock-fill"></i> Khóa
                                                             </button>
                                                         </form>
                                                     </c:when>
-
                                                     <c:otherwise>
                                                         <form action="${pageContext.request.contextPath}/NguoiDungServlet"
                                                               method="post"
                                                               style="display:inline">
-
                                                             <input type="hidden" name="action" value="unlock">
                                                             <input type="hidden" name="id" value="${u.idNguoiDung}">
-
                                                             <button type="submit"
                                                                     class="btn btn-sm btn-outline-success">
-
                                                                 <i class="bi bi-unlock-fill"></i> Mở khóa
                                                             </button>
                                                         </form>
                                                     </c:otherwise>
-
                                                 </c:choose>
+                                                <c:if test="${u.idNguoiDung != sessionScope.user.idNguoiDung}">
+                                                    <form action="${pageContext.request.contextPath}/NguoiDungServlet" method="post" class="d-inline-block ms-2" style="display:inline;">
+                                                        <input type="hidden" name="action" value="role">
+                                                        <input type="hidden" name="id" value="${u.idNguoiDung}">
+                                                        <select name="role" class="form-select form-select-sm d-inline-block w-auto" style="display: inline-block; vertical-align: middle;" onchange="if(confirm('Thay đổi vai trò của tài khoản này?')) this.form.submit(); else location.reload();">
+                                                            <option value="1" ${u.idVaiTro == 1 ? 'selected' : ''}>Admin</option>
+                                                            <option value="2" ${u.idVaiTro == 2 ? 'selected' : ''}>Nhân viên</option>
+                                                            <option value="3" ${u.idVaiTro == 3 ? 'selected' : ''}>Khách hàng</option>
+                                                        </select>
+                                                    </form>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>

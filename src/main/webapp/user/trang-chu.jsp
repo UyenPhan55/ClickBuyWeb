@@ -113,17 +113,18 @@
             <nav aria-label="Page navigation" class="mt-5">
                 <ul class="pagination justify-content-center">
                     <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="TrangChuServlet?page=${currentPage - 1}">
+                        <a class="page-link" href="${pageContext.request.contextPath}/TrangChuServlet?page=${currentPage - 1}">
                             <i class="bi bi-chevron-left"></i> Trước
                         </a>
                     </li>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li class="page-item ${currentPage == i ? 'active' : ''}">
-                            <a class="page-link" href="TrangChuServlet?page=${i}">${i}</a>
+                            <%-- Sửa link số trang --%>
+                            <a class="page-link" href="${pageContext.request.contextPath}/TrangChuServlet?page=${i}">${i}</a>
                         </li>
                     </c:forEach>
                     <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
-                        <a class="page-link" href="TrangChuServlet?page=${currentPage + 1}">
+                        <a class="page-link" href="${pageContext.request.contextPath}/TrangChuServlet?page=${currentPage + 1}">
                             Sau <i class="bi bi-chevron-right"></i>
                         </a>
                     </li>

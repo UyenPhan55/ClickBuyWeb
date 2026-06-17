@@ -29,6 +29,7 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
             switch (action) {
                 case "checkout":
                     request.setAttribute("danhSachGioHang", gioHangDAO.getItemsByUserId(idNguoiDung));
+                    request.setAttribute("danhSachVoucher", new dao.MaGiamGiaDAO().getAllMaGiamGia());
                     request.getRequestDispatcher("/user/thanh-toan.jsp").forward(request, response);
                     break;
                 case "success":
@@ -90,6 +91,7 @@ private final SanPhamTrongGioDAO gioHangDAO = new SanPhamTrongGioDAO();
                 String voucherParam = request.getParameter("idVoucher");
                 Integer idVoucher = (voucherParam == null || voucherParam.trim().isEmpty()) ? null : Integer.parseInt(voucherParam);
                 int idDonHang = donHangDAO.placeOrder(idNguoiDung, diaChi, sdtNguoiNhan, idVoucher, request.getRemoteAddr());
+                request.getSession().removeAttribute("discount");
                 response.sendRedirect(request.getContextPath() + "/don-hang?action=success&id=" + idDonHang);
                 return;
             }

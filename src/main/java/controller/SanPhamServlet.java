@@ -53,7 +53,7 @@ public class SanPhamServlet extends HttpServlet {
                     break;
 
                 // ===== USER — chi tiết sản phẩm =====
-                    break;
+                    
 
                 case "chi-tiet":
                     int id = Integer.parseInt(req.getParameter("id"));
@@ -91,13 +91,13 @@ public class SanPhamServlet extends HttpServlet {
 
                 // ===== ADMIN — form thêm sản phẩm =====
                 case "add":
-<<<<<<< HEAD
-=======
+
+
                     if (!SessionUtil.isAdmin(req)) {
                         res.sendError(HttpServletResponse.SC_FORBIDDEN);
                         return;
                     }
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
                     req.getRequestDispatcher("/admin/san-pham/them-san-pham.jsp")
                        .forward(req, res);
                     break;
@@ -116,13 +116,13 @@ public class SanPhamServlet extends HttpServlet {
 
                 // ===== ADMIN — xóa mềm sản phẩm =====
                 case "delete":
-<<<<<<< HEAD
+
                     int idXoa = Integer.parseInt(req.getParameter("id"));
                     spDAO.deleteSanPham(idXoa);
                     res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
-=======
+
                     res.sendRedirect(req.getContextPath() + "//san-pham?action=list");
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
                     break;
 
                 // ===== USER — tìm kiếm =====
@@ -177,14 +177,14 @@ public class SanPhamServlet extends HttpServlet {
                     spAdd.setNhaSanXuat(req.getParameter("nha_san_xuat"));
                     spAdd.setGiaCoBan(Double.parseDouble(req.getParameter("gia_co_ban")));
                     spAdd.setTrangThai(Integer.parseInt(req.getParameter("trang_thai")));
-<<<<<<< HEAD
+
                     spDAO.addSanPham(spAdd);
-=======
+
                     if (!spDAO.addSanPham(spAdd)) {
                         throw new Exception("Khong them duoc san pham");
                     }
                     LogUtil.ghiLog(req, "Them san pham", "san_pham", spAdd.getIdSanPham());
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
                     res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
                     break;
 
@@ -202,9 +202,9 @@ public class SanPhamServlet extends HttpServlet {
                     spSua.setNhaSanXuat(req.getParameter("nha_san_xuat"));
                     spSua.setGiaCoBan(Double.parseDouble(req.getParameter("gia_co_ban")));
                     spSua.setTrangThai(Integer.parseInt(req.getParameter("trang_thai")));
-<<<<<<< HEAD
+
                     spDAO.updateSanPham(spSua);
-=======
+
                     if (!spDAO.updateSanPham(spSua)) {
                         throw new Exception("Khong cap nhat duoc san pham");
                     }
@@ -222,7 +222,7 @@ public class SanPhamServlet extends HttpServlet {
                         throw new Exception("Khong xoa duoc san pham");
                     }
                     LogUtil.ghiLog(req, "Xoa san pham", "san_pham", idXoa);
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
                     res.sendRedirect(req.getContextPath() + "/san-pham?action=list");
                     break;
 

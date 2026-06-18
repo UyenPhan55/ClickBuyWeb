@@ -6,11 +6,10 @@
              https://jakarta.ee/xml/ns/jakartaee
              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+    
+
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

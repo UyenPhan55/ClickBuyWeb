@@ -32,7 +32,7 @@ public class NguoiDungServlet extends HttpServlet {
 
         String action = req.getParameter("action");
 
-<<<<<<< HEAD
+
         if ("lock".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
             dao.updateStatus(id, 0);
@@ -48,7 +48,7 @@ public class NguoiDungServlet extends HttpServlet {
         req.setAttribute("userList", dao.getAll());
         req.getRequestDispatcher("/admin/nguoi-dung/danh-sach-tai-khoan.jsp")
            .forward(req, res);
-=======
+
         if (SessionUtil.isAdmin(req)) {
             if ("lock".equals(action)) {
                 dao.updateStatus(Integer.parseInt(req.getParameter("id")), 0);
@@ -74,7 +74,7 @@ public class NguoiDungServlet extends HttpServlet {
         }
 
         res.sendError(HttpServletResponse.SC_FORBIDDEN);
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
     }
 
     @Override

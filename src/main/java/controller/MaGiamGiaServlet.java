@@ -43,19 +43,19 @@ public class MaGiamGiaServlet extends HttpServlet {
                     }
 
                     List<MaGiamGia> list = mggDAO.getAll();
-<<<<<<< HEAD
+
                     request.setAttribute("danhSachMaGiamGia", list);
 
                     request.getRequestDispatcher("/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                            .forward(request, response);
-=======
+
                     request.setAttribute("listMGG", list);
                     request.setAttribute("danhSachMaGiamGia", list);
                     request.getRequestDispatcher(SessionUtil.isAdmin(request)
                             ? "/admin/ma-giam-gia.jsp"
                             : "/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                             .forward(request, response);
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
                     break;
 
                 case "xoa":
@@ -72,18 +72,18 @@ public class MaGiamGiaServlet extends HttpServlet {
                     break;
             }
         } catch (Exception e) {
-<<<<<<< HEAD
+
             e.printStackTrace();
             request.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
             request.getRequestDispatcher("/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                    .forward(request, response);
-=======
+
             request.setAttribute("error", "Co loi xay ra: " + e.getMessage());
             request.getRequestDispatcher(SessionUtil.isAdmin(request)
                     ? "/admin/ma-giam-gia.jsp"
                     : "/staff/ma-giam-gia/danh-sach-ma-giam-gia.jsp")
                     .forward(request, response);
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
         }
     }
 
@@ -98,19 +98,19 @@ public class MaGiamGiaServlet extends HttpServlet {
 
         if (mgg != null) {
             session.setAttribute("discount", mgg);
-<<<<<<< HEAD
+
 
             // Áp mã thành công thì quay lại trang thanh toán
             response.sendRedirect(request.getContextPath() + "/don-hang?action=checkout&status=success");
         } else {
             session.setAttribute("voucherMsg", "Mã giảm giá không hợp lệ!");
             response.sendRedirect(request.getContextPath() + "/don-hang?action=checkout&status=invalid");
-=======
+
             response.sendRedirect(request.getContextPath() + "/GioHangServlet?status=success");
-        } else {
+        } {
             session.setAttribute("voucherMsg", "Ma giam gia khong hop le!");
             response.sendRedirect(request.getContextPath() + "/GioHangServlet?status=invalid");
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
         }
     }
 }

@@ -12,11 +12,11 @@ import model.BaoHanh;
 import util.LogUtil;
 import util.SessionUtil;
 
-<<<<<<< HEAD
+
 @WebServlet({"/BaoHanhServlet", "/bao-hanh"})
-=======
-@WebServlet("/BaoHanhServlet")
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
+
+
 public class BaoHanhServlet extends HttpServlet {
     private final BaoHanhDAO dao = new BaoHanhDAO();
 

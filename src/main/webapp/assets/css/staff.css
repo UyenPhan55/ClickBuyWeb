@@ -8,17 +8,17 @@
 /* ── Biến toàn cục ─────────────────────────────────────────── */
 :root {
   /* Sidebar */
-<<<<<<< HEAD
+
   --sb-width        : 250px;
   --sb-bg           : #0d1b2a;
   --sb-header-bg    : #091422;
   --sb-text         : #8da5be;
-=======
+
   --sb-width        : 255px;
   --sb-bg           : #102033;
   --sb-header-bg    : #071826;
   --sb-text         : #9fb3c8;
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
+
   --sb-text-hover   : #ffffff;
   --sb-active-bg    : rgba(37,99,235,0.18);
   --sb-active-border: #2563eb;

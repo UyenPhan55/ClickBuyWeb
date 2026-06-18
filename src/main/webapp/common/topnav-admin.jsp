@@ -1,28 +1,24 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <div class="topnav">
     <div class="topnav-left">
         <div>
-            <div class="page-title">${pageTitle}</div>
+            <div class="page-title">
+                ${not empty pageTitle ? pageTitle : 'Trang quản trị'}
+            </div>
             <div class="breadcrumb">
-                <%--  Sửa: trỏ vào AdminServlet --%>
                 <a href="${pageContext.request.contextPath}/AdminServlet">Trang chủ</a>
                 <span>/</span>
-                <span>${breadcrumb}</span>
+                <span>${not empty breadcrumb ? breadcrumb : 'Dashboard'}</span>
             </div>
         </div>
     </div>
     <div class="topnav-right">
         <div class="topnav-role">
-            <i class="fa-solid fa-shield"></i> ADMIN
+            <i class="bi bi-shield-fill-check"></i> ADMIN
         </div>
-        <a href="#" class="topnav-icon-btn">
-            <i class="fa-solid fa-bell"></i>
-            <span class="dot"></span>
-        </a>
         <div class="topnav-user">
-            <%--  Sửa: sessionScope.user.tenDayDu --%>
             <div class="avatar">
                 ${not empty sessionScope.user ? sessionScope.user.tenDayDu.charAt(0) : 'A'}
             </div>

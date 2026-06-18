@@ -1,31 +1,38 @@
 <%@ page pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
-<div class="topnav">
-    <div class="topnav-left">
-        <div class="page-title">${pageTitle}</div>
-        <div class="breadcrumb">
-            <a href="${pageContext.request.contextPath}/StaffServlet">Trang chủ</a>
-            <span>/</span>
-            <span>${breadcrumb}</span>
-        </div>
-    </div>
-    <div class="topnav-right">
-        <div class="topnav-role">
-            <i class="bi bi-person-badge-fill"></i> NHÂN VIÊN
-        </div>
-        <a href="#" class="topnav-icon-btn">
-            <i class="bi bi-bell"></i>
-            <span class="dot"></span>
-        </a>
-        <div class="topnav-user">
-            <div class="avatar">
-                <%--  Sửa: sessionScope.user.tenDayDu --%>
-                ${not empty sessionScope.user ? sessionScope.user.tenDayDu.charAt(0) : 'S'}
-            </div>
-            <span class="uname">
-                ${not empty sessionScope.user ? sessionScope.user.tenDayDu : 'Staff'}
-            </span>
-        </div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        ${not empty pageTitle ? pageTitle : 'Trang nhân viên'}
+        - CLICKBUY Staff
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/staff.css">
+</head>
+
+<body>
+
+<div class="layout-wrapper">
+
+    <jsp:include page="/common/sidebar-staff.jsp"/>
+
+    <main class="main-content">
+
+        <jsp:include page="/common/topnav-staff.jsp"/>
+        <%--để trang header là khung của cấu trúc HTML--%>
+        

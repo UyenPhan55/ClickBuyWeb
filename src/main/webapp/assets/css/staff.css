@@ -8,23 +8,30 @@
 /* ── Biến toàn cục ─────────────────────────────────────────── */
 :root {
   /* Sidebar */
+<<<<<<< HEAD
   --sb-width        : 250px;
   --sb-bg           : #0d1b2a;
   --sb-header-bg    : #091422;
   --sb-text         : #8da5be;
+=======
+  --sb-width        : 255px;
+  --sb-bg           : #102033;
+  --sb-header-bg    : #071826;
+  --sb-text         : #9fb3c8;
+>>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
   --sb-text-hover   : #ffffff;
   --sb-active-bg    : rgba(37,99,235,0.18);
   --sb-active-border: #2563eb;
   --sb-icon         : #4d7a9e;
 
   /* Brand / màu chính */
-  --primary         : #2563eb;
-  --primary-hover   : #1d4ed8;
-  --primary-light   : #3b82f6;
-  --accent          : #0ea5e9;
+  --primary         : #0f766e;
+  --primary-hover   : #0d5f59;
+  --primary-light   : #14b8a6;
+  --accent          : #f97316;
 
   /* Nền & card */
-  --bg              : #f0f4f8;
+  --bg              : #eef4f8;
   --bg-card         : #ffffff;
   --border          : #e4eaf0;
 
@@ -56,7 +63,7 @@
 
 body {
   font-family: 'Be Vietnam Pro', sans-serif;
-  background: var(--bg);
+  background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 42%, #edf7f2 100%);
   color: var(--text);
   font-size: 13.5px;
   line-height: 1.65;
@@ -233,21 +240,6 @@ a { text-decoration: none; }
   padding: 10px;
   border-top: 1px solid rgba(255,255,255,0.05);
   flex-shrink: 0;
-  
-  .sidebar-menu {
-      .layout-wrapper {
-          display: flex;
-      }
-      .sidebar {
-          width: 250px;
-          height: 100vh;
-          background: #333;
-          color: white;
-      }
-      .main-content {
-          flex: 1;
-      }
-  }
 }
 .sidebar-footer .nav-link { border-radius: var(--radius-sm); padding: 8px 10px; }
 
@@ -285,6 +277,20 @@ a { text-decoration: none; }
 .breadcrumb span { color: #cbd5e1; }
 
 .topnav-right { display: flex; align-items: center; gap: 10px; }
+
+.topnav-role {
+  background: rgba(20,184,166,.12);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(20,184,166,.24);
+  letter-spacing: .4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
 .topnav-icon-btn {
   width: 36px; height: 36px;
@@ -387,6 +393,61 @@ a { text-decoration: none; }
 .stat-sub  { font-size: 11.5px; margin-top: 4px; font-weight: 600; }
 .stat-sub.up   { color: var(--success); }
 .stat-sub.down { color: var(--danger); }
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quick-action {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  background: #fbfdff;
+  transition: all var(--ease);
+}
+.quick-action:hover {
+  color: var(--primary);
+  border-color: rgba(20,184,166,.38);
+  background: rgba(20,184,166,.06);
+}
+.quick-action i {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(249,115,22,.10);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.quick-action strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.quick-action span {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.item-title {
+  font-weight: 700;
+  line-height: 1.35;
+}
+.item-sub {
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
 
 /* ============================================================
    TABLE
@@ -581,4 +642,77 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
   .sidebar.open { transform: translateX(0); }
   .main-content { margin-left: 0; }
+}
+
+/* Responsive bổ sung */
+.tbl-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.tbl,
+table.table {
+  min-width: 850px;
+}
+
+.card-header {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 992px) {
+  .page-content {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .topnav {
+    padding: 0 14px;
+  }
+
+  .topnav-role,
+  .topnav-user .uname {
+    display: none;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .search-wrap .form-control {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-content {
+    padding: 12px;
+  }
+
+  .card {
+    border-radius: 10px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 16px;
+  }
 }

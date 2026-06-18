@@ -11,7 +11,7 @@
     <title>${pageTitle} – CLICKBUY</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/staff.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
     <style>
         .img-preview {
             width:120px; height:120px;
@@ -45,7 +45,7 @@
 
             <div class="card" style="max-width:780px;margin:auto">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <a href="${pageContext.request.contextPath}/san-pham?action=list"
+                    <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
                        class="btn btn-sm btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i>
                     </a>
@@ -84,9 +84,14 @@
                                 <label class="form-label fw-semibold">
                                     Giá cơ bản (₫) <span class="text-danger">*</span>
                                 </label>
-                                <%--  Sửa: giaCoban (chữ b thường) --%>
-                                <input type="number" name="gia_co_ban" class="form-control"
-                                       value="${sanPham.giaCoban}" min="0" required>
+                                <%--  Sửa: giaCoban (chữ b thường thành B) --%>
+                                <input type="number"
+                                       name="gia_co_ban"
+                                       class="form-control"
+                                       min="0"
+                                       step="1000"
+                                       value="${sanPham.giaCoBan}"
+                                       required>
                             </div>
                         </div>
 
@@ -135,7 +140,7 @@
                             <button type="submit" class="btn btn-warning">
                                 <i class="bi bi-check-lg"></i> Cập nhật
                             </button>
-                            <a href="${pageContext.request.contextPath}/san-pham?action=list"
+                            <a href="${pageContext.request.contextPath}/SanPhamServlet?action=list"
                                class="btn btn-outline-secondary">
                                 <i class="bi bi-x-lg"></i> Hủy
                             </a>

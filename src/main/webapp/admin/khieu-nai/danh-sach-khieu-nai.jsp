@@ -2,7 +2,7 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
-<c:set var="pageTitle" value="Xử lý khiếu nại"/>
+<c:set var="pageTitle" value="Quản lý khiếu nại"/>
 <c:set var="breadcrumb" value="Khiếu nại / Danh sách"/>
 <c:set var="activeMenu" value="complaints" scope="request"/>
 
@@ -11,17 +11,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${pageTitle} - CLICKBUY Staff</title>
+    <title>${pageTitle} - CLICKBUY Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/staff.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
 </head>
 <body>
 <div class="layout-wrapper">
-    <jsp:include page="/common/sidebar-staff.jsp"/>
+    <jsp:include page="/common/sidebar-admin.jsp"/>
 
     <div class="main-content">
-        <jsp:include page="/common/topnav-staff.jsp"/>
+        <jsp:include page="/common/topnav-admin.jsp"/>
 
         <div class="page-content">
             <c:if test="${not empty error}">
@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="bi bi-chat-square-text"></i> Danh sách khiếu nại
+                        <i class="bi bi-exclamation-triangle"></i> Danh sách khiếu nại
                     </div>
                     <a class="btn btn-outline btn-sm" href="${pageContext.request.contextPath}/KhieuNaiServlet?action=staff-list">
                         <i class="bi bi-arrow-clockwise"></i> Làm mới
@@ -59,24 +59,13 @@
                                 <c:when test="${not empty danhSachKhieuNai}">
                                     <c:forEach var="kn" items="${danhSachKhieuNai}">
                                         <tr>
-<<<<<<< HEAD
-                                            <td>#${kn.idKhieuNai}</td>
-                                            <td>${kn.tenNguoiDung}</td>
-                                            <td>#CB${kn.idDonHang}</td>
-                                            <td style="max-width:200px;overflow:hidden;
-                                                        text-overflow:ellipsis;white-space:nowrap">
-                                                ${kn.noiDung}
-=======
                                             <td><strong>#${kn.idKhieuNai}</strong></td>
                                             <td>
-                                                <div class="item-title">${kn.tenNguoiDung}</div>
-                                                <div class="item-sub">${kn.email}</div>
+                                                <div style="font-weight:700">${kn.tenNguoiDung}</div>
+                                                <div style="font-size:11.5px;color:var(--text-muted)">${kn.email}</div>
                                             </td>
                                             <td>#${kn.idDonHang}</td>
-                                            <td style="max-width:260px">
-                                                <div class="item-sub" style="color:var(--text)">${kn.noiDung}</div>
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
-                                            </td>
+                                            <td style="max-width:280px">${kn.noiDung}</td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${kn.yeuCauTraHang == 1}">
@@ -107,7 +96,7 @@
                                                 <c:choose>
                                                     <c:when test="${kn.trangThai == 'CHO_XU_LY'}">
                                                         <button type="button"
-                                                                class="btn btn-primary btn-sm"
+                                                                class="btn btn-admin btn-sm"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#modalPhanHoi"
                                                                 data-id="${kn.idKhieuNai}">
@@ -115,7 +104,7 @@
                                                         </button>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span class="item-sub">${kn.phanHoi}</span>
+                                                        <span style="font-size:12px;color:var(--text-muted)">${kn.phanHoi}</span>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -151,22 +140,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">
-<<<<<<< HEAD
-                    <label class="form-label fw-semibold">Nội dung phản hồi</label>
-                    <textarea name="phanHoi" class="form-control" rows="4"
-                              placeholder="Nhập phản hồi..." required></textarea>
-=======
                     <label class="form-label">Nội dung phản hồi</label>
                     <textarea name="phanHoi"
                               class="form-control"
                               rows="4"
                               placeholder="Nhập nội dung phản hồi..."
                               required></textarea>
->>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-admin">
                         <i class="bi bi-send"></i> Gửi phản hồi
                     </button>
                 </div>

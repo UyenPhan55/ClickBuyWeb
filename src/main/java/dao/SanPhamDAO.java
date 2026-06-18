@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.SanPham;
@@ -14,11 +15,8 @@ public class SanPhamDAO {
         List<SanPham> list = new ArrayList<>();
         String sql =
             "SELECT sp.*, " +
-            "MIN(bt.id_bien_the) AS id_bien_the " +
+            "(SELECT MIN(bt.id_bien_the) FROM bien_the_san_pham bt WHERE bt.id_san_pham = sp.id_san_pham) AS id_bien_the " +
             "FROM san_pham sp " +
-            "LEFT JOIN bien_the_san_pham bt " +
-            "ON sp.id_san_pham = bt.id_san_pham " +
-            "GROUP BY sp.id_san_pham " +
             "ORDER BY sp.id_san_pham DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -84,14 +82,22 @@ public class SanPhamDAO {
     public boolean addSanPham(SanPham sp) {
         String sql = "INSERT INTO san_pham (ten_san_pham, mo_ta, url_anh, nha_san_xuat, gia_co_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, sp.getTenSanPham());
             ps.setString(2, sp.getMoTa());
             ps.setString(3, sp.getUrlAnh());
             ps.setString(4, sp.getNhaSanXuat());
             ps.setDouble(5, sp.getGiaCoBan());
             ps.setInt(6, sp.getTrangThai());
-            return ps.executeUpdate() > 0;
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                try (ResultSet keys = ps.getGeneratedKeys()) {
+                    if (keys.next()) {
+                        sp.setIdSanPham(keys.getInt(1));
+                    }
+                }
+                return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,9 +136,10 @@ public class SanPhamDAO {
         return false;
     }
 
-    // 6. TÌM KIẾM SẢN PHẨM THEO TÊN (Thêm rs.getInt("so_luong_ton"))
+    // 6. TÌM KIẾM SẢN PHẨM THEO TÊN )
     public List<SanPham> searchSanPhamByName(String keyword) {
         List<SanPham> list = new ArrayList<>();
+<<<<<<< HEAD
         String sql =
             "SELECT sp.*, MIN(bt.id_bien_the) AS id_bien_the " +
             "FROM san_pham sp " +
@@ -142,9 +149,21 @@ public class SanPhamDAO {
             "ORDER BY sp.id_san_pham DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
+=======
+
+        String sql
+                = "SELECT * FROM san_pham "
+                + "WHERE ten_san_pham LIKE ? "
+                + "ORDER BY id_san_pham DESC";
+
+        try (
+                Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+>>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
             ps.setString(1, "%" + keyword + "%");
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+<<<<<<< HEAD
                     SanPham sp = new SanPham(
                         rs.getInt("id_san_pham"), rs.getString("ten_san_pham"),
                         rs.getString("mo_ta"), rs.getString("url_anh"),
@@ -157,11 +176,24 @@ public class SanPhamDAO {
                     }
                     sp.setIdBienThe(idBT);
                     list.add(sp);
+=======
+                    list.add(new SanPham(
+                            rs.getInt("id_san_pham"),
+                            rs.getString("ten_san_pham"),
+                            rs.getString("mo_ta"),
+                            rs.getString("url_anh"),
+                            rs.getString("nha_san_xuat"),
+                            rs.getDouble("gia_co_ban"),
+                            rs.getInt("trang_thai")
+                    ));
+>>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 

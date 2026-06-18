@@ -1,25 +1,36 @@
 package controller;
 
 import dao.BaoHanhDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
 import model.BaoHanh;
 import util.LogUtil;
 import util.SessionUtil;
-import jakarta.servlet.annotation.WebServlet;
 
+<<<<<<< HEAD
 @WebServlet({"/BaoHanhServlet", "/bao-hanh"})
+=======
+@WebServlet("/BaoHanhServlet")
+>>>>>>> 14a66ce (Hoan thien giao dien admin va staff)
 public class BaoHanhServlet extends HttpServlet {
     private final BaoHanhDAO dao = new BaoHanhDAO();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
+
         String action = request.getParameter("action");
-        if (action == null) action = "lookup";
+        if (action == null) {
+            action = "lookup";
+        }
+
         try {
             Integer idNguoiDung = SessionUtil.getIdNguoiDung(request);
 
@@ -30,7 +41,10 @@ public class BaoHanhServlet extends HttpServlet {
                         return;
                     }
                     request.setAttribute("danhSachBaoHanh", dao.getAllBaoHanh());
-                    request.getRequestDispatcher("/staff/bao-hanh/danh-sach-bao-hanh.jsp").forward(request, response);
+                    request.getRequestDispatcher(SessionUtil.isAdmin(request)
+                            ? "/admin/bao-hanh/danh-sach-bao-hanh.jsp"
+                            : "/staff/bao-hanh/danh-sach-bao-hanh.jsp")
+                            .forward(request, response);
                     break;
 
                 case "mine":
@@ -58,15 +72,18 @@ public class BaoHanhServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
+
         String action = request.getParameter("action");
         try {
             if (!SessionUtil.isStaffOrAdmin(request)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
+
             Integer idNhanVienSession = SessionUtil.getIdNguoiDung(request);
 
             if ("insert".equals(action)) {
@@ -80,8 +97,8 @@ public class BaoHanhServlet extends HttpServlet {
                 bh.setTrangThai(request.getParameter("trangThai"));
                 bh.setGhiChu(request.getParameter("ghiChu"));
                 dao.insertBaoHanh(bh);
-                LogUtil.ghiLog(request, "Thêm bảo hành", "bao_hanh", bh.getIdDonHang());
-                response.sendRedirect(request.getContextPath() + "/bao-hanh?action=list");
+                LogUtil.ghiLog(request, "Them bao hanh", "bao_hanh", bh.getIdDonHang());
+                response.sendRedirect(request.getContextPath() + "/BaoHanhServlet?action=list");
                 return;
             }
 
@@ -90,12 +107,12 @@ public class BaoHanhServlet extends HttpServlet {
                 String trangThai = request.getParameter("trangThai");
                 String ghiChu = request.getParameter("ghiChu");
                 dao.updateTrangThai(idBaoHanh, trangThai, idNhanVienSession, ghiChu);
-                LogUtil.ghiLog(request, "Cập nhật bảo hành", "bao_hanh", idBaoHanh);
-                response.sendRedirect(request.getContextPath() + "/bao-hanh?action=list");
+                LogUtil.ghiLog(request, "Cap nhat bao hanh", "bao_hanh", idBaoHanh);
+                response.sendRedirect(request.getContextPath() + "/BaoHanhServlet?action=list");
                 return;
             }
 
-            response.sendRedirect(request.getContextPath() + "/bao-hanh?action=list");
+            response.sendRedirect(request.getContextPath() + "/BaoHanhServlet?action=list");
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/loi.jsp").forward(request, response);

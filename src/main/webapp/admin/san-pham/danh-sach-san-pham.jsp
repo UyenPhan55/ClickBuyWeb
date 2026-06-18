@@ -8,6 +8,7 @@
 </c:if>
 
 <c:set var="pageTitle" value="Quản lý sản phẩm"/>
+<c:set var="activeMenu" value="products"/>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -23,7 +24,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/staff.css">
+          href="${pageContext.request.contextPath}/assets/css/admin.css">
 </head>
 
 <body>
@@ -92,7 +93,7 @@
 
                         <c:choose>
 
-                            <!-- Có dữ liệu -->
+                            <%-- Có dữ liệu --%>
                             <c:when test="${not empty listSanPham}">
 
                                 <c:forEach items="${listSanPham}" var="sp">
@@ -105,27 +106,28 @@
                                         </td>
 
                                         <!-- Ảnh -->
+                                        <<!-- Ảnh -->
                                         <td>
+                                            <c:choose>
 
-                                            <img
-                                                src="${not empty sp.urlAnh
-                                                    ? pageContext.request.contextPath.concat('/uploads/san-pham/').concat(sp.urlAnh)
-                                                    : 'https://placehold.co/50x50?text=SP'}"
+                                                <c:when test="${not empty sp.urlAnh}">
+                                                    <img
+                                                        src="${pageContext.request.contextPath}/assets/images/${sp.urlAnh}"
+                                                        alt="${sp.tenSanPham}"
+                                                        class="tbl-img"
+                                                        onerror="this.onerror=null;
+                                                        this.src='${pageContext.request.contextPath}/assets/images/iphone14.jpg';">
+                                                </c:when>
 
-                                                alt="${sp.tenSanPham}"
+                                                <c:otherwise>
+                                                    <img
+                                                        src="${pageContext.request.contextPath}/assets/images/iphone14.jpg"
+                                                        alt="Không có ảnh"
+                                                        class="tbl-img">
+                                                </c:otherwise>
 
-                                                style="
-                                                    width:48px;
-                                                    height:48px;
-                                                    object-fit:cover;
-                                                    border-radius:8px;
-                                                    border:1px solid #eee
-                                                "
-
-                                                onerror="this.src='https://placehold.co/50x50?text=SP'"
-                                            >
+                                            </c:choose>
                                         </td>
-
                                         <!-- Tên -->
                                         <td>
 
@@ -198,13 +200,6 @@
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </a>
 
-                                                <!-- Quản lý biến thể -->
-                                                <a href="${pageContext.request.contextPath}/san-pham?action=quanLyBienThe&id=${sp.idSanPham}"
-                                                   class="btn btn-sm btn-outline-primary">
-                                                   
-                                                    <i class="bi bi-diagram-3"></i>
-                                                </a>
-
                                                 <!-- Xóa -->
                                                 <form action="${pageContext.request.contextPath}/san-pham"
                                                       method="post"
@@ -238,7 +233,7 @@
 
                             </c:when>
 
-                            <!-- Không có dữ liệu -->
+                            <%-- Không có dữ liệu --%>
                             <c:otherwise>
 
                                 <tr>

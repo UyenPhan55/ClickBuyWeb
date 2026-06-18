@@ -69,7 +69,7 @@ body {
 a { text-decoration: none; }
 
 /* ============================================================
-   LAYOUT
+   LAYOUT - sửa phần header-admin cho khớp
    ============================================================ */
 .layout-wrapper { display: flex; min-height: 100vh; }
 
@@ -333,7 +333,16 @@ table.tbl td {
 table.tbl tbody tr:hover td { background: #f8fafd; }
 table.tbl tbody tr:last-child td { border-bottom: none; }
 
-.tbl-img { width: 42px; height: 42px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+.tbl-img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    display: block;
+    padding: 3px;
+    background: #ffffff;
+    border: 1px solid #e4eaf0;
+    border-radius: 8px;
+}
 .tbl-no-data { text-align: center; padding: 44px 16px; color: var(--text-muted); }
 .tbl-no-data i { font-size: 30px; display: block; margin-bottom: 8px; opacity: .5; }
 
@@ -460,4 +469,76 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
   .sidebar.open { transform: translateX(0); }
   .main-content { margin-left: 0; }
+}
+/* Responsive bổ sung */
+.tbl-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.tbl,
+table.table {
+  min-width: 850px;
+}
+
+.card-header {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 992px) {
+  .page-content {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .topnav {
+    padding: 0 14px;
+  }
+
+  .topnav-role,
+  .topnav-user .uname {
+    display: none;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .search-wrap .form-control {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-content {
+    padding: 12px;
+  }
+
+  .card {
+    border-radius: 10px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 16px;
+  }
 }
